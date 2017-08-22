@@ -1,0 +1,37 @@
+{
+	"name": "gdmnDCTmobile",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"logcat": "node node_modules/react-native/local-cli/cli.js log-android",
+		"reverse": "adb reverse tcp:8081 tcp:8081",
+		"shake": "adb shell input keyevent 82",
+		"test": "jest"
+	},
+	"dependencies": {
+		"moment": "^2.18.1",
+		"prop-types": "^15.5.10",
+		"react": "^16.0.0-alpha.12",
+		"react-native": "^0.47.1",
+		"react-native-action-button": "^2.7.2",
+		"react-native-fs": "^2.5.1",
+		"react-native-snackbar": "^0.4.1",
+		"react-native-vector-icons": "^4.3.0",
+		"react-navigation": "^1.0.0-beta.12",
+		"react-redux": "^5.0.6",
+		"realm": "^1.10.3",
+		"redux": "^3.7.2",
+		"redux-actions": "^2.2.1",
+		"redux-thunk": "^2.2.0"
+	},
+	"devDependencies": {
+		"babel-jest": "^20.0.3",
+		"babel-preset-react-native": "^3.0.0",
+		"jest": "^20.0.4",
+		"react-test-renderer": "^16.0.0-alpha.12"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
