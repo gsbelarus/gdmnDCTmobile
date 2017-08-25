@@ -9,6 +9,13 @@ import SelectOperationContainer from '../containers/SelectOperationContainer'
 import ScannerContainer from '../containers/ScannerContainer'
 import SplashScreen from '../components/SplashScreen/index'
 import EmptyView from '../components/EmptyView/index'
+import strings, {
+  STRING_TITLE_SCANNER,
+  STRING_TITLE_SELECT_OPERATION,
+  STRING_TITLE_SELECT_OPERATOR,
+  STRING_TITLE_SELECT_STORING_PLACE,
+  STRING_TITLE_SESSIONS
+} from '../localization/strings'
 
 export const LOADER = 'Loader'
 export const ERROR = 'Error'
@@ -45,31 +52,31 @@ export default StackNavigator({
   [SESSIONS]: {
     screen: SessionsContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: 'Сессии'
+      title: strings(STRING_TITLE_SESSIONS)
     })
   },
   [SELECT_OPERATOR]: {
     screen: SelectOperatorContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: 'Выберите оператора'
+      title: strings(STRING_TITLE_SELECT_OPERATOR)
     })
   },
   [SELECT_STORING_PLACE]: {
     screen: SelectStoringPlaceContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: 'Выберите место хранения'
+      title: strings(STRING_TITLE_SELECT_STORING_PLACE)
     })
   },
   [SELECT_OPERATION]: {
     screen: SelectOperationContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: 'Выберите операцию'
+      title: strings(STRING_TITLE_SELECT_OPERATION)
     })
   },
   [SCANNER]: {
     screen: ScannerContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: 'Сессия открыта...',
+      title: strings(STRING_TITLE_SCANNER),
       headerRight: (
         <TouchableNativeFeedback
           delayPressIn={0}

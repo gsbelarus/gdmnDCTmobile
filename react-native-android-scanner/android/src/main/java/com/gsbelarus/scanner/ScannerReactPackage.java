@@ -1,4 +1,4 @@
-package com.gsbelarus.gedemin.datacollectionterminal.scanner;
+package com.gsbelarus.scanner;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

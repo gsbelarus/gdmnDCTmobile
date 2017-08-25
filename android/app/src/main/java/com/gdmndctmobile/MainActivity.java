@@ -1,4 +1,4 @@
-package com.gsbelarus.gedemin.datacollectionterminal;
+package com.gdmndctmobile;
 
 import com.facebook.react.ReactActivity;
 

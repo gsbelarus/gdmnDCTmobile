@@ -1,4 +1,4 @@
-package com.gsbelarus.gedemin.datacollectionterminal.scanner;
+package com.gsbelarus.scanner;
 
 import android.content.Intent;
 import android.os.Bundle;

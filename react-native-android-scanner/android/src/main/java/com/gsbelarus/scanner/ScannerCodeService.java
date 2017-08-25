@@ -1,4 +1,4 @@
-package com.gsbelarus.gedemin.datacollectionterminal.scanner;
+package com.gsbelarus.scanner;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,8 +14,6 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-
-import com.gsbelarus.gedemin.datacollectionterminal.R;
 
 import device.scanner.DecodeResult;
 import device.scanner.IScannerService;
@@ -95,7 +93,7 @@ public class ScannerCodeService extends Service {
                 return null;
             }
         });
-        
+
         IntentFilter intentFilter = new IntentFilter("device.scanner.USERMSG");
         registerReceiver(scanReceiver, intentFilter);
     }

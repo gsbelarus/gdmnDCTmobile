@@ -1,7 +1,7 @@
+import ScannerApi from 'react-native-android-scanner'
 import realm from './realm/realm'
 import CodeModel from './realm/models/CodeModel'
 import SessionModel from './realm/models/SessionModel'
-import ScannerApi from './ScannerApi'
 
 export default async (taskData) => {
   if (taskData.value !== ScannerApi.SCANNER_READ_FAIL) {

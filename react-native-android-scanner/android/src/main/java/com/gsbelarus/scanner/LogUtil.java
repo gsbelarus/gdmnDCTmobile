@@ -1,5 +1,4 @@
-package com.gsbelarus.gedemin.datacollectionterminal.scanner;
-
+package com.gsbelarus.scanner;
 import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;

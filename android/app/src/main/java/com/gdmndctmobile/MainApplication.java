@@ -1,13 +1,14 @@
-package com.gsbelarus.gedemin.datacollectionterminal;
+package com.gdmndctmobile;
 
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.rnfs.RNFSPackage;
-import com.azendoo.reactnativesnackbar.SnackbarPackage;
-import com.gsbelarus.gedemin.datacollectionterminal.scanner.ScannerReactPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import io.realm.react.RealmReactPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.azendoo.reactnativesnackbar.SnackbarPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.rnfs.RNFSPackage;
+import com.gsbelarus.scanner.ScannerReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,10 +29,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFSPackage(),
-            new SnackbarPackage(),
-            new VectorIconsPackage(),
             new RealmReactPackage(),
+            new VectorIconsPackage(),
+            new SnackbarPackage(),
+            new RNI18nPackage(),
+            new RNFSPackage(),
             new ScannerReactPackage()
       );
     }

@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 import Snackbar from 'react-native-snackbar'
-import ScannerApi from '../../ScannerApi'
+import ScannerApi from 'react-native-android-scanner'
 import SessionModel from '../../realm/models/SessionModel'
 import CodeModel from '../../realm/models/CodeModel'
 import scannerCallbackTask from '../../scannerCallbackTask'

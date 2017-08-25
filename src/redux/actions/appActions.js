@@ -1,6 +1,7 @@
 import { Alert, BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import Snackbar from 'react-native-snackbar'
+import ScannerApi from 'react-native-android-scanner'
 import {
   ERROR,
   LOADER,
@@ -10,7 +11,6 @@ import {
   SELECT_STORING_PLACE,
   SESSIONS
 } from '../../navigators/AppNavigator'
-import ScannerApi from '../../ScannerApi'
 import SessionModel from '../../realm/models/SessionModel'
 import StoringPlaceModel from '../../realm/models/StoringPlaceModel'
 import OperatorModel from '../../realm/models/OperatorModel'
