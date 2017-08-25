@@ -1,4 +1,3 @@
-import 'moment/locale/ru'
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import { AppRegistry, UIManager } from 'react-native'

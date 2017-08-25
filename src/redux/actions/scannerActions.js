@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions'
 import Snackbar from 'react-native-snackbar'
 import ScannerApi from 'react-native-android-scanner'
+import strings, { STRING_ACTION_HIDE, STRING_ERROR_SCANNING } from '../../localization/strings'
 import SessionModel from '../../realm/models/SessionModel'
 import CodeModel from '../../realm/models/CodeModel'
 import scannerCallbackTask from '../../scannerCallbackTask'
@@ -40,10 +41,10 @@ export function onScanned (realm, scanResult) {
   return async (dispatch, getState) => {
     if (scanResult.value === ScannerApi.SCANNER_READ_FAIL) {
       Snackbar.show({
-        title: 'Не удалось считать код',
+        title: strings(STRING_ERROR_SCANNING),
         duration: Snackbar.LENGTH_SHORT,
         action: {
-          title: 'Скрыть',
+          title: strings(STRING_ACTION_HIDE),
           color: 'red',
           onPress: Snackbar.dismiss,
         }

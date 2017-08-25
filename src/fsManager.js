@@ -1,5 +1,5 @@
 import RNFS from 'react-native-fs'
-import moment from 'moment'
+import { formatDate } from './localization/utils'
 import OperatorModel from './realm/models/OperatorModel'
 import StoringPlaceModel from './realm/models/StoringPlaceModel'
 import OperationModel from './realm/models/OperationModel'
@@ -10,7 +10,7 @@ export class ExportManager {
   static ENCODING = 'utf8'
 
   static getFileNameSession (session) {
-    return `${moment(session.time).format('YYMMDDHHmmss')}.txt`
+    return `${formatDate(session.time, 'YYMMDDHHmmss', 'en')}.txt`
   }
 
   static async exportSession (session) {

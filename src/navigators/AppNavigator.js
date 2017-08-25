@@ -2,13 +2,6 @@ import React from 'react'
 import { Platform, TouchableNativeFeedback, View } from 'react-native'
 import { StackNavigator } from 'react-navigation'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import SessionsContainer from '../containers/SessionsContainer'
-import SelectOperatorContainer from '../containers/SelectOperatorContainer'
-import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContainer'
-import SelectOperationContainer from '../containers/SelectOperationContainer'
-import ScannerContainer from '../containers/ScannerContainer'
-import SplashScreen from '../components/SplashScreen/index'
-import EmptyView from '../components/EmptyView/index'
 import strings, {
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
@@ -16,6 +9,13 @@ import strings, {
   STRING_TITLE_SELECT_STORING_PLACE,
   STRING_TITLE_SESSIONS
 } from '../localization/strings'
+import SessionsContainer from '../containers/SessionsContainer'
+import SelectOperatorContainer from '../containers/SelectOperatorContainer'
+import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContainer'
+import SelectOperationContainer from '../containers/SelectOperationContainer'
+import ScannerContainer from '../containers/ScannerContainer'
+import SplashScreen from '../components/SplashScreen/index'
+import EmptyView from '../components/EmptyView/index'
 
 export const LOADER = 'Loader'
 export const ERROR = 'Error'

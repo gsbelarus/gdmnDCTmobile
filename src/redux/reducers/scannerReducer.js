@@ -1,11 +1,17 @@
 import { handleActions } from 'redux-actions'
+import strings, {
+  STRING_ACTION_DELETE,
+  STRING_ACTION_SAVE,
+  STRING_TITLE_CREATING,
+  STRING_TITLE_EDITING
+} from '../../localization/strings'
 import { dismissEditor, showEditor } from '../actions/scannerActions'
 
 const defaultState = {
   editorVisible: false,
   editorDefaultValue: null,
   editorTitle: '',
-  editorConfirmText: 'Сохранить',
+  editorConfirmText: strings(STRING_ACTION_SAVE),
   editorCancelText: null,
   editableItem: null,
 }
@@ -15,8 +21,8 @@ export default handleActions({
     ...state,
     editorVisible: true,
     editorDefaultValue: (action.payload && action.payload.name) || '',
-    editorTitle: action.payload ? 'Редактирование' : 'Создание',
-    editorCancelText: action.payload ? 'Удалить' : null,
+    editorTitle: action.payload ? strings(STRING_TITLE_EDITING) : strings(STRING_TITLE_CREATING),
+    editorCancelText: action.payload ? strings(STRING_ACTION_DELETE) : null,
     editableItem: action.payload
   }),
   [dismissEditor]: (state, action) => ({

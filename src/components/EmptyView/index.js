@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Text, View } from 'react-native'
 import styles from './styles'
+import strings, { STRING_EMPTY_DATA } from '../../localization/strings'
 
 export default class EmptyView extends PureComponent {
 
@@ -16,7 +17,7 @@ export default class EmptyView extends PureComponent {
 
   static defaultProps = {
     icon: 'sentiment-neutral',
-    text: 'Данные отстутствуют'
+    text: strings(STRING_EMPTY_DATA)
   }
 
   render () {

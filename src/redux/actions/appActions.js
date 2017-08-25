@@ -2,6 +2,18 @@ import { Alert, BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import Snackbar from 'react-native-snackbar'
 import ScannerApi from 'react-native-android-scanner'
+import strings, {
+  STRING_ACTION_CANCEL, STRING_ACTION_CLOSE_SESSION,
+  STRING_ACTION_CONFIRM,
+  STRING_ACTION_OPEN_SESSION,
+  STRING_ACTION_REPEAT,
+  STRING_CLOSING_SESSION,
+  STRING_ERROR_CLOSING_SESSION,
+  STRING_ERROR_DEVICE_NOT_SUPPORTED,
+  STRING_ERROR_LOADING_DATA,
+  STRING_LOADING_DATA,
+  STRING_NOTIFICATION
+} from '../../localization/strings'
 import {
   ERROR,
   LOADER,
@@ -46,25 +58,25 @@ export function appInit (realm) {
         actions: [NavigationActions.navigate({
           routeName: ERROR,
           params: {
-            message: 'Устройство не поддерживается',
+            message: strings(STRING_ERROR_DEVICE_NOT_SUPPORTED),
             icon: 'sentiment-very-dissatisfied'
           }
         })]
       }))
     } else {
       try {
-        dispatch(openLoader('Загрузка данных...'))
-        // await ExportManager.exportTest(realm)
+        dispatch(openLoader(strings(STRING_LOADING_DATA)))
+        await ExportManager.exportTest(realm)
         await ImportManager.importAll(realm)
-        // await ExportManager.exportTest(realm)
+        await ExportManager.exportTest(realm)
         dispatch(globalNavigate(realm))
       } catch (error) {
         console.warn(error)
         Snackbar.show({
-          title: 'Не удалось загрузить данные',
+          title: strings(STRING_ERROR_LOADING_DATA),
           duration: Snackbar.LENGTH_INDEFINITE,
           action: {
-            title: 'Повторить',
+            title: strings(STRING_ACTION_REPEAT),
             color: 'red',
             onPress: () => dispatch(appInit(realm)),
           }
@@ -97,10 +109,10 @@ export function openCreateSession (realm, object) {
     } else if (object instanceof OperationModel) {
       const {operator, storingPlace} = params
       Alert.alert(
-        'Уведомление',
-        'Открыть сессию?',
-        [{text: 'Отмена'}, {
-          text: 'Да',
+        strings(STRING_NOTIFICATION),
+        strings(STRING_ACTION_OPEN_SESSION) + '?',
+        [{text: strings(STRING_ACTION_CANCEL)}, {
+          text: strings(STRING_ACTION_CONFIRM),
           onPress: () => {
             realm.write(() => {
               SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
@@ -117,7 +129,7 @@ export function closeSession (realm) {
   return (dispatch, getState) => {
     async function onConfirmed () {
       try {
-        dispatch(openLoader('Закрытие сессии...'))
+        dispatch(openLoader(strings(STRING_CLOSING_SESSION)))
         const session = SessionModel.getOpenedSession(realm)
         await ExportManager.exportSession(session)
         realm.write(() => session.disabled = true)
@@ -125,10 +137,10 @@ export function closeSession (realm) {
       } catch (error) {
         console.warn(error)
         Snackbar.show({
-          title: 'Не удалось закрыть сессию',
+          title: strings(STRING_ERROR_CLOSING_SESSION),
           duration: Snackbar.LENGTH_INDEFINITE,
           action: {
-            title: 'Повторить',
+            title: strings(STRING_ACTION_REPEAT),
             color: 'red',
             onPress: onConfirmed,
           }
@@ -137,10 +149,10 @@ export function closeSession (realm) {
     }
 
     Alert.alert(
-      'Уведомление',
-      'Закрыть сессию?',
-      [{text: 'Отмена'}, {
-        text: 'Да',
+      strings(STRING_NOTIFICATION),
+      strings(STRING_ACTION_CLOSE_SESSION) + '?',
+      [{text: strings(STRING_ACTION_CANCEL)}, {
+        text: strings(STRING_ACTION_CONFIRM),
         onPress: onConfirmed
       }]
     )

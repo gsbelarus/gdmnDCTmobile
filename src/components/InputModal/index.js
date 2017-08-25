@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Modal, ScrollView, Text, TextInput, TouchableNativeFeedback, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles'
+import strings, { STRING_ACTION_OK } from '../../localization/strings'
 
 export default class InputModal extends PureComponent {
 
@@ -23,8 +24,7 @@ export default class InputModal extends PureComponent {
     defaultValue: '',
     title: '',
     keyboardType: 'numeric',
-    confirmText: 'Ok',
-    cancelText: 'Cancel',
+    confirmText: strings(STRING_ACTION_OK),
     onConfirm: () => {},
     onCancel: () => {},
     style: null
