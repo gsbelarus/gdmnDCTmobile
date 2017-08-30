@@ -16,6 +16,7 @@ import {
   STRING_ERROR_SCANNING,
   STRING_LOADING_DATA,
   STRING_NOTIFICATION,
+  STRING_OPENING_SESSION,
   STRING_TITLE_CREATING,
   STRING_TITLE_EDITING,
   STRING_TITLE_SCANNER,
@@ -38,6 +39,7 @@ export default () => ({
 
   [STRING_EMPTY_DATA]: 'Данные отсутствуют',
   [STRING_LOADING_DATA]: 'Загрузка данных...',
+  [STRING_OPENING_SESSION]: 'Открытие сессии...',
   [STRING_CLOSING_SESSION]: 'Закрытие сессии...',
   [STRING_NOTIFICATION]: 'Уведомление',
 

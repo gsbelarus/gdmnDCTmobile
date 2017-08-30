@@ -9,6 +9,7 @@ import com.azendoo.reactnativesnackbar.SnackbarPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.rnfs.RNFSPackage;
 import com.gsbelarus.scanner.ScannerReactPackage;
+import com.gsbelarus.fswatcher.FSWatcherReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -34,7 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
             new SnackbarPackage(),
             new RNI18nPackage(),
             new RNFSPackage(),
-            new ScannerReactPackage()
+            new ScannerReactPackage(),
+            new FSWatcherReactPackage()
       );
     }
   };

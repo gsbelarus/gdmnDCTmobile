@@ -1,8 +1,11 @@
 import RNFS from 'react-native-fs'
+import FSWatcher from 'react-native-android-fs-watcher'
 import { formatDate } from './localization/utils'
 import OperatorModel from './realm/models/OperatorModel'
 import StoringPlaceModel from './realm/models/StoringPlaceModel'
 import OperationModel from './realm/models/OperationModel'
+
+export { FSWatcher }
 
 export class ExportManager {
 
@@ -14,7 +17,7 @@ export class ExportManager {
   }
 
   static async exportSession (session) {
-    const filePath = ExportManager.DIR + '/' + ExportManager.getFileNameSession(session)
+    const filePath = this.DIR + '/' + this.getFileNameSession(session)
 
     const data = session.codes.map((code) => (
       new ExportItem(
@@ -27,8 +30,8 @@ export class ExportManager {
       )
     ))
 
-    await RNFS.mkdir(ExportManager.DIR)
-    await RNFS.writeFile(filePath, JSON.stringify(data), ExportManager.ENCODING)
+    await RNFS.mkdir(this.DIR)
+    await RNFS.writeFile(filePath, JSON.stringify(data), this.ENCODING)
   }
 
   static async exportTest (realm) {
@@ -43,7 +46,7 @@ export class ExportManager {
     await RNFS.writeFile(storingPlaceFilePath, JSON.stringify(Array.from(storingPlaces)), ExportManager.ENCODING)
 
     const operationFilePath = ImportManager.DIR + '/' + ImportManager.FILE_NAME_OPERATIONS
-    const operations = OperationModel.getSortedByName(realm)
+    const operations = OperationModel.getSortedBySortNumber(realm)
     await RNFS.mkdir(ImportManager.DIR)
     await RNFS.writeFile(operationFilePath, JSON.stringify(Array.from(operations)), ExportManager.ENCODING)
   }
@@ -57,17 +60,45 @@ export class ImportManager {
   static FILE_NAME_STORING_PLACES = 'storing_places.txt'
   static FILE_NAME_OPERATIONS = 'operations.txt'
 
+  static watchCallbacks = []
+
+  static watch (callback) {
+    this.watchCallbacks.push(callback)
+    FSWatcher.addToWatching(this.DIR)
+    FSWatcher.addListener(onFileEvent)
+  }
+
+  static unwatch (callback) {
+    this.watchCallbacks.splice(this.watchCallbacks.findIndex(callback), 1)
+    FSWatcher.removeFromWatching(this.DIR)
+    FSWatcher.removeListener(onFileEvent)
+  }
+
+  static async importByFileName (realm, fileName) {
+    switch (fileName) {
+      case this.FILE_NAME_OPERATORS:
+        await this.importOperators(realm)
+        break
+      case this.FILE_NAME_STORING_PLACES:
+        await this.importStoringPlaces(realm)
+        break
+      case this.FILE_NAME_OPERATIONS:
+        await this.importOperations(realm)
+        break
+    }
+  }
+
   static async importAll (realm) {
-    await ImportManager.importOperators(realm)
-    await ImportManager.importStoringPlaces(realm)
-    await ImportManager.importOperations(realm)
+    await this.importOperators(realm)
+    await this.importStoringPlaces(realm)
+    await this.importOperations(realm)
   }
 
   static async importOperators (realm) {
-    const filePath = ImportManager.DIR + '/' + ImportManager.FILE_NAME_OPERATORS
+    const filePath = this.DIR + '/' + this.FILE_NAME_OPERATORS
 
     if (await RNFS.exists(filePath)) {
-      const operators = JSON.parse(await RNFS.readFile(filePath, ImportManager.ENCODING))
+      const operators = JSON.parse(await RNFS.readFile(filePath, this.ENCODING))
       const operatorModels = operators.map((operator) => (
         OperatorModel.newInstance(
           operator[OperatorModel.FIELD_ID],
@@ -80,16 +111,17 @@ export class ImportManager {
           realm.create(OperationModel.name, operator, true)
         })
       })
-
+      console.log('imported', filePath)
       await RNFS.unlink(filePath)
+      console.log('deleted', filePath)
     }
   }
 
   static async importStoringPlaces (realm) {
-    const filePath = ImportManager.DIR + '/' + ImportManager.FILE_NAME_STORING_PLACES
+    const filePath = this.DIR + '/' + this.FILE_NAME_STORING_PLACES
 
     if (await RNFS.exists(filePath)) {
-      const storingPlaces = JSON.parse(await RNFS.readFile(filePath, ImportManager.ENCODING))
+      const storingPlaces = JSON.parse(await RNFS.readFile(filePath, this.ENCODING))
       const storingPlaceModels = storingPlaces.map((storingPlace) => (
         StoringPlaceModel.newInstance(
           storingPlace[StoringPlaceModel.FIELD_ID],
@@ -103,16 +135,17 @@ export class ImportManager {
           realm.create(StoringPlaceModel.name, storingPlace, true)
         })
       })
-
+      console.log('imported', filePath)
       await RNFS.unlink(filePath)
+      console.log('deleted', filePath)
     }
   }
 
   static async importOperations (realm) {
-    const filePath = ImportManager.DIR + '/' + ImportManager.FILE_NAME_OPERATIONS
+    const filePath = this.DIR + '/' + this.FILE_NAME_OPERATIONS
 
     if (await RNFS.exists(filePath)) {
-      const operations = JSON.parse(await RNFS.readFile(filePath, ImportManager.ENCODING))
+      const operations = JSON.parse(await RNFS.readFile(filePath, this.ENCODING))
       const operationModels = operations.map((operation) => (
         OperationModel.newInstance(
           operation[OperationModel.FIELD_ID],
@@ -127,27 +160,38 @@ export class ImportManager {
           realm.create(OperationModel.name, operation, true)
         })
       })
-
+      console.log('imported', filePath)
       await RNFS.unlink(filePath)
+      console.log('deleted', filePath)
     }
+  }
+}
+
+function onFileEvent (event) {
+  switch (event.key) {
+    // case FSWatcher.KEY_CREATE:
+    case FSWatcher.KEY_MODIFY:
+    case FSWatcher.KEY_MOVED_TO:
+      console.log(event)
+      switch (event.fileName) {
+        case ImportManager.FILE_NAME_OPERATORS:
+        case ImportManager.FILE_NAME_OPERATIONS:
+        case ImportManager.FILE_NAME_STORING_PLACES:
+          ImportManager.watchCallbacks.forEach(callback => callback(event.fileName))
+          break
+      }
+      break
   }
 }
 
 class ExportItem {
 
-  codeName
-  storingPlaceKey
-  operationKey
-  operatorKey
-  sessionTime
-  fileName
-
   constructor (codeName, storingPlaceKey, operationKey, operatorKey, sessionTime, fileName) {
-    this.codeName = codeName
-    this.storingPlaceKey = storingPlaceKey
-    this.operationKey = operationKey
-    this.operatorKey = operatorKey
-    this.sessionTime = sessionTime
-    this.fileName = fileName
+    this._codeName = codeName
+    this._storingPlaceKey = storingPlaceKey
+    this._operationKey = operationKey
+    this._operatorKey = operatorKey
+    this._sessionTime = sessionTime
+    this._fileName = fileName
   }
 }

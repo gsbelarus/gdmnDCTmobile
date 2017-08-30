@@ -37,10 +37,14 @@ export default class OperationModel {
     return realm.create(OperationModel.name, OperationModel.newInstance(max + 1, name, code, sortNumber, disabled), update)
   }
 
-  static getSortedByName (realm, reverse) {
+  static getEnabledObjects (realm) {
     return realm.objects(OperationModel.name)
-      .sorted(OperationModel.FIELD_NAME, reverse)
-      .sorted(OperationModel.FIELD_DISABLED)
+      .filtered(`${OperationModel.FIELD_DISABLED} = false`)
+  }
+
+  static getSortedBySortNumber (realm, reverse) {
+    return OperationModel.getEnabledObjects(realm)
+      .sorted(OperationModel.FIELD_SORT_NUMBER, reverse)
   }
 
   get id () {

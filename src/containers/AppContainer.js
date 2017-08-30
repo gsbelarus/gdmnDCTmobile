@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
-import { BackHandler, StatusBar } from 'react-native'
+import { BackHandler, StatusBar, View } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers } from 'react-navigation'
-import { appInit, closeSession, goBack, openCreateSession, } from '../redux/actions/appActions'
+import { ImportManager } from '../fsManager'
+import { appInit, closeSession, goBack, importData, openCreateSession } from '../redux/actions/appActions'
 import connectRealm from '../realm/react/connectRealm'
 import AppNavigator from '../navigators/AppNavigator'
+import ProgressModalContainer from './ProgressModalContainer'
 
 class App extends PureComponent {
 
@@ -21,23 +23,28 @@ class App extends PureComponent {
   }
 
   componentDidMount () {
-    this.props.appInit()
+    this.props.init()
 
     StatusBar.setBackgroundColor('black', true)
     BackHandler.addEventListener('hardwareBackPress', this.onBackPress)
+    ImportManager.watch(this.props.importData)
   }
 
   componentWillUnmount () {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress)
+    ImportManager.unwatch(this.props.importData)
   }
 
   render () {
     return (
-      <AppNavigator navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.state,
-        ...this.props
-      })}/>
+      <View style={{flex: 1}}>
+        <AppNavigator navigation={addNavigationHelpers({
+          dispatch: this.props.dispatch,
+          state: this.props.state,
+          ...this.props
+        })}/>
+        <ProgressModalContainer/>
+      </View>
     )
   }
 }
@@ -48,7 +55,8 @@ const ReduxAppContainer = connect(
   }),
   (dispatch, ownProps) => ({
     dispatch,
-    appInit: () => dispatch(appInit(ownProps.realm)),
+    init: () => dispatch(appInit(ownProps.realm)),
+    importData: (fileName) => dispatch(importData(ownProps.realm, fileName)),
     goBack: () => dispatch(goBack()),
     closeSession: () => dispatch(closeSession(ownProps.realm)),
     openCreateSession: (object) => dispatch(openCreateSession(ownProps.realm, object))

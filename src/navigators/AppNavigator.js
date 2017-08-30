@@ -14,10 +14,10 @@ import SelectOperatorContainer from '../containers/SelectOperatorContainer'
 import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContainer'
 import SelectOperationContainer from '../containers/SelectOperationContainer'
 import ScannerContainer from '../containers/ScannerContainer'
-import SplashScreen from '../components/SplashScreen/index'
 import EmptyView from '../components/EmptyView/index'
+import ProgressModalContainer from '../containers/ProgressModalContainer'
 
-export const LOADER = 'Loader'
+export const SPLASH_SCREEN = 'SplashScreen'
 export const ERROR = 'Error'
 export const SESSIONS = 'Sessions'
 export const SELECT_OPERATOR = 'SelectOperator'
@@ -26,13 +26,8 @@ export const SELECT_OPERATION = 'SelectOperation'
 export const SCANNER = 'Scanner'
 
 export default StackNavigator({
-  [LOADER]: {
-    screen: (props) => (
-      <SplashScreen
-        label={props.navigation.state.params && props.navigation.state.params.label}
-        progressColor={'white'}
-        style={{backgroundColor: 'black'}}/>
-    ),
+  [SPLASH_SCREEN]: {
+    screen: () => null,
     navigationOptions: ({navigation, screenProps}) => ({
       header: null
     })

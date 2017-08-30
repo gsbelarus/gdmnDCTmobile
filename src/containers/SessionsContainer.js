@@ -1,7 +1,7 @@
 import React from 'react'
 import connectRealm from '../realm/react/connectRealm'
 import SessionModel from '../realm/models/SessionModel'
-import Sessions from './Sessions'
+import Sessions from '../components/Sessions'
 import { ExportManager } from '../fsManager'
 
 export default connectRealm(

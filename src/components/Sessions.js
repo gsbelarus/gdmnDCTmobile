@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import { formatDate } from '../localization/utils'
-import List from '../components/List/index'
+import List from './List/index'
 
 export default class Sessions extends PureComponent {
 

@@ -13,6 +13,7 @@ export const STRING_ACTION_CLOSE_SESSION = 'actionCloseSession'
 
 export const STRING_EMPTY_DATA = 'emptyData'
 export const STRING_LOADING_DATA = 'loadingData'
+export const STRING_OPENING_SESSION = 'openingSession'
 export const STRING_CLOSING_SESSION = 'closingSession'
 export const STRING_NOTIFICATION = 'notification'
 

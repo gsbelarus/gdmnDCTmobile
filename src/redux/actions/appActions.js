@@ -1,9 +1,9 @@
 import { Alert, BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import Snackbar from 'react-native-snackbar'
-import ScannerApi from 'react-native-android-scanner'
 import strings, {
-  STRING_ACTION_CANCEL, STRING_ACTION_CLOSE_SESSION,
+  STRING_ACTION_CANCEL,
+  STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_CONFIRM,
   STRING_ACTION_OPEN_SESSION,
   STRING_ACTION_REPEAT,
@@ -12,11 +12,11 @@ import strings, {
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
   STRING_ERROR_LOADING_DATA,
   STRING_LOADING_DATA,
-  STRING_NOTIFICATION
+  STRING_NOTIFICATION,
+  STRING_OPENING_SESSION
 } from '../../localization/strings'
 import {
   ERROR,
-  LOADER,
   SCANNER,
   SELECT_OPERATION,
   SELECT_OPERATOR,
@@ -28,6 +28,8 @@ import StoringPlaceModel from '../../realm/models/StoringPlaceModel'
 import OperatorModel from '../../realm/models/OperatorModel'
 import OperationModel from '../../realm/models/OperationModel'
 import { ExportManager, ImportManager } from '../../fsManager'
+import { addToProgress, removeFromProgress } from './progressActions'
+import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
 
 export function goBack () {
   return (dispatch, getState) => {
@@ -40,19 +42,17 @@ export function goBack () {
   }
 }
 
-export function openLoader (label) {
-  return NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({
-      routeName: LOADER,
-      params: {label}
-    })]
-  })
-}
-
 export function appInit (realm) {
   return async (dispatch, getState) => {
-    if (!await ScannerApi.isDeviceSupported()) {
+    const progress = {message: require('../../../app.json').displayName}
+    dispatch(addToProgress(progress))
+
+    await new Promise(resolve => setTimeout(resolve, 500))
+    let isSupported = await ScannerApi.isDeviceSupported()
+
+    // isSupported = true
+
+    if (!isSupported) {
       dispatch(NavigationActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({
@@ -64,24 +64,37 @@ export function appInit (realm) {
         })]
       }))
     } else {
-      try {
-        dispatch(openLoader(strings(STRING_LOADING_DATA)))
-        await ExportManager.exportTest(realm)
+      dispatch(importData(realm))
+      dispatch(globalNavigate(realm))
+    }
+
+    dispatch(removeFromProgress(progress))
+  }
+}
+
+export function importData (realm, fileName) {
+  return async (dispatch, getState) => {
+    const progress = {message: strings(STRING_LOADING_DATA)}
+    dispatch(addToProgress(progress))
+    try {
+      if (fileName) {
+        await ImportManager.importByFileName(realm, fileName)
+      } else {
         await ImportManager.importAll(realm)
-        await ExportManager.exportTest(realm)
-        dispatch(globalNavigate(realm))
-      } catch (error) {
-        console.warn(error)
-        Snackbar.show({
-          title: strings(STRING_ERROR_LOADING_DATA),
-          duration: Snackbar.LENGTH_INDEFINITE,
-          action: {
-            title: strings(STRING_ACTION_REPEAT),
-            color: 'red',
-            onPress: () => dispatch(appInit(realm)),
-          }
-        })
       }
+    } catch (error) {
+      console.warn(error)
+      Snackbar.show({     //TODO conflict with React Native Modal
+        title: strings(STRING_ERROR_LOADING_DATA),
+        duration: Snackbar.LENGTH_LONG,
+        action: {
+          title: strings(STRING_ACTION_REPEAT),
+          color: 'red',
+          onPress: () => dispatch(importData(realm, fileName)),
+        }
+      })
+    } finally {
+      dispatch(removeFromProgress(progress))
     }
   }
 }
@@ -114,10 +127,15 @@ export function openCreateSession (realm, object) {
         [{text: strings(STRING_ACTION_CANCEL)}, {
           text: strings(STRING_ACTION_CONFIRM),
           onPress: () => {
+            const progress = {message: strings(STRING_OPENING_SESSION)}
+            dispatch(addToProgress(progress))
+
             realm.write(() => {
               SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
             })
             dispatch(globalNavigate(realm))
+
+            dispatch(removeFromProgress(progress))
           }
         }]
       )
@@ -127,9 +145,11 @@ export function openCreateSession (realm, object) {
 
 export function closeSession (realm) {
   return (dispatch, getState) => {
+
     async function onConfirmed () {
+      const progress = {message: strings(STRING_CLOSING_SESSION)}
+      dispatch(addToProgress(progress))
       try {
-        dispatch(openLoader(strings(STRING_CLOSING_SESSION)))
         const session = SessionModel.getOpenedSession(realm)
         await ExportManager.exportSession(session)
         realm.write(() => session.disabled = true)
@@ -145,6 +165,8 @@ export function closeSession (realm) {
             onPress: onConfirmed,
           }
         })
+      } finally {
+        dispatch(removeFromProgress(progress))
       }
     }
 

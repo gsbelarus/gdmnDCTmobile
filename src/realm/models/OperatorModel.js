@@ -30,10 +30,14 @@ export default class OperatorModel {
     return realm.create(OperatorModel.name, OperatorModel.newInstance(max + 1, name, disabled))
   }
 
-  static getSortedByName (realm, reverse) {
+  static getEnabledObjects (realm) {
     return realm.objects(OperatorModel.name)
+      .filtered(`${OperatorModel.FIELD_DISABLED} = false`)
+  }
+
+  static getSortedByName (realm, reverse) {
+    return OperatorModel.getEnabledObjects(realm)
       .sorted(OperatorModel.FIELD_NAME, reverse)
-      .sorted(OperatorModel.FIELD_DISABLED)
   }
 
   get id () {

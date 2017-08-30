@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import connectRealm from '../realm/react/connectRealm'
 import SessionModel from '../realm/models/SessionModel'
-import Scanner from './Scanner'
+import Scanner from '../components/Scanner'
 import {
   deleteAndDismissEditor,
   dismissEditor,

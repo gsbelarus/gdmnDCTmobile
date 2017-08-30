@@ -34,10 +34,14 @@ export default class StoringPlaceModel {
     return realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(max + 1, name, code, disabled))
   }
 
-  static getSortedByName (realm, reverse) {
+  static getEnabledObjects (realm) {
     return realm.objects(StoringPlaceModel.name)
+      .filtered(`${StoringPlaceModel.FIELD_DISABLED} = false`)
+  }
+
+  static getSortedByName (realm, reverse) {
+    return StoringPlaceModel.getEnabledObjects(realm)
       .sorted(StoringPlaceModel.FIELD_NAME, reverse)
-      .sorted(StoringPlaceModel.FIELD_DISABLED)
   }
 
   get id () {

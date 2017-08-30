@@ -6,7 +6,7 @@ import SimpleListItem from '../components/SimpleListItem/index'
 
 export default connectRealm(
   (realm, ownProps) => ({
-    items: OperationModel.getSortedByName(realm),
+    items: OperationModel.getSortedBySortNumber(realm),
     renderItem: ({item}) => (
       <SimpleListItem
         id={item.id}

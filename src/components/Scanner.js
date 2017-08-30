@@ -4,9 +4,9 @@ import { View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import ScannerApi from 'react-native-android-scanner'
 import CodeModel from '../realm/models/CodeModel'
-import List from '../components/List/index'
-import SimpleListItem from '../components/SimpleListItem/index'
-import InputModal from '../components/InputModal/index'
+import List from './List/index'
+import SimpleListItem from './SimpleListItem/index'
+import InputModal from './InputModal/index'
 
 export default class Scanner extends PureComponent {
 

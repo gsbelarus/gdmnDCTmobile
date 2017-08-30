@@ -1,12 +1,6 @@
-import { NavigationActions } from 'react-navigation'
-import AppNavigator, { LOADER } from '../../navigators/AppNavigator'
+import AppNavigator, { SPLASH_SCREEN } from '../../navigators/AppNavigator'
 
-const initialState = AppNavigator.router.getStateForAction(
-  NavigationActions.navigate({
-    routeName: LOADER,
-    params: {label: require('../../../app.json').displayName}
-  })
-)
+const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams(SPLASH_SCREEN))
 
 export default function (state = initialState, action) {
   const nextState = AppNavigator.router.getStateForAction(action, state)
