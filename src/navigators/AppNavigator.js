@@ -15,7 +15,7 @@ import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContain
 import SelectOperationContainer from '../containers/SelectOperationContainer'
 import ScannerContainer from '../containers/ScannerContainer'
 import EmptyView from '../components/EmptyView/index'
-import ProgressModalContainer from '../containers/ProgressModalContainer'
+import SplashScreen from '../components/SplashScreen/index'
 
 export const SPLASH_SCREEN = 'SplashScreen'
 export const ERROR = 'Error'
@@ -27,7 +27,12 @@ export const SCANNER = 'Scanner'
 
 export default StackNavigator({
   [SPLASH_SCREEN]: {
-    screen: () => null,
+    screen: () => (
+      <SplashScreen
+        label={require('../../app.json').displayName}
+        progressColor={'white'}
+        style={{backgroundColor: 'black'}}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       header: null
     })

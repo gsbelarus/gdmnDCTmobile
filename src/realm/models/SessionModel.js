@@ -57,6 +57,14 @@ export default class SessionModel {
     else return null
   }
 
+  static findCodeByKey (session, codeKey) {
+    if (session) {
+      let collisionCode = session.codes.filtered(`${CodeModel.FIELD_ID} = '${codeKey}'`)
+      if (collisionCode.length) return collisionCode[0]
+    }
+    return null
+  }
+
   static findCodeByName (session, codeName) {
     if (session) {
       let collisionCode = session.codes.filtered(`${CodeModel.FIELD_NAME} = '${codeName}'`)

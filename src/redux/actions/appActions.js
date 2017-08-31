@@ -7,13 +7,14 @@ import strings, {
   STRING_ACTION_CONFIRM,
   STRING_ACTION_OPEN_SESSION,
   STRING_ACTION_REPEAT,
-  STRING_CLOSING_SESSION,
   STRING_ERROR_CLOSING_SESSION,
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
   STRING_ERROR_LOADING_DATA,
-  STRING_LOADING_DATA,
   STRING_NOTIFICATION,
-  STRING_OPENING_SESSION
+  STRING_PROGRESS_CLOSING_SESSION,
+  STRING_PROGRESS_LOADING_DATA,
+  STRING_PROGRESS_OPENING_SESSION,
+  STRING_PROGRESS_VERIFY_APP
 } from '../../localization/strings'
 import {
   ERROR,
@@ -33,7 +34,8 @@ import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
 
 export function goBack () {
   return (dispatch, getState) => {
-    const {appState} = getState()
+    const {appState, progressState} = getState()
+    if (progressState.visible) return
     if (appState.index) {
       dispatch(NavigationActions.back())
     } else {
@@ -44,13 +46,11 @@ export function goBack () {
 
 export function appInit (realm) {
   return async (dispatch, getState) => {
-    const progress = {message: require('../../../app.json').displayName}
+    const progress = {message: strings(STRING_PROGRESS_VERIFY_APP)}
     dispatch(addToProgress(progress))
 
-    await new Promise(resolve => setTimeout(resolve, 500))
     let isSupported = await ScannerApi.isDeviceSupported()
-
-    // isSupported = true
+    isSupported = true
 
     if (!isSupported) {
       dispatch(NavigationActions.reset({
@@ -74,7 +74,7 @@ export function appInit (realm) {
 
 export function importData (realm, fileName) {
   return async (dispatch, getState) => {
-    const progress = {message: strings(STRING_LOADING_DATA)}
+    const progress = {message: strings(STRING_PROGRESS_LOADING_DATA)}
     dispatch(addToProgress(progress))
     try {
       if (fileName) {
@@ -84,7 +84,7 @@ export function importData (realm, fileName) {
       }
     } catch (error) {
       console.warn(error)
-      Snackbar.show({     //TODO conflict with React Native Modal
+      Snackbar.show({
         title: strings(STRING_ERROR_LOADING_DATA),
         duration: Snackbar.LENGTH_LONG,
         action: {
@@ -102,7 +102,7 @@ export function importData (realm, fileName) {
 export function openCreateSession (realm, object) {
   return (dispatch, getState) => {
     const {appState} = getState()
-    const params = appState.routes[appState.index].params
+    const params = getCurrentRouteState(appState).params
 
     if (!object) {
       dispatch(NavigationActions.navigate({routeName: SELECT_OPERATOR}))
@@ -127,12 +127,10 @@ export function openCreateSession (realm, object) {
         [{text: strings(STRING_ACTION_CANCEL)}, {
           text: strings(STRING_ACTION_CONFIRM),
           onPress: () => {
-            const progress = {message: strings(STRING_OPENING_SESSION)}
+            const progress = {message: strings(STRING_PROGRESS_OPENING_SESSION)}
             dispatch(addToProgress(progress))
 
-            realm.write(() => {
-              SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
-            })
+            realm.write(() => SessionModel.create(realm, new Date(), operator, storingPlace, object, false, []))
             dispatch(globalNavigate(realm))
 
             dispatch(removeFromProgress(progress))
@@ -147,7 +145,7 @@ export function closeSession (realm) {
   return (dispatch, getState) => {
 
     async function onConfirmed () {
-      const progress = {message: strings(STRING_CLOSING_SESSION)}
+      const progress = {message: strings(STRING_PROGRESS_CLOSING_SESSION)}
       dispatch(addToProgress(progress))
       try {
         const session = SessionModel.getOpenedSession(realm)
@@ -202,4 +200,11 @@ function globalNavigate (realm) {
       }))
     }
   }
+}
+
+function getCurrentRouteState (navigationState) {
+  if (!navigationState) return null
+  const route = navigationState.routes[navigationState.index]
+  if (route.routes) return getCurrentRouteState(route)
+  return route
 }

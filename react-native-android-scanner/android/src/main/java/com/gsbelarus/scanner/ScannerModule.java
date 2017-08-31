@@ -56,9 +56,6 @@ public class ScannerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void start(ReadableMap options, Promise promise) {
         try {
-            if (!isServiceAvailable()) {
-                throw new RuntimeException("Unsupported device");
-            }
             Intent intent = new Intent(getReactApplicationContext(), ScannerCodeService.class);
             intent.putExtra("config", initConfig(options));
 

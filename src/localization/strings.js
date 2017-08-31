@@ -12,10 +12,12 @@ export const STRING_ACTION_OPEN_SESSION = 'actionOpenSession'
 export const STRING_ACTION_CLOSE_SESSION = 'actionCloseSession'
 
 export const STRING_EMPTY_DATA = 'emptyData'
-export const STRING_LOADING_DATA = 'loadingData'
-export const STRING_OPENING_SESSION = 'openingSession'
-export const STRING_CLOSING_SESSION = 'closingSession'
 export const STRING_NOTIFICATION = 'notification'
+
+export const STRING_PROGRESS_LOADING_DATA = 'progressLoadingData'
+export const STRING_PROGRESS_OPENING_SESSION = 'progressOpeningSession'
+export const STRING_PROGRESS_CLOSING_SESSION = 'progressClosingSession'
+export const STRING_PROGRESS_VERIFY_APP = 'progressVerifyApp'
 
 export const STRING_TITLE_SESSIONS = 'titleSessions'
 export const STRING_TITLE_SELECT_OPERATOR = 'titleSelectOperator'
@@ -29,6 +31,7 @@ export const STRING_ERROR_DEVICE_NOT_SUPPORTED = 'deviceNotSupported'
 export const STRING_ERROR_LOADING_DATA = 'errorLoadingData'
 export const STRING_ERROR_CLOSING_SESSION = 'errorClosingSession'
 export const STRING_ERROR_SCANNING = 'errorScanning'
+export const STRING_ERROR_REPEAT_CODE = 'errorRepeatCode'
 
 I18n.fallbacks = true
 I18n.translations = {

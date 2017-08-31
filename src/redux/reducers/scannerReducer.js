@@ -13,7 +13,7 @@ const defaultState = {
   editorTitle: '',
   editorConfirmText: strings(STRING_ACTION_SAVE),
   editorCancelText: null,
-  editableItem: null,
+  editableItemKey: null
 }
 
 export default handleActions({
@@ -23,12 +23,12 @@ export default handleActions({
     editorDefaultValue: (action.payload && action.payload.name) || '',
     editorTitle: action.payload ? strings(STRING_TITLE_EDITING) : strings(STRING_TITLE_CREATING),
     editorCancelText: action.payload ? strings(STRING_ACTION_DELETE) : null,
-    editableItem: action.payload
+    editableItemKey: action.payload ? action.payload.id : null
   }),
   [dismissEditor]: (state, action) => ({
     ...state,
     editorVisible: false,
     editorDefaultValue: null,
-    editableItem: null
+    editableItemKey: null
   })
 }, defaultState)
