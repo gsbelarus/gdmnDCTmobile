@@ -3,7 +3,7 @@ import { BackHandler, StatusBar, View } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers } from 'react-navigation'
 import { ImportManager } from '../fsManager'
-import { appInit, closeSession, goBack, importData, openCreateSession } from '../redux/actions/appActions'
+import { appInit, closeSession, exportData, goBack, importData, openCreateSession } from '../redux/actions/appActions'
 import connectRealm from '../realm/react/connectRealm'
 import AppNavigator from '../navigators/AppNavigator'
 import ProgressModalContainer from './ProgressModalContainer'
@@ -56,6 +56,7 @@ const ReduxAppContainer = connect(
   (dispatch, ownProps) => ({
     dispatch,
     init: () => dispatch(appInit(ownProps.realm)),
+    exportData: () => dispatch(exportData(ownProps.realm)),
     importData: (fileName) => dispatch(importData(ownProps.realm, fileName)),
     goBack: () => dispatch(goBack()),
     closeSession: () => dispatch(closeSession(ownProps.realm)),

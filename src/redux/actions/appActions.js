@@ -9,10 +9,12 @@ import strings, {
   STRING_ACTION_REPEAT,
   STRING_ERROR_CLOSING_SESSION,
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
-  STRING_ERROR_LOADING_DATA,
+  STRING_ERROR_EXPORT_DATA,
+  STRING_ERROR_IMPORT_DATA,
   STRING_NOTIFICATION,
   STRING_PROGRESS_CLOSING_SESSION,
-  STRING_PROGRESS_LOADING_DATA,
+  STRING_PROGRESS_EXPORT_DATA,
+  STRING_PROGRESS_IMPORT_DATA,
   STRING_PROGRESS_OPENING_SESSION,
   STRING_PROGRESS_VERIFY_APP
 } from '../../localization/strings'
@@ -50,7 +52,7 @@ export function appInit (realm) {
     dispatch(addToProgress(progress))
 
     let isSupported = await ScannerApi.isDeviceSupported()
-    isSupported = true
+    isSupported = true    //TODO remove
 
     if (!isSupported) {
       dispatch(NavigationActions.reset({
@@ -74,7 +76,7 @@ export function appInit (realm) {
 
 export function importData (realm, fileName) {
   return async (dispatch, getState) => {
-    const progress = {message: strings(STRING_PROGRESS_LOADING_DATA)}
+    const progress = {message: strings(STRING_PROGRESS_IMPORT_DATA)}
     dispatch(addToProgress(progress))
     try {
       if (fileName) {
@@ -85,12 +87,38 @@ export function importData (realm, fileName) {
     } catch (error) {
       console.warn(error)
       Snackbar.show({
-        title: strings(STRING_ERROR_LOADING_DATA),
+        title: strings(STRING_ERROR_IMPORT_DATA),
         duration: Snackbar.LENGTH_LONG,
         action: {
           title: strings(STRING_ACTION_REPEAT),
           color: 'red',
           onPress: () => dispatch(importData(realm, fileName)),
+        }
+      })
+    } finally {
+      dispatch(removeFromProgress(progress))
+    }
+  }
+}
+
+export function exportData (realm) {
+  return async (dispatch, getState) => {
+    const progress = {message: strings(STRING_PROGRESS_EXPORT_DATA)}
+    dispatch(addToProgress(progress))
+    try {
+      const sessions = SessionModel.getSortedByDate(realm)
+      for (let i = 0; i < sessions.length; i++) {
+        await ExportManager.exportSession(sessions[i])
+      }
+    } catch (error) {
+      console.warn(error)
+      Snackbar.show({
+        title: strings(STRING_ERROR_EXPORT_DATA),
+        duration: Snackbar.LENGTH_LONG,
+        action: {
+          title: strings(STRING_ACTION_REPEAT),
+          color: 'red',
+          onPress: () => dispatch(exportData(realm)),
         }
       })
     } finally {

@@ -1,8 +1,9 @@
 import React from 'react'
-import { Platform, TouchableNativeFeedback, View } from 'react-native'
 import { StackNavigator } from 'react-navigation'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import { View } from 'react-native'
 import strings, {
+  STRING_ACTION_CLOSE_SESSION, STRING_ACTION_EXPORT,
+  STRING_ACTION_IMPORT,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
@@ -14,6 +15,7 @@ import SelectOperatorContainer from '../containers/SelectOperatorContainer'
 import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContainer'
 import SelectOperationContainer from '../containers/SelectOperationContainer'
 import ScannerContainer from '../containers/ScannerContainer'
+import HeaderIcon from '../components/HeaderIcon/index'
 import EmptyView from '../components/EmptyView/index'
 import SplashScreen from '../components/SplashScreen/index'
 
@@ -52,7 +54,23 @@ export default StackNavigator({
   [SESSIONS]: {
     screen: SessionsContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: strings(STRING_TITLE_SESSIONS)
+      title: strings(STRING_TITLE_SESSIONS),
+      headerRight: (
+        <View style={{flexDirection: 'row'}}>
+          <HeaderIcon
+            iconName={'file-upload'}
+            label={strings(STRING_ACTION_EXPORT)}
+            onPress={navigation.exportData}
+            rippleColor={'white'}
+            iconStyle={{color: 'white'}}/>
+          <HeaderIcon
+            iconName={'file-download'}
+            label={strings(STRING_ACTION_IMPORT)}
+            onPress={navigation.importData}
+            rippleColor={'white'}
+            iconStyle={{color: 'white'}}/>
+        </View>
+      )
     })
   },
   [SELECT_OPERATOR]: {
@@ -78,12 +96,12 @@ export default StackNavigator({
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SCANNER),
       headerRight: (
-        <TouchableNativeFeedback
-          delayPressIn={0}
-          background={Platform.Version > 21 ? TouchableNativeFeedback.Ripple('white', true) : TouchableNativeFeedback.SelectableBackground()}
-          onPress={navigation.closeSession}>
-          <View><Icon name={'stop'} style={{margin: 10, fontSize: 36, color: 'red'}}/></View>
-        </TouchableNativeFeedback>
+        <HeaderIcon
+          iconName={'highlight-off'}
+          label={strings(STRING_ACTION_CLOSE_SESSION)}
+          onPress={navigation.closeSession}
+          rippleColor={'white'}
+          iconStyle={{color: 'red'}}/>
       )
     })
   }
