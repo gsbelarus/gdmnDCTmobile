@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, TouchableNativeFeedback, View } from 'react-native'
+import { View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import { formatDate } from '../localization/utils'
 import List from './List/index'
+import SimpleListItem from './SimpleListItem/index'
 
 export default class Sessions extends PureComponent {
 
@@ -39,21 +40,17 @@ export default class Sessions extends PureComponent {
 
   renderItem ({item}) {
     return (
-      <TouchableNativeFeedback
-        onPress={() => this.props.onItemPress(item)}
-        onLongPress={() => this.props.onItemLongPress(item)}
-        background={TouchableNativeFeedback.SelectableBackground()}>
-        <View style={styles.itemContainer}>
-          <Text style={styles.itemPrimaryText}>{item.operator.name}</Text>
-          <Text style={styles.itemSecondaryText}>{formatDate(item.time, 'Do MMMM YYYY, HH:mm:ss')}</Text>
-        </View>
-      </TouchableNativeFeedback>
+      <SimpleListItem
+        id={item.id}
+        primaryText={item.operator.name}
+        secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm:ss')}
+        onPress={() => this.props.onItemPress(item)}/>
     )
   }
 
   render () {
     return (
-      <View style={styles.container}>
+      <View style={{flex: 1}}>
         <List
           extra={this.props.extra}
           items={this.props.items}
@@ -63,22 +60,3 @@ export default class Sessions extends PureComponent {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  itemContainer: {
-    minHeight: 72,
-    padding: 16
-  },
-  itemPrimaryText: {
-    fontFamily: 'Roboto',
-    fontSize: 16,
-    color: 'black'
-  },
-  itemSecondaryText: {
-    fontFamily: 'Roboto',
-    fontSize: 14
-  }
-})

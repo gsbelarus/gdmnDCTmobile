@@ -47,11 +47,13 @@ export default class Scanner extends PureComponent {
   }
 
   renderItem ({item}) {
-    return <SimpleListItem
-      id={item.id}
-      primaryText={item.name}
-      disabled={item.disabled}
-      onPress={() => this.props.onItemPress(item)}/>
+    return (
+      <SimpleListItem
+        id={item.id}
+        primaryText={item.name}
+        disabled={item.disabled}
+        onPress={() => this.props.onItemPress(item)}/>
+    )
   }
 
   render () {

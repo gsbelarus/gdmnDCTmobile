@@ -10,13 +10,19 @@ export default class SimpleListItem extends PureComponent {
       PropTypes.number,
       PropTypes.string
     ]).isRequired,
-    primaryText: PropTypes.string.isRequired,
+    primaryText: PropTypes.string,
+    secondaryText: PropTypes.string,
     disabled: PropTypes.bool,
-    onPress: PropTypes.func
+    disabledColor: PropTypes.string,
+    onPress: PropTypes.func,
+    primaryTextStyle: Text.propTypes.style,
+    secondaryTextStyle: Text.propTypes.style,
+    style: View.propTypes.style
   }
 
   static defaultProps = {
-    onItemPress: () => {}
+    onItemPress: () => {},
+    disabledColor: '#90000010'
   }
 
   componentWillUpdate () {
@@ -24,18 +30,37 @@ export default class SimpleListItem extends PureComponent {
   }
 
   render () {
-    const {id, primaryText, disabled} = this.props
+    const {
+      id,
+      primaryText,
+      secondaryText,
+      disabled,
+      disabledColor,
+      primaryTextStyle,
+      secondaryTextStyle,
+      style,
+      onPress
+    } = this.props
+
+    let primaryView
+    if (primaryText) {
+      primaryView = <Text style={[styles.itemPrimaryText, primaryTextStyle]}>{primaryText}</Text>
+    }
+
+    let secondaryView
+    if (secondaryText) {
+      secondaryView = <Text style={[styles.itemSecondaryText, secondaryTextStyle]}>{secondaryText}</Text>
+    }
 
     return (
       <TouchableNativeFeedback
         delayPressIn={0}
         disabled={disabled}
-        onPress={() => this.props.onPress(id)}
+        onPress={() => onPress(id)}
         background={TouchableNativeFeedback.SelectableBackground()}>
-        <View style={[styles.itemContainer, disabled ? {backgroundColor: '#90000010'} : null]}>
-          <Text style={[styles.itemText, disabled ? {textDecorationLine: 'line-through'} : null]}>
-            {primaryText}
-          </Text>
+        <View style={[styles.itemContainer, style, disabled ? {backgroundColor: disabledColor} : null]}>
+          {primaryView}
+          {secondaryView}
         </View>
       </TouchableNativeFeedback>
     )

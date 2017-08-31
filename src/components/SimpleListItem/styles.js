@@ -5,9 +5,13 @@ export default StyleSheet.create({
     minHeight: 48,
     padding: 16
   },
-  itemText: {
+  itemPrimaryText: {
     fontFamily: 'Roboto',
     fontSize: 16,
     color: 'black'
+  },
+  itemSecondaryText: {
+    fontFamily: 'Roboto',
+    fontSize: 13
   }
 })
