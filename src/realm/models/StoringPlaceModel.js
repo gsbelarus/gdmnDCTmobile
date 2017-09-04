@@ -8,6 +8,8 @@ export default class StoringPlaceModel {
   static FIELD_CODE = '_code'
   static FIELD_DISABLED = '_disabled'
 
+  static FIELD_SEARCH_FIELD = '_searchField'
+
   static schema = {
     name: StoringPlaceModel.name,
     primaryKey: StoringPlaceModel.FIELD_ID,
@@ -15,7 +17,9 @@ export default class StoringPlaceModel {
       [StoringPlaceModel.FIELD_ID]: {type: 'int'},
       [StoringPlaceModel.FIELD_NAME]: {type: 'string'},
       [StoringPlaceModel.FIELD_CODE]: {type: 'string', optional: true},
-      [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool'}
+      [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool'},
+
+      [StoringPlaceModel.FIELD_SEARCH_FIELD]: {type: 'string'}
     }
   }
 
@@ -44,6 +48,18 @@ export default class StoringPlaceModel {
       .sorted(StoringPlaceModel.FIELD_NAME, reverse)
   }
 
+  static search (items, search) {
+    if (!search) return items
+
+    return items.filtered(`${StoringPlaceModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
+  }
+
+  bindSearchTextField () {
+    this.searchField =
+      (this.name && this.name.toLowerCase()) +
+      (this.code && this.code.toLowerCase())
+  }
+
   get id () {
     return this[StoringPlaceModel.FIELD_ID]
   }
@@ -61,6 +77,7 @@ export default class StoringPlaceModel {
       throw new Error(`Length must be less than ${StoringPlaceModel.NAME_MAX_LENGTH}`)
     }
     this[StoringPlaceModel.FIELD_NAME] = value
+    this.bindSearchTextField()
   }
 
   get code () {
@@ -72,6 +89,7 @@ export default class StoringPlaceModel {
       throw new Error(`Length must be less than ${StoringPlaceModel.CODE_MAX_LENGTH}`)
     }
     this[StoringPlaceModel.FIELD_CODE] = value
+    this.bindSearchTextField()
   }
 
   get disabled () {
@@ -80,5 +98,13 @@ export default class StoringPlaceModel {
 
   set disabled (value) {
     this[StoringPlaceModel.FIELD_DISABLED] = value
+  }
+
+  get searchField () {
+    return this[StoringPlaceModel.FIELD_SEARCH_FIELD]
+  }
+
+  set searchField (value) {
+    this[StoringPlaceModel.FIELD_SEARCH_FIELD] = value
   }
 }

@@ -12,6 +12,7 @@ export const STRING_ACTION_OPEN_SESSION = 'actionOpenSession'
 export const STRING_ACTION_CLOSE_SESSION = 'actionCloseSession'
 export const STRING_ACTION_IMPORT = 'actionImport'
 export const STRING_ACTION_EXPORT = 'actionExport'
+export const STRING_ACTION_SEARCH = 'search'
 
 export const STRING_EMPTY_DATA = 'emptyData'
 export const STRING_NOTIFICATION = 'notification'

@@ -8,7 +8,7 @@ import CodeModel from './models/CodeModel'
 
 const realm = new Realm({
   schema: [SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
-  schemaVersion: 16
+  schemaVersion: 22,
 })
 
 createDemoData(realm)

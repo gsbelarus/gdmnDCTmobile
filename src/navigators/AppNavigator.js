@@ -1,8 +1,9 @@
 import React from 'react'
-import { StackNavigator } from 'react-navigation'
+import { Header, StackNavigator } from 'react-navigation'
 import { View } from 'react-native'
 import strings, {
-  STRING_ACTION_CLOSE_SESSION, STRING_ACTION_EXPORT,
+  STRING_ACTION_CLOSE_SESSION,
+  STRING_ACTION_EXPORT,
   STRING_ACTION_IMPORT,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
@@ -18,6 +19,7 @@ import ScannerContainer from '../containers/ScannerContainer'
 import HeaderIcon from '../components/HeaderIcon/index'
 import EmptyView from '../components/EmptyView/index'
 import SplashScreen from '../components/SplashScreen/index'
+import HeaderSearchBar from '../components/HeaderSearchBar/index'
 
 export const SPLASH_SCREEN = 'SplashScreen'
 export const ERROR = 'Error'
@@ -82,13 +84,29 @@ export default StackNavigator({
   [SELECT_STORING_PLACE]: {
     screen: SelectStoringPlaceContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: strings(STRING_TITLE_SELECT_STORING_PLACE)
+      title: strings(STRING_TITLE_SELECT_STORING_PLACE),
+      header: (props) => {
+        return (
+          <View style={props.getScreenDetails(props.scene).options.headerStyle}>
+            <Header {...props}/>
+            <HeaderSearchBar onChangeText={navigation.updateSearchFilter}/>
+          </View>
+        )
+      }
     })
   },
   [SELECT_OPERATION]: {
     screen: SelectOperationContainer,
     navigationOptions: ({navigation, screenProps}) => ({
-      title: strings(STRING_TITLE_SELECT_OPERATION)
+      title: strings(STRING_TITLE_SELECT_OPERATION),
+      header: (props) => {
+        return (
+          <View style={props.getScreenDetails(props.scene).options.headerStyle}>
+            <Header {...props}/>
+            <HeaderSearchBar onChangeText={navigation.updateSearchFilter}/>
+          </View>
+        )
+      }
     })
   },
   [SCANNER]: {
@@ -108,6 +126,7 @@ export default StackNavigator({
 }, {
   navigationOptions: ({navigation, screenProps}) => ({
     headerStyle: {
+      elevation: 4,
       backgroundColor: 'black'
     },
     headerTintColor: 'white',

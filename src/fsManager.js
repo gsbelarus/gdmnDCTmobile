@@ -40,16 +40,19 @@ export class ExportManager {
     const operators = OperatorModel.getSortedByName(realm)
     await RNFS.mkdir(ImportManager.DIR)
     await RNFS.writeFile(operatorFilePath, JSON.stringify(Array.from(operators)), ExportManager.ENCODING)
+    await FSWatcher.scanFile(operatorFilePath)
 
     const storingPlaceFilePath = ImportManager.DIR + '/' + ImportManager.FILE_NAME_STORING_PLACES
     const storingPlaces = StoringPlaceModel.getSortedByName(realm)
     await RNFS.mkdir(ImportManager.DIR)
     await RNFS.writeFile(storingPlaceFilePath, JSON.stringify(Array.from(storingPlaces)), ExportManager.ENCODING)
+    await FSWatcher.scanFile(storingPlaceFilePath)
 
     const operationFilePath = ImportManager.DIR + '/' + ImportManager.FILE_NAME_OPERATIONS
     const operations = OperationModel.getSortedBySortNumber(realm)
     await RNFS.mkdir(ImportManager.DIR)
     await RNFS.writeFile(operationFilePath, JSON.stringify(Array.from(operations)), ExportManager.ENCODING)
+    await FSWatcher.scanFile(operationFilePath)
   }
 }
 

@@ -16,7 +16,8 @@ export default class List extends PureComponent {
       PropTypes.object
     ]),
     renderItem: PropTypes.func.isRequired,
-    keyExtractor: PropTypes.func
+    keyExtractor: PropTypes.func,
+    keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled', false, true])
   }
 
   static defaultProps = {
@@ -36,6 +37,7 @@ export default class List extends PureComponent {
         keyExtractor={this.props.keyExtractor}
         data={this.props.items}
         renderItem={this.props.renderItem}
+        keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
         ItemSeparatorComponent={() => <View style={styles.separator}/>}
         ListEmptyComponent={<EmptyView/>}
         contentContainerStyle={styles.content}

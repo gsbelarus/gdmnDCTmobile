@@ -230,6 +230,20 @@ function globalNavigate (realm) {
   }
 }
 
+export function updateSearchFilter (search) {
+  return (dispatch, getState) => {
+    const {appState} = getState()
+    const route = getCurrentRouteState(appState)
+    dispatch(NavigationActions.setParams({
+      key: route.key,
+      params: {
+        ...route.params,
+        search
+      }
+    }))
+  }
+}
+
 function getCurrentRouteState (navigationState) {
   if (!navigationState) return null
   const route = navigationState.routes[navigationState.index]

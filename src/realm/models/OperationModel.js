@@ -9,6 +9,8 @@ export default class OperationModel {
   static FIELD_SORT_NUMBER = '_sortNumber'
   static FIELD_DISABLED = '_disabled'
 
+  static FIELD_SEARCH_FIELD = '_searchField'
+
   static schema = {
     name: OperationModel.name,
     primaryKey: OperationModel.FIELD_ID,
@@ -17,7 +19,9 @@ export default class OperationModel {
       [OperationModel.FIELD_NAME]: {type: 'string'},
       [OperationModel.FIELD_CODE]: {type: 'string', optional: true},
       [OperationModel.FIELD_SORT_NUMBER]: {type: 'string', optional: true},
-      [OperationModel.FIELD_DISABLED]: {type: 'bool'}
+      [OperationModel.FIELD_DISABLED]: {type: 'bool'},
+
+      [OperationModel.FIELD_SEARCH_FIELD]: {type: 'string'}
     }
   }
 
@@ -47,6 +51,18 @@ export default class OperationModel {
       .sorted(OperationModel.FIELD_SORT_NUMBER, reverse)
   }
 
+  static search (items, search) {
+    if (!search) return items
+
+    return items.filtered(`${OperationModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
+  }
+
+  bindSearchTextField () {
+    this.searchField =
+      (this.name && this.name.toLowerCase()) +
+      (this.code && this.code.toLowerCase())
+  }
+
   get id () {
     return this[OperationModel.FIELD_ID]
   }
@@ -64,6 +80,7 @@ export default class OperationModel {
       throw new Error(`Length must be less than ${OperationModel.NAME_MAX_LENGTH}`)
     }
     this[OperationModel.FIELD_NAME] = value
+    this.bindSearchTextField()
   }
 
   get code () {
@@ -75,6 +92,7 @@ export default class OperationModel {
       throw new Error(`Length must be less than ${OperationModel.CODE_MAX_LENGTH}`)
     }
     this[OperationModel.FIELD_CODE] = value
+    this.bindSearchTextField()
   }
 
   get sortNumber () {
@@ -91,5 +109,13 @@ export default class OperationModel {
 
   set disabled (value) {
     this[OperationModel.FIELD_DISABLED] = value
+  }
+
+  get searchField () {
+    return this[OperationModel.FIELD_SEARCH_FIELD]
+  }
+
+  set searchField (value) {
+    this[OperationModel.FIELD_SEARCH_FIELD] = value
   }
 }

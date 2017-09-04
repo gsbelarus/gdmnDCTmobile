@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-export default function connectRealm (realmMapToProps, mapToProps) {
+export default function connectRealm (realmMapToProps = (realm, ownProps) => ({realm}),
+                                      mapToProps = (extraData, ownProps) => ({...ownProps, extraData}),
+                                      isNeedUpdateRealmProps = (ownProps, newOwnProps) => false) {
   return (WrappedComponent) => {
     return class ConnectedRealmContainer extends PureComponent {
 
@@ -15,11 +17,15 @@ export default function connectRealm (realmMapToProps, mapToProps) {
       constructor (props, context) {
         super(props, context)
 
+        this.initRealmProps(props, context)
+
+        this.update = this.update.bind(this)
+      }
+
+      initRealmProps (props, context) {
         if (context.reactRealmInstance) {
           this.realmProps = realmMapToProps(context.reactRealmInstance, props)
         }
-
-        this.update = this.update.bind(this)
       }
 
       update (objects, changes) {
@@ -52,9 +58,10 @@ export default function connectRealm (realmMapToProps, mapToProps) {
       }
 
       componentWillUpdate (nextProps, nextState, nextContext) {
-        if (this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) {
+        if ((this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) ||
+          isNeedUpdateRealmProps(this.props, nextProps)) {
           this.removeListeners()
-          this.realmProps = realmMapToProps(nextContext.reactRealmInstance, nextProps.props)
+          this.initRealmProps(nextProps, nextContext)
           this.addListeners()
         }
       }
@@ -71,7 +78,7 @@ export default function connectRealm (realmMapToProps, mapToProps) {
         return (
           <WrappedComponent
             {...this.realmProps}
-            {...(mapToProps ? mapToProps(this.extraData, this.props) : this.props)} />
+            {...mapToProps(this.extraData, this.props)} />
         )
       }
     }
