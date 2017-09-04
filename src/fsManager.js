@@ -32,6 +32,7 @@ export class ExportManager {
 
     await RNFS.mkdir(this.DIR)
     await RNFS.writeFile(filePath, JSON.stringify(data), this.ENCODING)
+    await FSWatcher.scanFile(filePath)
   }
 
   static async exportTest (realm) {
@@ -113,6 +114,7 @@ export class ImportManager {
       })
       console.log('imported', filePath)
       await RNFS.unlink(filePath)
+      await FSWatcher.scanFile(filePath)
       console.log('deleted', filePath)
     }
   }
@@ -137,6 +139,7 @@ export class ImportManager {
       })
       console.log('imported', filePath)
       await RNFS.unlink(filePath)
+      await FSWatcher.scanFile(filePath)
       console.log('deleted', filePath)
     }
   }
@@ -162,6 +165,7 @@ export class ImportManager {
       })
       console.log('imported', filePath)
       await RNFS.unlink(filePath)
+      await FSWatcher.scanFile(filePath)
       console.log('deleted', filePath)
     }
   }

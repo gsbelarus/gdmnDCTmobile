@@ -107,6 +107,7 @@ public class ScannerCodeService extends Service {
         executeScannerApi(new Executor<Void>() {
             @Override
             public Void run() throws RemoteException {
+                scannerService.aDecodeSetDecodeEnable(0);
                 scannerService.aDecodeAPIDeinit();
                 return null;
             }

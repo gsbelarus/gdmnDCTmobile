@@ -15,6 +15,10 @@ export default class FSWatcher {
   static KEY_MOVED_TO = NativeModules.FSWatcher.MOVED_TO
   static KEY_OPEN = NativeModules.FSWatcher.OPEN
 
+  static async scanFile (paths) {
+    return await NativeModules.FSWatcher.scanFile(paths)
+  }
+
   static addToWatching (filePath) {
     NativeModules.FSWatcher.addToWatching(filePath)
   }

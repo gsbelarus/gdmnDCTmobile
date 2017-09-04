@@ -1,5 +1,7 @@
 package com.gsbelarus.fswatcher;
 
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.FileObserver;
 
@@ -126,6 +128,20 @@ public class FSWatcherModule extends ReactContextBaseJavaModule {
         } else {
             promise.resolve(null);
         }
+    }
+
+    @ReactMethod
+    public void scanFile(String path, final Promise promise) {
+        MediaScannerConnection.scanFile(
+                getReactApplicationContext(),
+                new String[]{path},
+                null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String s, Uri uri) {
+                        promise.resolve(s);
+                    }
+                });
     }
 
     private void sendEvent(String eventName, @Nullable WritableMap params) {

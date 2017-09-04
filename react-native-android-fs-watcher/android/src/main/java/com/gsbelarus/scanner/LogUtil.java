@@ -1,4 +1,5 @@
 package com.gsbelarus.fswatcher;
+
 import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;
