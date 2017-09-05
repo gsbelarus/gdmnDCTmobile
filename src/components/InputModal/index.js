@@ -37,15 +37,15 @@ export default class InputModal extends PureComponent {
   constructor (props) {
     super(props)
 
-    this.onConfirmPress = this.onConfirmPress.bind(this)
-    this.onChangeText = this.onChangeText.bind(this)
+    this._onConfirmPress = this._onConfirmPress.bind(this)
+    this._onChangeText = this._onChangeText.bind(this)
   }
 
-  onConfirmPress () {
+  _onConfirmPress () {
     this.props.onConfirm(this.state.text)
   }
 
-  onChangeText (text) {
+  _onChangeText (text) {
     this.setState({text})
   }
 
@@ -73,10 +73,10 @@ export default class InputModal extends PureComponent {
               value={this.state.text}
               autoFocus={true}
               keyboardType={this.props.keyboardType}
-              onChangeText={this.onChangeText}/>
+              onChangeText={this._onChangeText}/>
             <View style={styles.buttonsContainer}>
               <TouchableNativeFeedback
-                onPress={this.onConfirmPress}
+                onPress={this._onConfirmPress}
                 background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.confirmButton}>
                   <Text style={styles.confirmText}>{this.props.confirmText}</Text>

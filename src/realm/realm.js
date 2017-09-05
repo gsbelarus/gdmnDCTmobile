@@ -3,14 +3,17 @@ import SessionModel from './models/SessionModel'
 import OperatorModel from './models/OperatorModel'
 import StoringPlaceModel from './models/StoringPlaceModel'
 import OperationModel from './models/OperationModel'
-import createDemoData from './demoData'
 import CodeModel from './models/CodeModel'
+import createDemoData from './demoData'
 
-const realm = new Realm({
-  schema: [SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
-  schemaVersion: 22,
-})
+export async function openRealm () {
+  const realm = await Realm.open({
+    schema: [SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
+    schemaVersion: 22,
+    shouldCompactOnLaunch: (totalBytes, usedBytes) => true
+  })
 
-createDemoData(realm)
+  createDemoData(realm)
 
-export default realm
+  return realm
+}

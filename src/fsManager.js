@@ -64,18 +64,35 @@ export class ImportManager {
   static FILE_NAME_STORING_PLACES = 'storing_places.txt'
   static FILE_NAME_OPERATIONS = 'operations.txt'
 
-  static watchCallbacks = []
+  static _watchCallbacks = []
+
+  static _onFileEvent (event) {
+    switch (event.key) {
+      // case FSWatcher.KEY_CREATE:
+      case FSWatcher.KEY_MODIFY:
+      case FSWatcher.KEY_MOVED_TO:
+        console.log(event)
+        switch (event.fileName) {
+          case ImportManager.FILE_NAME_OPERATORS:
+          case ImportManager.FILE_NAME_OPERATIONS:
+          case ImportManager.FILE_NAME_STORING_PLACES:
+            ImportManager._watchCallbacks.forEach(callback => callback(event.fileName))
+            break
+        }
+        break
+    }
+  }
 
   static watch (callback) {
-    this.watchCallbacks.push(callback)
+    this._watchCallbacks.push(callback)
     FSWatcher.addToWatching(this.DIR)
-    FSWatcher.addListener(onFileEvent)
+    FSWatcher.addListener(this._onFileEvent)
   }
 
   static unwatch (callback) {
-    this.watchCallbacks.splice(this.watchCallbacks.findIndex(callback), 1)
+    this._watchCallbacks.splice(this._watchCallbacks.findIndex(callback), 1)
     FSWatcher.removeFromWatching(this.DIR)
-    FSWatcher.removeListener(onFileEvent)
+    FSWatcher.removeListener(this._onFileEvent)
   }
 
   static async importByFileName (realm, fileName) {
@@ -171,23 +188,6 @@ export class ImportManager {
       await FSWatcher.scanFile(filePath)
       console.log('deleted', filePath)
     }
-  }
-}
-
-function onFileEvent (event) {
-  switch (event.key) {
-    // case FSWatcher.KEY_CREATE:
-    case FSWatcher.KEY_MODIFY:
-    case FSWatcher.KEY_MOVED_TO:
-      console.log(event)
-      switch (event.fileName) {
-        case ImportManager.FILE_NAME_OPERATORS:
-        case ImportManager.FILE_NAME_OPERATIONS:
-        case ImportManager.FILE_NAME_STORING_PLACES:
-          ImportManager.watchCallbacks.forEach(callback => callback(event.fileName))
-          break
-      }
-      break
   }
 }
 

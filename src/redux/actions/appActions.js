@@ -46,7 +46,7 @@ export function goBack () {
   }
 }
 
-export function appInit (realm) {
+export function init (realm) {
   return async (dispatch, getState) => {
     const progress = {message: strings(STRING_PROGRESS_VERIFY_APP)}
     dispatch(addToProgress(progress))
@@ -138,13 +138,14 @@ export function openCreateSession (realm, object) {
     } else if (object instanceof OperatorModel) {
       dispatch(NavigationActions.navigate({
         routeName: SELECT_STORING_PLACE,
-        params: {operator: object, ...params}
+        params: {operator: object}
       }))
 
     } else if (object instanceof StoringPlaceModel) {
+      const {operator} = params
       dispatch(NavigationActions.navigate({
         routeName: SELECT_OPERATION,
-        params: {storingPlace: object, ...params}
+        params: {storingPlace: object, operator}
       }))
 
     } else if (object instanceof OperationModel) {

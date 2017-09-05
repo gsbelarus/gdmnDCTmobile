@@ -6,8 +6,7 @@ export default StyleSheet.create({
     backgroundColor: '#FAFAFA', //GREY_50
   },
   content: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8
   },
   separator: {
     height: 0.7,

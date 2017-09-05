@@ -35,10 +35,10 @@ export default class Sessions extends PureComponent {
   constructor (props) {
     super(props)
 
-    this.renderItem = this.renderItem.bind(this)
+    this._renderItem = this._renderItem.bind(this)
   }
 
-  renderItem ({item}) {
+  _renderItem ({item}) {
     return (
       <SimpleListItem
         id={item.id}
@@ -54,7 +54,7 @@ export default class Sessions extends PureComponent {
         <List
           extra={this.props.extra}
           items={this.props.items}
-          renderItem={this.renderItem}/>
+          renderItem={this._renderItem}/>
         <ActionButton onPress={this.props.onAddPress}/>
       </View>
     )

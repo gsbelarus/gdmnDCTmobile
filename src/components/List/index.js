@@ -26,6 +26,22 @@ export default class List extends PureComponent {
     keyExtractor: (item, index) => index
   }
 
+  state = {
+    width: 0,
+    height: 0
+  }
+
+  constructor () {
+    super()
+
+    this._onLayout = this._onLayout.bind(this)
+  }
+
+  _onLayout (event) {
+    const {width, height} = event.nativeEvent.layout
+    this.setState({width, height})
+  }
+
   componentWillUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
@@ -33,14 +49,20 @@ export default class List extends PureComponent {
   render () {
     return (
       <FlatList
+        onLayout={this._onLayout}
         extraData={this.props.extra}
         keyExtractor={this.props.keyExtractor}
         data={this.props.items}
         renderItem={this.props.renderItem}
         keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
         ItemSeparatorComponent={() => <View style={styles.separator}/>}
-        ListEmptyComponent={<EmptyView/>}
-        contentContainerStyle={styles.content}
+        ListEmptyComponent={
+          <EmptyView style={{
+            width: this.state.width,
+            height: this.state.height
+          }}/>
+        }
+        contentContainerStyle={[styles.content, this.props.items.length ? null : {paddingVertical: 0}]}
         style={styles.container}/>
     )
   }

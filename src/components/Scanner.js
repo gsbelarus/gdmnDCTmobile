@@ -35,7 +35,7 @@ export default class Scanner extends PureComponent {
   constructor () {
     super()
 
-    this.renderItem = this.renderItem.bind(this)
+    this._renderItem = this._renderItem.bind(this)
   }
 
   componentDidMount () {
@@ -46,7 +46,7 @@ export default class Scanner extends PureComponent {
     ScannerApi.removeListener(this.props.onScanned)
   }
 
-  renderItem ({item}) {
+  _renderItem ({item}) {
     return (
       <SimpleListItem
         id={item.id}
@@ -62,7 +62,7 @@ export default class Scanner extends PureComponent {
         <List
           extra={this.props.extra}
           items={this.props.items}
-          renderItem={this.renderItem}/>
+          renderItem={this._renderItem}/>
         <ActionButton onPress={this.props.onAddItemPress}/>
         <InputModal
           visible={this.props.editorVisible}

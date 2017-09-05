@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
-export default function connectRealm (realmMapToProps = (realm, ownProps) => ({realm}),
+export default function connectRealm (mapToRealmProps = (realm, ownProps) => ({realm}),
                                       mapToProps = (extraData, ownProps) => ({...ownProps, extraData}),
-                                      isNeedUpdateRealmProps = (ownProps, newOwnProps) => false) {
+                                      mergeProps = (mapRealmProps, mapProps, ownProps) => ({...mapRealmProps, ...mapProps})) {
   return (WrappedComponent) => {
     return class ConnectedRealmContainer extends PureComponent {
 
@@ -11,46 +11,46 @@ export default function connectRealm (realmMapToProps = (realm, ownProps) => ({r
         reactRealmInstance: PropTypes.object
       }
 
-      realmProps = {}
-      extraData = false
+      _realmProps = {}
+      _extraData = false
 
       constructor (props, context) {
         super(props, context)
 
-        this.initRealmProps(props, context)
+        this._initRealmProps(props, context)
 
-        this.update = this.update.bind(this)
+        this._update = this._update.bind(this)
       }
 
-      initRealmProps (props, context) {
+      _initRealmProps (props, context) {
         if (context.reactRealmInstance) {
-          this.realmProps = realmMapToProps(context.reactRealmInstance, props)
+          this._realmProps = mapToRealmProps(context.reactRealmInstance, props)
         }
       }
 
-      update (objects, changes) {
-        this.extraData = !this.extraData
+      _update (objects, changes) {
+        this._extraData = !this._extraData
         this.forceUpdate()
       }
 
-      addListeners () {
-        if (this.realmProps) {
-          for (let prop in this.realmProps) {
-            if (this.realmProps[prop].addListener) {
+      _addListeners () {
+        if (this._realmProps) {
+          for (let prop in this._realmProps) {
+            if (this._realmProps[prop].addListener) {
               try {
-                this.realmProps[prop].addListener(this.update)
+                this._realmProps[prop].addListener(this._update)
               } catch (ignore) {}
             }
           }
         }
       }
 
-      removeListeners () {
-        if (this.realmProps) {
-          for (let prop in this.realmProps) {
-            if (this.realmProps[prop].addListener) {
+      _removeListeners () {
+        if (this._realmProps) {
+          for (let prop in this._realmProps) {
+            if (this._realmProps[prop].addListener) {
               try {
-                this.realmProps[prop].removeListener(this.update)
+                this._realmProps[prop].removeListener(this._update)
               } catch (ignore) {}
             }
           }
@@ -58,27 +58,24 @@ export default function connectRealm (realmMapToProps = (realm, ownProps) => ({r
       }
 
       componentWillUpdate (nextProps, nextState, nextContext) {
-        if ((this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) ||
-          isNeedUpdateRealmProps(this.props, nextProps)) {
-          this.removeListeners()
-          this.initRealmProps(nextProps, nextContext)
-          this.addListeners()
+        if (this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) {
+          this._removeListeners()
+          this._initRealmProps(nextProps, nextContext)
+          this._addListeners()
         }
       }
 
       componentWillMount () {
-        this.addListeners()
+        this._addListeners()
       }
 
       componentWillUnmount () {
-        this.removeListeners()
+        this._removeListeners()
       }
 
       render () {
         return (
-          <WrappedComponent
-            {...this.realmProps}
-            {...mapToProps(this.extraData, this.props)} />
+          <WrappedComponent {...mergeProps(this._realmProps, mapToProps(this._extraData, this.props), this.props)} />
         )
       }
     }

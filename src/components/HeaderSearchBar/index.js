@@ -33,17 +33,17 @@ export default class HeaderSearchBar extends PureComponent {
   constructor () {
     super()
 
-    this.onChangeText = this.onChangeText.bind(this)
+    this._onChangeText = this._onChangeText.bind(this)
   }
 
-  onChangeText (text) {
+  _onChangeText (text) {
     this.setState({text})
     this.props.onChangeText(text)
   }
 
   componentWillUpdate (nextProps, nextContext) {
     if (this.props.value !== nextProps.value) {
-      this.onChangeText(nextProps.value)
+      this._onChangeText(nextProps.value)
     }
     LayoutAnimation.easeInEaseOut()
   }
@@ -56,16 +56,19 @@ export default class HeaderSearchBar extends PureComponent {
           returnKeyType={'search'}
           value={this.state.text}
           autoFocus={this.props.autoFocus}
-          onChangeText={this.onChangeText}
+          onChangeText={this._onChangeText}
           placeholder={this.props.placeholder}
           placeholderTextColor={this.props.placeholderTextColor}
           selectionColor={this.props.selectionColor}
           style={[styles.textInput, {color: this.props.tint}]}/>
-        <HeaderIcon
-          iconName={'clear'}
-          label={strings(STRING_ACTION_SEARCH)}
-          onPress={() => this.onChangeText('')}
-          style={this.state.text ? null : {display: 'none'}}/>
+        {
+          this.state.text
+            ? <HeaderIcon
+              iconName={'clear'}
+              label={strings(STRING_ACTION_SEARCH)}
+              onPress={() => this._onChangeText('')}/>
+            : null
+        }
       </View>
     )
   }

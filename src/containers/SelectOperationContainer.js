@@ -6,8 +6,7 @@ import SimpleListItem from '../components/SimpleListItem/index'
 
 export default connectRealm(
   (realm, ownProps) => ({
-    items: OperationModel.search(OperationModel.getSortedBySortNumber(realm),
-      ownProps.navigation.state.params && ownProps.navigation.state.params.search),
+    allItems: OperationModel.getSortedBySortNumber(realm),
     renderItem: ({item}) => (
       <SimpleListItem
         id={item.id}
@@ -18,5 +17,12 @@ export default connectRealm(
     )
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData, keyboardShouldPersistTaps: 'handled'}),
-  (ownProps, newOwnProps) => (ownProps.navigation.state.params !== newOwnProps.navigation.state.params)
+  (mapRealmProps, mapProps, ownProps) => {
+    return {
+      ...mapRealmProps,
+      ...mapProps,
+      items: OperationModel.search(mapRealmProps.allItems,
+        ownProps.navigation.state.params && ownProps.navigation.state.params.search)
+    }
+  }
 )(List)

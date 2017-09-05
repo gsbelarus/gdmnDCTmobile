@@ -57,9 +57,9 @@ export default () => ({
   [STRING_PROGRESS_VERIFY_APP]: 'Проверка устройства...',
 
   [STRING_TITLE_SESSIONS]: 'Сессии',
-  [STRING_TITLE_SELECT_OPERATOR]: 'Выберите оператора',
-  [STRING_TITLE_SELECT_STORING_PLACE]: 'Выберите место хранения',
-  [STRING_TITLE_SELECT_OPERATION]: 'Выберите операцию',
+  [STRING_TITLE_SELECT_OPERATOR]: 'Выбор оператора',
+  [STRING_TITLE_SELECT_STORING_PLACE]: 'Выбор места хранения',
+  [STRING_TITLE_SELECT_OPERATION]: 'Выбор операции',
   [STRING_TITLE_SCANNER]: 'Сессия открыта...',
   [STRING_TITLE_CREATING]: 'Создание',
   [STRING_TITLE_EDITING]: 'Редактирование',

@@ -26,10 +26,10 @@ export default class HeaderIcon extends Component {
   constructor () {
     super()
 
-    this.onLongPress = this.onLongPress.bind(this)
+    this._onLongPress = this._onLongPress.bind(this)
   }
 
-  onLongPress () {
+  _onLongPress () {
     const {label} = this.props
 
     ToastAndroid.show(label, ToastAndroid.LONG)
@@ -43,7 +43,7 @@ export default class HeaderIcon extends Component {
         delayPressIn={0}
         background={Platform.Version > 21 ? TouchableNativeFeedback.Ripple(rippleColor, true) : TouchableNativeFeedback.SelectableBackground()}
         onPress={onPress}
-        onLongPress={this.onLongPress}>
+        onLongPress={this._onLongPress}>
         <View style={style}>
           <Icon name={iconName} style={[styles.icon, iconStyle]}/>
         </View>

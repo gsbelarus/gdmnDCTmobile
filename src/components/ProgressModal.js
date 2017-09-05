@@ -22,11 +22,10 @@ export default class ProgressModal extends PureComponent {
   constructor (props, context) {
     super()
 
-    this.onBackPress = this.onBackPress.bind(this)
+    this._onBackPress = this._onBackPress.bind(this)
   }
 
-  onBackPress () {
-    console.log(this.props.visible)
+  _onBackPress () {
     if (this.props.visible) {
       this.props.onRequestClose()
       return true
@@ -35,11 +34,11 @@ export default class ProgressModal extends PureComponent {
   }
 
   componentDidMount () {
-    BackHandler.addEventListener('hardwareBackPress', this.onBackPress)
+    BackHandler.addEventListener('hardwareBackPress', this._onBackPress)
   }
 
   componentWillUnmount () {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackPress)
+    BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
   }
 
   componentWillUpdate (nextProps, nextState) {
