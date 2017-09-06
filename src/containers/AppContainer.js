@@ -5,7 +5,7 @@ import { addNavigationHelpers } from 'react-navigation'
 import { ImportManager } from '../fsManager'
 import { openRealm } from '../realm/realm'
 import {
-  closeSession,
+  closeSession, deleteSession,
   exportData,
   goBack,
   importData,
@@ -31,6 +31,7 @@ class App extends PureComponent {
     this._importWatcher = this._importWatcher.bind(this)
     this._exportData = this._exportData.bind(this)
     this._closeSession = this._closeSession.bind(this)
+    this._deleteSession = this._deleteSession.bind(this)
     this._openCreateSession = this._openCreateSession.bind(this)
     this._updateSearchFilter = this._updateSearchFilter.bind(this)
   }
@@ -54,6 +55,10 @@ class App extends PureComponent {
 
   _closeSession () {
     this.props.dispatch(closeSession(this.state.realm))
+  }
+
+  _deleteSession (session) {
+    this.props.dispatch(deleteSession(this.state.realm, session))
   }
 
   _openCreateSession (object) {
@@ -92,6 +97,7 @@ class App extends PureComponent {
                 state,
                 exportData: this._exportData,
                 closeSession: this._closeSession,
+                deleteSession: this._deleteSession,
                 openCreateSession: this._openCreateSession,
                 updateSearchFilter: this._updateSearchFilter
               })

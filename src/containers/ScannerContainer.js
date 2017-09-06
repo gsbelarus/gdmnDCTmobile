@@ -5,7 +5,7 @@ import connectRealm from '../realm/react/connectRealm'
 import SessionModel from '../realm/models/SessionModel'
 import Scanner from '../components/Scanner'
 import {
-  deleteAndDismissEditor,
+  deleteAndDismissEditor, deleteCode,
   dismissEditor,
   onScanned,
   saveAndDismissEditor,
@@ -24,6 +24,7 @@ const ReduxScannerContainer = connect(
     onAddItemPress: bindActionCreators(showEditor, dispatch),
     onItemPress: bindActionCreators(showEditor, dispatch),
     onEditorRequestClose: bindActionCreators(dismissEditor, dispatch),
+    onItemIconRightPress: (item) => dispatch(deleteCode(ownProps.realm, item)),
     onEditorConfirm: (text) => dispatch(saveAndDismissEditor(ownProps.realm, text)),
     onEditorCancel: () => dispatch(deleteAndDismissEditor(ownProps.realm)),
     onScanned: (scanResult) => dispatch(onScanned(ownProps.realm, scanResult))

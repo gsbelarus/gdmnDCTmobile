@@ -8,15 +8,13 @@ export default connectRealm(
   (realm, ownProps) => ({
     items: SessionModel.getSortedByDate(realm, true),
     onAddPress: ownProps.navigation.openCreateSession,
-    onItemPress: (item) => {  //TODO
-      realm.write(() => {
-        realm.delete(item.codes)
-        realm.delete(item)
-      })
+    onItemPress: (item) => {
+      //TODO
     },
     onItemLongPress: async (item) => {  //TODO
       await ExportManager.exportSession(item)
-    }
+    },
+    onItemIconRightPress: ownProps.navigation.deleteSession
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})
 )(Sessions)

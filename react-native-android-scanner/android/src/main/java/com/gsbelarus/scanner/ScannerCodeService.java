@@ -125,10 +125,13 @@ public class ScannerCodeService extends Service {
     }
 
     private Notification createNotification() {
+        int appNameId = getResources().getIdentifier("app_name", "string", getPackageName());
+        int appLauncherIconId = getResources().getIdentifier("ic_launcher", "mipmap", getPackageName());
+
         return new NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.app_name))
+                .setContentTitle(getString(appNameId))
                 .setContentText(config.getNotificationText())
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(appLauncherIconId)
                 .setColor(Color.parseColor(config.getNotificationColor()))
                 .build();
     }

@@ -208,6 +208,29 @@ export function closeSession (realm) {
   }
 }
 
+export function deleteSession (realm, item) {
+  return (dispatch, getState) => {
+    realm.write(() => {
+      realm.delete(item.codes)
+      realm.delete(item)
+    })
+  }
+}
+
+export function updateSearchFilter (search) {
+  return (dispatch, getState) => {
+    const {appState} = getState()
+    const route = getCurrentRouteState(appState)
+    dispatch(NavigationActions.setParams({
+      key: route.key,
+      params: {
+        ...route.params,
+        search
+      }
+    }))
+  }
+}
+
 function globalNavigate (realm) {
   return async (dispatch, getState) => {
     let session = SessionModel.getOpenedSession(realm)
@@ -228,20 +251,6 @@ function globalNavigate (realm) {
         actions: [NavigationActions.navigate({routeName: SESSIONS})]
       }))
     }
-  }
-}
-
-export function updateSearchFilter (search) {
-  return (dispatch, getState) => {
-    const {appState} = getState()
-    const route = getCurrentRouteState(appState)
-    dispatch(NavigationActions.setParams({
-      key: route.key,
-      params: {
-        ...route.params,
-        search
-      }
-    }))
   }
 }
 

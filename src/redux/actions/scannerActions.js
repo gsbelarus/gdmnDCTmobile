@@ -48,9 +48,15 @@ export function deleteAndDismissEditor (realm) {
     if (scannerState.editableItemKey) {
       const session = SessionModel.getOpenedSession(realm)
       const code = SessionModel.findCodeByKey(session, scannerState.editableItemKey)
-      realm.write(() => realm.delete(code))
+      dispatch(deleteCode(realm, code))
       dispatch(dismissEditor())
     }
+  }
+}
+
+export function deleteCode (realm, code) {
+  return (dispatch, getState) => {
+    realm.write(() => realm.delete(code))
   }
 }
 

@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import { formatDate } from '../localization/utils'
 import List from './List/index'
-import SimpleListItem from './SimpleListItem/index'
+import ListItem from './ListItem/index'
 
 export default class Sessions extends PureComponent {
 
@@ -20,15 +20,13 @@ export default class Sessions extends PureComponent {
     onAddPress: PropTypes.func,
     onItemPress: PropTypes.func,
     onItemLongPress: PropTypes.func,
+    onItemIconRightPress: PropTypes.func,
     keyExtractor: PropTypes.func
   }
 
   static defaultProps = {
     extra: {},
     items: [],
-    onAddPress: () => {},
-    onItemPress: () => {},
-    onItemLongPress: () => {},
     keyExtractor: (item, index) => index
   }
 
@@ -40,11 +38,14 @@ export default class Sessions extends PureComponent {
 
   _renderItem ({item}) {
     return (
-      <SimpleListItem
+      <ListItem
         id={item.id}
         primaryText={item.operator.name}
         secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm:ss')}
-        onPress={() => this.props.onItemPress(item)}/>
+        iconRightName={'clear'}
+        onItemPress={() => this.props.onItemPress(item)}
+        onItemLongPress={() => this.props.onItemLongPress(item)}
+        onItemIconRightPress={() => this.props.onItemIconRightPress(item)}/>
     )
   }
 

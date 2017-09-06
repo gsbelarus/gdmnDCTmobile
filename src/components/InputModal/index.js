@@ -73,6 +73,7 @@ export default class InputModal extends PureComponent {
               value={this.state.text}
               autoFocus={true}
               keyboardType={this.props.keyboardType}
+              onSubmitEditing={this._onConfirmPress}
               onChangeText={this._onChangeText}/>
             <View style={styles.buttonsContainer}>
               <TouchableNativeFeedback

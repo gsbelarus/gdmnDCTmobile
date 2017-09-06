@@ -5,7 +5,7 @@ import ActionButton from 'react-native-action-button'
 import ScannerApi from 'react-native-android-scanner'
 import CodeModel from '../realm/models/CodeModel'
 import List from './List/index'
-import SimpleListItem from './SimpleListItem/index'
+import ListItem from './ListItem/index'
 import InputModal from './InputModal/index'
 
 export default class Scanner extends PureComponent {
@@ -25,6 +25,7 @@ export default class Scanner extends PureComponent {
     editorConfirmText: PropTypes.string,
     editorCancelText: PropTypes.string,
     onItemPress: PropTypes.func,
+    onItemIconRightPress: PropTypes.func,
     onAddItemPress: PropTypes.func,
     onScanned: PropTypes.func,
     onEditorRequestClose: PropTypes.func,
@@ -48,11 +49,13 @@ export default class Scanner extends PureComponent {
 
   _renderItem ({item}) {
     return (
-      <SimpleListItem
+      <ListItem
         id={item.id}
         primaryText={item.name}
         disabled={item.disabled}
-        onPress={() => this.props.onItemPress(item)}/>
+        iconRightName={'clear'}
+        onItemPress={() => this.props.onItemPress(item)}
+        onItemIconRightPress={() => this.props.onItemIconRightPress(item)}/>
     )
   }
 

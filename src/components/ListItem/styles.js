@@ -2,8 +2,15 @@ import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   itemContainer: {
-    minHeight: 48,
-    padding: 16
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 8,
+    minHeight: 48
+  },
+  itemTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 8
   },
   itemPrimaryText: {
     fontFamily: 'Roboto',
@@ -13,5 +20,9 @@ export default StyleSheet.create({
   itemSecondaryText: {
     fontFamily: 'Roboto',
     fontSize: 13
+  },
+  itemIconRight: {
+    fontSize: 24,
+    padding: 8
   }
 })
