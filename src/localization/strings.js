@@ -24,6 +24,7 @@ export const STRING_PROGRESS_CLOSING_SESSION = 'progressClosingSession'
 export const STRING_PROGRESS_VERIFY_APP = 'progressVerifyApp'
 
 export const STRING_TITLE_SESSIONS = 'titleSessions'
+export const STRING_TITLE_SESSION_DETAIL = 'titleSessionDetail'
 export const STRING_TITLE_SELECT_OPERATOR = 'titleSelectOperator'
 export const STRING_TITLE_SELECT_STORING_PLACE = 'titleSelectStoringPlace'
 export const STRING_TITLE_SELECT_OPERATION = 'titleSelectOperation'

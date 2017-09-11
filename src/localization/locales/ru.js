@@ -30,6 +30,7 @@ import {
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
   STRING_TITLE_SELECT_STORING_PLACE,
+  STRING_TITLE_SESSION_DETAIL,
   STRING_TITLE_SESSIONS
 } from '../strings'
 
@@ -57,6 +58,7 @@ export default () => ({
   [STRING_PROGRESS_VERIFY_APP]: 'Проверка устройства...',
 
   [STRING_TITLE_SESSIONS]: 'Сессии',
+  [STRING_TITLE_SESSION_DETAIL]: 'Сессия',
   [STRING_TITLE_SELECT_OPERATOR]: 'Выбор оператора',
   [STRING_TITLE_SELECT_STORING_PLACE]: 'Выбор места хранения',
   [STRING_TITLE_SELECT_OPERATION]: 'Выбор операции',

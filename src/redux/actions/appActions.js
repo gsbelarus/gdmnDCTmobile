@@ -24,6 +24,7 @@ import {
   SELECT_OPERATION,
   SELECT_OPERATOR,
   SELECT_STORING_PLACE,
+  SESSION_DETAIL,
   SESSIONS
 } from '../../navigators/AppNavigator'
 import SessionModel from '../../realm/models/SessionModel'
@@ -103,12 +104,20 @@ export function importData (realm, fileName) {
 
 export function exportData (realm) {
   return async (dispatch, getState) => {
+    const {appState} = getState()
+    const params = getCurrentRouteState(appState).params || {}
+
     const progress = {message: strings(STRING_PROGRESS_EXPORT_DATA)}
     dispatch(addToProgress(progress))
     try {
-      const sessions = SessionModel.getSortedByDate(realm)
-      for (let i = 0; i < sessions.length; i++) {
-        await ExportManager.exportSession(sessions[i])
+      if (params.session) {
+        await ExportManager.exportSession(params.session)
+
+      } else {
+        const sessions = SessionModel.getSortedByDate(realm)
+        for (let i = 0; i < sessions.length; i++) {
+          await ExportManager.exportSession(sessions[i])
+        }
       }
     } catch (error) {
       console.warn(error)
@@ -130,7 +139,7 @@ export function exportData (realm) {
 export function openCreateSession (realm, object) {
   return (dispatch, getState) => {
     const {appState} = getState()
-    const params = getCurrentRouteState(appState).params
+    const {operator, storingPlace} = getCurrentRouteState(appState).params || {}
 
     if (!object) {
       dispatch(NavigationActions.navigate({routeName: SELECT_OPERATOR}))
@@ -142,14 +151,12 @@ export function openCreateSession (realm, object) {
       }))
 
     } else if (object instanceof StoringPlaceModel) {
-      const {operator} = params
       dispatch(NavigationActions.navigate({
         routeName: SELECT_OPERATION,
         params: {storingPlace: object, operator}
       }))
 
     } else if (object instanceof OperationModel) {
-      const {operator, storingPlace} = params
       Alert.alert(
         strings(STRING_NOTIFICATION),
         strings(STRING_ACTION_OPEN_SESSION) + '?',
@@ -166,6 +173,32 @@ export function openCreateSession (realm, object) {
           }
         }]
       )
+    }
+  }
+}
+
+export function openSessionDetail (session) {
+  return NavigationActions.navigate({
+    routeName: SESSION_DETAIL,
+    params: {
+      sessionKey: session.id,
+      sessionOperatorName: session.operator.name,
+      sessionOperationName: session.operation.name,
+      sessionStoringPlaceName: session.storingPlace.name
+    }
+  })
+}
+
+export function deleteSessionDetail (realm) {
+  return (dispatch, getState) => {
+    const {appState} = getState()
+    const {sessionKey} = getCurrentRouteState(appState).params || {}
+
+    dispatch(goBack())
+
+    const session = SessionModel.findSessionByKey(realm, sessionKey)
+    if (session) {
+      dispatch(deleteSession(realm, session))
     }
   }
 }
@@ -208,11 +241,11 @@ export function closeSession (realm) {
   }
 }
 
-export function deleteSession (realm, item) {
+export function deleteSession (realm, session) {
   return (dispatch, getState) => {
     realm.write(() => {
-      realm.delete(item.codes)
-      realm.delete(item)
+      realm.delete(session.codes)
+      realm.delete(session)
     })
   }
 }
@@ -239,7 +272,15 @@ function globalNavigate (realm) {
       await ScannerApi.start()
       dispatch(NavigationActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({routeName: SCANNER})]
+        actions: [NavigationActions.navigate({
+          routeName: SCANNER,
+          params: {
+            sessionKey: session.id,
+            sessionOperatorName: session.operator.name,
+            sessionOperationName: session.operation.name,
+            sessionStoringPlaceName: session.storingPlace.name
+          }
+        })]
       }))
 
     } else {

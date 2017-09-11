@@ -5,12 +5,15 @@ import { addNavigationHelpers } from 'react-navigation'
 import { ImportManager } from '../fsManager'
 import { openRealm } from '../realm/realm'
 import {
-  closeSession, deleteSession,
+  closeSession,
+  deleteSession,
+  deleteSessionDetail,
   exportData,
   goBack,
   importData,
   init,
   openCreateSession,
+  openSessionDetail,
   updateSearchFilter
 } from '../redux/actions/appActions'
 import AppNavigator from '../navigators/AppNavigator'
@@ -32,7 +35,9 @@ class App extends PureComponent {
     this._exportData = this._exportData.bind(this)
     this._closeSession = this._closeSession.bind(this)
     this._deleteSession = this._deleteSession.bind(this)
+    this._deleteSessionDetail = this._deleteSessionDetail.bind(this)
     this._openCreateSession = this._openCreateSession.bind(this)
+    this._openSessionDetail = this._openSessionDetail.bind(this)
     this._updateSearchFilter = this._updateSearchFilter.bind(this)
   }
 
@@ -61,8 +66,16 @@ class App extends PureComponent {
     this.props.dispatch(deleteSession(this.state.realm, session))
   }
 
+  _deleteSessionDetail () {
+    this.props.dispatch(deleteSessionDetail(this.state.realm))
+  }
+
   _openCreateSession (object) {
     this.props.dispatch(openCreateSession(this.state.realm, object))
+  }
+
+  _openSessionDetail (session) {
+    this.props.dispatch(openSessionDetail(session))
   }
 
   _updateSearchFilter (search) {
@@ -98,7 +111,9 @@ class App extends PureComponent {
                 exportData: this._exportData,
                 closeSession: this._closeSession,
                 deleteSession: this._deleteSession,
+                deleteSessionDetail: this._deleteSessionDetail,
                 openCreateSession: this._openCreateSession,
+                openSessionDetail: this._openSessionDetail,
                 updateSearchFilter: this._updateSearchFilter
               })
             }/>

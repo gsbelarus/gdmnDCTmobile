@@ -41,7 +41,7 @@ export default class Sessions extends PureComponent {
       <ListItem
         id={item.id}
         primaryText={item.operator.name}
-        secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm:ss')}
+        secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm')}
         iconRightName={'clear'}
         onItemPress={() => this.props.onItemPress(item)}
         onItemLongPress={() => this.props.onItemLongPress(item)}

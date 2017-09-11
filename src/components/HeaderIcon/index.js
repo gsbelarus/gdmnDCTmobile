@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Platform, Text, ToastAndroid, TouchableNativeFeedback, View } from 'react-native'
+import { Vibration, Platform, Text, ToastAndroid, TouchableNativeFeedback, View } from 'react-native'
 import styles from './styles'
 
 export default class HeaderIcon extends Component {
@@ -32,6 +32,7 @@ export default class HeaderIcon extends Component {
   _onLongPress () {
     const {label} = this.props
 
+    Vibration.vibrate(50)
     ToastAndroid.show(label, ToastAndroid.LONG)
   }
 

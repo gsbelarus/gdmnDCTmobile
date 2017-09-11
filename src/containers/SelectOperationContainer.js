@@ -12,7 +12,6 @@ export default connectRealm(
         id={item.id}
         primaryText={item.name}
         secondaryText={item.code}
-        disabled={item.disabled}
         onItemPress={() => ownProps.navigation.openCreateSession(item)}/>
     )
   }),

@@ -8,9 +8,7 @@ export default connectRealm(
   (realm, ownProps) => ({
     items: SessionModel.getSortedByDate(realm, true),
     onAddPress: ownProps.navigation.openCreateSession,
-    onItemPress: (item) => {
-      //TODO
-    },
+    onItemPress: ownProps.navigation.openSessionDetail,
     onItemLongPress: async (item) => {  //TODO
       await ExportManager.exportSession(item)
     },

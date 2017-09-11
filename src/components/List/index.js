@@ -35,6 +35,7 @@ export default class List extends PureComponent {
     super()
 
     this._onLayout = this._onLayout.bind(this)
+    this._renderSeparator = this._renderSeparator.bind(this)
   }
 
   _onLayout (event) {
@@ -46,6 +47,10 @@ export default class List extends PureComponent {
     LayoutAnimation.easeInEaseOut()
   }
 
+  _renderSeparator() {
+    return <View style={styles.separator}/>
+  }
+
   render () {
     return (
       <FlatList
@@ -55,7 +60,7 @@ export default class List extends PureComponent {
         data={this.props.items}
         renderItem={this.props.renderItem}
         keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
-        ItemSeparatorComponent={() => <View style={styles.separator}/>}
+        ItemSeparatorComponent={this._renderSeparator}
         ListEmptyComponent={
           <EmptyView style={{
             width: this.state.width,

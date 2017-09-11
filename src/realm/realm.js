@@ -6,14 +6,17 @@ import OperationModel from './models/OperationModel'
 import CodeModel from './models/CodeModel'
 import createDemoData from './demoData'
 
+let realm
+
 export async function openRealm () {
-  const realm = await Realm.open({
-    schema: [SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
-    schemaVersion: 22,
-    shouldCompactOnLaunch: (totalBytes, usedBytes) => true
-  })
+  if (!realm) {
+    realm = await Realm.open({
+      schema: [SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
+      schemaVersion: 22,
+      shouldCompactOnLaunch: (totalBytes, usedBytes) => true
+    })
 
-  createDemoData(realm)
-
+    createDemoData(realm)
+  }
   return realm
 }

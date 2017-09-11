@@ -52,7 +52,6 @@ export default class Scanner extends PureComponent {
       <ListItem
         id={item.id}
         primaryText={item.name}
-        disabled={item.disabled}
         iconRightName={'clear'}
         onItemPress={() => this.props.onItemPress(item)}
         onItemIconRightPress={() => this.props.onItemIconRightPress(item)}/>

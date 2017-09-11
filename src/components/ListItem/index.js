@@ -14,7 +14,7 @@ export default class ListItem extends PureComponent {
     primaryText: PropTypes.string,
     secondaryText: PropTypes.string,
     itemDisabled: PropTypes.bool,
-    disabledColor: PropTypes.string,
+    itemDisabledColor: PropTypes.string,
     onItemPress: PropTypes.func,
     onItemLongPress: PropTypes.func,
     onItemIconRightPress: PropTypes.func,
@@ -28,7 +28,7 @@ export default class ListItem extends PureComponent {
   static defaultProps = {
     onItemPress: () => {},
     onItemIconRightPress: () => {},
-    disabledColor: '#90000010'
+    itemDisabledColor: 'transparent'
   }
 
   constructor () {
@@ -101,7 +101,7 @@ export default class ListItem extends PureComponent {
   }
 
   render () {
-    const {iconRightName, itemDisabled, disabledColor, style} = this.props
+    const {iconRightName, itemDisabled, itemDisabledColor, style} = this.props
 
     return (
       <TouchableNativeFeedback
@@ -110,7 +110,7 @@ export default class ListItem extends PureComponent {
         onPress={this._onItemPress}
         onLongPress={this._onItemLongPress}
         background={TouchableNativeFeedback.SelectableBackground()}>
-        <View style={[styles.itemContainer, style, itemDisabled ? {backgroundColor: disabledColor} : null]}>
+        <View style={[styles.itemContainer, style, itemDisabled ? {backgroundColor: itemDisabledColor} : null]}>
           <View style={[styles.itemTextContainer, iconRightName ? {minHeight: 24} : null]}>
             {this._renderPrimaryText()}
             {this._renderSecondaryText()}

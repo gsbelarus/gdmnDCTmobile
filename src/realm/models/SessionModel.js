@@ -57,6 +57,10 @@ export default class SessionModel {
     else return null
   }
 
+  static findSessionByKey (realm, sessionKey) {
+    return realm.objectForPrimaryKey(SessionModel.name, sessionKey)
+  }
+
   static findCodeByKey (session, codeKey) {
     if (session) {
       let collisionCode = session.codes.filtered(`${CodeModel.FIELD_ID} = '${codeKey}'`)

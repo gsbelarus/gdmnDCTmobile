@@ -3,15 +3,18 @@ import { Header, StackNavigator } from 'react-navigation'
 import { View } from 'react-native'
 import strings, {
   STRING_ACTION_CLOSE_SESSION,
+  STRING_ACTION_DELETE,
   STRING_ACTION_EXPORT,
   STRING_ACTION_IMPORT,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
   STRING_TITLE_SELECT_STORING_PLACE,
+  STRING_TITLE_SESSION_DETAIL,
   STRING_TITLE_SESSIONS
 } from '../localization/strings'
 import SessionsContainer from '../containers/SessionsContainer'
+import SessionDetailContainer from '../containers/SessionDetailContainer'
 import SelectOperatorContainer from '../containers/SelectOperatorContainer'
 import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContainer'
 import SelectOperationContainer from '../containers/SelectOperationContainer'
@@ -20,10 +23,12 @@ import HeaderIcon from '../components/HeaderIcon/index'
 import EmptyView from '../components/EmptyView/index'
 import SplashScreen from '../components/SplashScreen/index'
 import HeaderSearchBar from '../components/HeaderSearchBar/index'
+import HeaderStepHistory from '../components/HeaderStepHistory/index'
 
 export const SPLASH_SCREEN = 'SplashScreen'
 export const ERROR = 'Error'
 export const SESSIONS = 'Sessions'
+export const SESSION_DETAIL = 'SessionDetail'
 export const SELECT_OPERATOR = 'SelectOperator'
 export const SELECT_STORING_PLACE = 'SelectStoringPlace'
 export const SELECT_OPERATION = 'SelectOperation'
@@ -58,6 +63,20 @@ export default StackNavigator({
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SESSIONS),
       headerRight: (
+        <HeaderIcon
+          iconName={'file-download'}
+          label={strings(STRING_ACTION_IMPORT)}
+          onPress={navigation.importData}
+          rippleColor={'white'}
+          iconStyle={{color: 'white'}}/>
+      )
+    })
+  },
+  [SESSION_DETAIL]: {
+    screen: SessionDetailContainer,
+    navigationOptions: ({navigation, screenProps}) => ({
+      title: strings(STRING_TITLE_SESSION_DETAIL),
+      headerRight: (
         <View style={{flexDirection: 'row'}}>
           <HeaderIcon
             iconName={'file-upload'}
@@ -66,13 +85,28 @@ export default StackNavigator({
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
           <HeaderIcon
-            iconName={'file-download'}
-            label={strings(STRING_ACTION_IMPORT)}
-            onPress={navigation.importData}
+            iconName={'clear'}
+            label={strings(STRING_ACTION_DELETE)}
+            onPress={navigation.deleteSessionDetail}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
         </View>
-      )
+      ),
+      header: (props) => {
+        const {headerStyle, headerTintColor} = props.getScreenDetails(props.scene).options
+        const {sessionOperatorName, sessionOperationName, sessionStoringPlaceName} = navigation.state.params || {}
+        let steps = [
+          {label: sessionOperatorName, disabled: true},
+          {label: sessionOperationName, disabled: true},
+          {label: sessionStoringPlaceName, disabled: true}
+        ]
+        return (
+          <View style={headerStyle}>
+            <Header {...props}/>
+            <HeaderStepHistory tintColor={headerTintColor} steps={steps}/>
+          </View>
+        )
+      }
     })
   },
   [SELECT_OPERATOR]: {
@@ -120,7 +154,22 @@ export default StackNavigator({
           onPress={navigation.closeSession}
           rippleColor={'white'}
           iconStyle={{color: 'red'}}/>
-      )
+      ),
+      header: (props) => {
+        const {headerStyle, headerTintColor} = props.getScreenDetails(props.scene).options
+        const {sessionOperatorName, sessionOperationName, sessionStoringPlaceName} = navigation.state.params || {}
+        let steps = [
+          {label: sessionOperatorName, disabled: true},
+          {label: sessionOperationName, disabled: true},
+          {label: sessionStoringPlaceName, disabled: true}
+        ]
+        return (
+          <View style={headerStyle}>
+            <Header {...props}/>
+            <HeaderStepHistory tintColor={headerTintColor} steps={steps}/>
+          </View>
+        )
+      }
     })
   }
 }, {
