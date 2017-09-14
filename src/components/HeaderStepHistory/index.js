@@ -40,7 +40,7 @@ export default class HeaderStepHistory extends Component {
     )
   }
 
-  _renderItem ({item}) {
+  _renderItem ({item, index}) {
     const {tintColor} = this.props
     const {label, disabled, style} = item
 
@@ -49,10 +49,11 @@ export default class HeaderStepHistory extends Component {
         delayPressIn={0}
         background={Platform.Version > 21 ? TouchableNativeFeedback.Ripple(tintColor, false) : TouchableNativeFeedback.SelectableBackground()}
         disabled={disabled}>
-        <View>
+        <View style={{flexDirection: 'row'}}>
           <Text style={[styles.label, {color: tintColor}, style]}>
             {label}
           </Text>
+          {index < this.props.steps.length - 1 ? this._renderSeparator() : null}
         </View>
       </TouchableNativeFeedback>
     )
@@ -67,7 +68,10 @@ export default class HeaderStepHistory extends Component {
         keyExtractor={keyExtractor}
         data={steps}
         renderItem={this._renderItem}
-        ItemSeparatorComponent={this._renderSeparator}/>
+        // ItemSeparatorComponent={this._renderSeparator}
+      />
     )
   }
+
+  //TODO remove workaround issue #15777
 }
