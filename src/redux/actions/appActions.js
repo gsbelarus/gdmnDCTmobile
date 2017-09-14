@@ -114,8 +114,9 @@ export function exportData (realm) {
     const progress = {message: strings(STRING_PROGRESS_EXPORT_DATA)}
     dispatch(addToProgress(progress))
     try {
-      if (params.session) {
-        await ExportManager.exportSession(params.session)
+      if (params.sessionKey) {
+        let session = SessionModel.findSessionByKey(realm, params.sessionKey)
+        await ExportManager.exportSession(session)
 
       } else {
         const sessions = SessionModel.getSortedByDate(realm)
