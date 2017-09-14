@@ -16,30 +16,6 @@ export default class OperatorModel {
     }
   }
 
-  static newInstance (id, name, disabled) {
-    let instance = new OperatorModel()
-    instance.id = id
-    instance.name = name
-    instance.disabled = disabled
-    return instance
-  }
-
-  static create (realm, name, disabled) {
-    let max = 0
-    realm.objects(OperatorModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(OperatorModel.name, OperatorModel.newInstance(max + 1, name, disabled))
-  }
-
-  static getEnabledObjects (realm) {
-    return realm.objects(OperatorModel.name)
-      .filtered(`${OperatorModel.FIELD_DISABLED} = false`)
-  }
-
-  static getSortedByName (realm, reverse) {
-    return OperatorModel.getEnabledObjects(realm)
-      .sorted(OperatorModel.FIELD_NAME, reverse)
-  }
-
   get id () {
     return this[OperatorModel.FIELD_ID]
   }
@@ -65,5 +41,29 @@ export default class OperatorModel {
 
   set disabled (value) {
     this[OperatorModel.FIELD_DISABLED] = value
+  }
+
+  static newInstance (id, name, disabled) {
+    let instance = new OperatorModel()
+    instance.id = id
+    instance.name = name
+    instance.disabled = disabled
+    return instance
+  }
+
+  static create (realm, name, disabled) {
+    let max = 0
+    realm.objects(OperatorModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    return realm.create(OperatorModel.name, OperatorModel.newInstance(max + 1, name, disabled))
+  }
+
+  static getEnabledObjects (realm) {
+    return realm.objects(OperatorModel.name)
+      .filtered(`${OperatorModel.FIELD_DISABLED} = false`)
+  }
+
+  static getSortedByName (realm, reverse) {
+    return OperatorModel.getEnabledObjects(realm)
+      .sorted(OperatorModel.FIELD_NAME, reverse)
   }
 }

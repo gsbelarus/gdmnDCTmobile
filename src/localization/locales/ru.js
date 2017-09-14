@@ -11,6 +11,10 @@ import {
   STRING_ACTION_REPEAT,
   STRING_ACTION_SAVE,
   STRING_ACTION_SEARCH,
+  STRING_ACTION_SETTINGS,
+  STRING_CODE_CREATING,
+  STRING_CODE_EDITING,
+  STRING_CODE_ENTER,
   STRING_EMPTY_DATA,
   STRING_ERROR_CLOSING_SESSION,
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
@@ -24,14 +28,20 @@ import {
   STRING_PROGRESS_IMPORT_DATA,
   STRING_PROGRESS_OPENING_SESSION,
   STRING_PROGRESS_VERIFY_APP,
-  STRING_TITLE_CREATING,
-  STRING_TITLE_EDITING,
+  STRING_SETTINGS_ABOUT,
+  STRING_SETTINGS_ABOUT_CONTENT,
+  STRING_SETTINGS_COUNT_SESSION_DESCRIPTION,
+  STRING_SETTINGS_COUNT_SESSION_HINT,
+  STRING_SETTINGS_COUNT_SESSION_OVERFLOW,
+  STRING_SETTINGS_COUNT_SESSION_PRIMARY,
+  STRING_SETTINGS_COUNT_SESSION_SECONDARY,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
   STRING_TITLE_SELECT_STORING_PLACE,
   STRING_TITLE_SESSION_DETAIL,
-  STRING_TITLE_SESSIONS
+  STRING_TITLE_SESSIONS,
+  STRING_TITLE_SETTINGS
 } from '../strings'
 
 export default () => ({
@@ -47,9 +57,21 @@ export default () => ({
   [STRING_ACTION_IMPORT]: 'Импорт',
   [STRING_ACTION_EXPORT]: 'Экспорт',
   [STRING_ACTION_SEARCH]: 'Поиск',
+  [STRING_ACTION_SETTINGS]: 'Настройки',
 
   [STRING_EMPTY_DATA]: 'Данные отсутствуют',
   [STRING_NOTIFICATION]: 'Уведомление',
+  [STRING_CODE_CREATING]: 'Создание',
+  [STRING_CODE_EDITING]: 'Редактирование',
+  [STRING_CODE_ENTER]: 'Введите код...',
+
+  [STRING_SETTINGS_COUNT_SESSION_PRIMARY]: 'Размер хранилища сессий',
+  [STRING_SETTINGS_COUNT_SESSION_SECONDARY]: 'Максимальное количество сессий для хранения: {{count}}',
+  [STRING_SETTINGS_COUNT_SESSION_HINT]: 'Введите количество...',
+  [STRING_SETTINGS_COUNT_SESSION_DESCRIPTION]: 'Максимальное количество сессий для хранения. Старые сессии удаляются',
+  [STRING_SETTINGS_COUNT_SESSION_OVERFLOW]: 'Количество сессий превышает размер хранилища. Удалить старые сессии?',
+  [STRING_SETTINGS_ABOUT]: 'О приложении',
+  [STRING_SETTINGS_ABOUT_CONTENT]: 'Version code: {{versionCode}}\n\nCopyright \u00a9 2017 by Golden Software of Belarus, Ltd\nAll rights reserved.',
 
   [STRING_PROGRESS_IMPORT_DATA]: 'Загрузка данных...',
   [STRING_PROGRESS_EXPORT_DATA]: 'Выгрузка данных...',
@@ -57,14 +79,13 @@ export default () => ({
   [STRING_PROGRESS_CLOSING_SESSION]: 'Закрытие сессии...',
   [STRING_PROGRESS_VERIFY_APP]: 'Проверка устройства...',
 
+  [STRING_TITLE_SETTINGS]: 'Настройки',
   [STRING_TITLE_SESSIONS]: 'Сессии',
   [STRING_TITLE_SESSION_DETAIL]: 'Сессия',
   [STRING_TITLE_SELECT_OPERATOR]: 'Выбор оператора',
   [STRING_TITLE_SELECT_STORING_PLACE]: 'Выбор места хранения',
   [STRING_TITLE_SELECT_OPERATION]: 'Выбор операции',
   [STRING_TITLE_SCANNER]: 'Сессия открыта...',
-  [STRING_TITLE_CREATING]: 'Создание',
-  [STRING_TITLE_EDITING]: 'Редактирование',
 
   [STRING_ERROR_DEVICE_NOT_SUPPORTED]: 'Устройство не поддерживается',
   [STRING_ERROR_IMPORT_DATA]: 'Не удалось загрузить данные',

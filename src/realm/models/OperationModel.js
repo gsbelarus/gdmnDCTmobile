@@ -25,44 +25,6 @@ export default class OperationModel {
     }
   }
 
-  static newInstance (id, name, code, sortNumber, disabled) {
-    let instance = new OperationModel()
-    instance.id = id
-    instance.name = name
-    instance.code = code
-    instance.sortNumber = sortNumber
-    instance.disabled = disabled
-    return instance
-  }
-
-  static create (realm, update, name, code, sortNumber, disabled) {
-    let max = 0
-    realm.objects(OperationModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(OperationModel.name, OperationModel.newInstance(max + 1, name, code, sortNumber, disabled), update)
-  }
-
-  static getEnabledObjects (realm) {
-    return realm.objects(OperationModel.name)
-      .filtered(`${OperationModel.FIELD_DISABLED} = false`)
-  }
-
-  static getSortedBySortNumber (realm, reverse) {
-    return OperationModel.getEnabledObjects(realm)
-      .sorted(OperationModel.FIELD_SORT_NUMBER, reverse)
-  }
-
-  static search (items, search) {
-    if (!search) return items
-
-    return items.filtered(`${OperationModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
-  }
-
-  bindSearchTextField () {
-    this.searchField =
-      (this.name && this.name.toLowerCase()) +
-      (this.code && this.code.toLowerCase())
-  }
-
   get id () {
     return this[OperationModel.FIELD_ID]
   }
@@ -117,5 +79,43 @@ export default class OperationModel {
 
   set searchField (value) {
     this[OperationModel.FIELD_SEARCH_FIELD] = value
+  }
+
+  static newInstance (id, name, code, sortNumber, disabled) {
+    let instance = new OperationModel()
+    instance.id = id
+    instance.name = name
+    instance.code = code
+    instance.sortNumber = sortNumber
+    instance.disabled = disabled
+    return instance
+  }
+
+  static create (realm, update, name, code, sortNumber, disabled) {
+    let max = 0
+    realm.objects(OperationModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    return realm.create(OperationModel.name, OperationModel.newInstance(max + 1, name, code, sortNumber, disabled), update)
+  }
+
+  static getEnabledObjects (realm) {
+    return realm.objects(OperationModel.name)
+      .filtered(`${OperationModel.FIELD_DISABLED} = false`)
+  }
+
+  static getSortedBySortNumber (realm, reverse) {
+    return OperationModel.getEnabledObjects(realm)
+      .sorted(OperationModel.FIELD_SORT_NUMBER, reverse)
+  }
+
+  static search (items, search) {
+    if (!search) return items
+
+    return items.filtered(`${OperationModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
+  }
+
+  bindSearchTextField () {
+    this.searchField =
+      (this.name && this.name.toLowerCase()) +
+      (this.code && this.code.toLowerCase())
   }
 }

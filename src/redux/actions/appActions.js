@@ -1,5 +1,6 @@
-import { Alert, BackHandler } from 'react-native'
+import { BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
+import DialogAndroid from 'react-native-dialogs'
 import Snackbar from 'react-native-snackbar'
 import strings, {
   STRING_ACTION_CANCEL,
@@ -25,7 +26,8 @@ import {
   SELECT_OPERATOR,
   SELECT_STORING_PLACE,
   SESSION_DETAIL,
-  SESSIONS
+  SESSIONS,
+  SETTINGS
 } from '../../navigators/AppNavigator'
 import SessionModel from '../../realm/models/SessionModel'
 import StoringPlaceModel from '../../realm/models/StoringPlaceModel'
@@ -34,6 +36,8 @@ import OperationModel from '../../realm/models/OperationModel'
 import { ExportManager, ImportManager } from '../../fsManager'
 import { addToProgress, removeFromProgress } from './progressActions'
 import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
+import { updateStoredSessionsQuantity } from '../../realm/utils'
+import SettingsModel from '../../realm/models/SettingsModel'
 
 export function goBack () {
   return (dispatch, getState) => {
@@ -157,22 +161,26 @@ export function openCreateSession (realm, object) {
       }))
 
     } else if (object instanceof OperationModel) {
-      Alert.alert(
-        strings(STRING_NOTIFICATION),
-        strings(STRING_ACTION_OPEN_SESSION) + '?',
-        [{text: strings(STRING_ACTION_CANCEL)}, {
-          text: strings(STRING_ACTION_CONFIRM),
-          onPress: () => {
-            const progress = {message: strings(STRING_PROGRESS_OPENING_SESSION)}
-            dispatch(addToProgress(progress))
+      let dialog = new DialogAndroid()
+      dialog.set({
+        title: strings(STRING_NOTIFICATION),
+        content: strings(STRING_ACTION_OPEN_SESSION) + '?',
+        positiveText: strings(STRING_ACTION_CONFIRM),
+        negativeText: strings(STRING_ACTION_CANCEL),
+        onPositive: () => {
+          const progress = {message: strings(STRING_PROGRESS_OPENING_SESSION)}
+          dispatch(addToProgress(progress))
 
-            realm.write(() => SessionModel.create(realm, new Date(), operator, storingPlace, object, false, []))
-            dispatch(globalNavigate(realm))
+          realm.write(() => {
+            SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
+            updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
+          })
+          dispatch(globalNavigate(realm))
 
-            dispatch(removeFromProgress(progress))
-          }
-        }]
-      )
+          dispatch(removeFromProgress(progress))
+        }
+      })
+      dialog.show()
     }
   }
 }
@@ -189,6 +197,10 @@ export function openSessionDetail (session) {
   })
 }
 
+export function openSettings () {
+  return NavigationActions.navigate({routeName: SETTINGS})
+}
+
 export function deleteSessionDetail (realm) {
   return (dispatch, getState) => {
     const {appState} = getState()
@@ -198,7 +210,10 @@ export function deleteSessionDetail (realm) {
 
     const session = SessionModel.findSessionByKey(realm, sessionKey)
     if (session) {
-      dispatch(deleteSession(realm, session))
+      realm.write(() => {
+        realm.delete(session.codes)
+        realm.delete(session)
+      })
     }
   }
 }
@@ -230,23 +245,15 @@ export function closeSession (realm) {
       }
     }
 
-    Alert.alert(
-      strings(STRING_NOTIFICATION),
-      strings(STRING_ACTION_CLOSE_SESSION) + '?',
-      [{text: strings(STRING_ACTION_CANCEL)}, {
-        text: strings(STRING_ACTION_CONFIRM),
-        onPress: onConfirmed
-      }]
-    )
-  }
-}
-
-export function deleteSession (realm, session) {
-  return (dispatch, getState) => {
-    realm.write(() => {
-      realm.delete(session.codes)
-      realm.delete(session)
+    let dialog = new DialogAndroid()
+    dialog.set({
+      title: strings(STRING_NOTIFICATION),
+      content: strings(STRING_ACTION_CLOSE_SESSION) + '?',
+      positiveText: strings(STRING_ACTION_CONFIRM),
+      negativeText: strings(STRING_ACTION_CANCEL),
+      onPositive: onConfirmed
     })
+    dialog.show()
   }
 }
 

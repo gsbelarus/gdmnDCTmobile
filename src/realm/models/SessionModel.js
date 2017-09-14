@@ -28,55 +28,6 @@ export default class SessionModel {
     }
   }
 
-  static newInstance (id, time, operator, storingPlace, operation, disabled, codes) {
-    let instance = new SessionModel()
-    instance.id = id
-    instance.time = time
-    instance.operator = operator
-    instance.storingPlace = storingPlace
-    instance.operation = operation
-    instance.disabled = disabled
-    instance.codes = codes
-    return instance
-  }
-
-  static create (realm, time, operator, storingPlace, operation, disabled, codes) {
-    let max = 0
-    realm.objects(SessionModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(SessionModel.name, SessionModel.newInstance(max + 1, time, operator, storingPlace, operation,
-      disabled, codes))
-  }
-
-  static getSortedByDate (realm, reverse) {
-    return realm.objects(SessionModel.name).sorted(SessionModel.FIELD_TIME, reverse)
-  }
-
-  static getOpenedSession (realm) {
-    let sessions = SessionModel.getSortedByDate(realm, true).filtered(`${SessionModel.FIELD_DISABLED} = false`)
-    if (sessions.length) return sessions[0]
-    else return null
-  }
-
-  static findSessionByKey (realm, sessionKey) {
-    return realm.objectForPrimaryKey(SessionModel.name, sessionKey)
-  }
-
-  static findCodeByKey (session, codeKey) {
-    if (session) {
-      let collisionCode = session.codes.filtered(`${CodeModel.FIELD_ID} = '${codeKey}'`)
-      if (collisionCode.length) return collisionCode[0]
-    }
-    return null
-  }
-
-  static findCodeByName (session, codeName) {
-    if (session) {
-      let collisionCode = session.codes.filtered(`${CodeModel.FIELD_NAME} = '${codeName}'`)
-      if (collisionCode.length) return collisionCode[0]
-    }
-    return null
-  }
-
   get id () {
     return this[SessionModel.FIELD_ID]
   }
@@ -131,5 +82,46 @@ export default class SessionModel {
 
   set codes (value) {
     this[SessionModel.FIELD_CODES] = value
+  }
+
+  static newInstance (id, time, operator, storingPlace, operation, disabled, codes) {
+    let instance = new SessionModel()
+    instance.id = id
+    instance.time = time
+    instance.operator = operator
+    instance.storingPlace = storingPlace
+    instance.operation = operation
+    instance.disabled = disabled
+    instance.codes = codes
+    return instance
+  }
+
+  static create (realm, time, operator, storingPlace, operation, disabled, codes) {
+    let max = 0
+    realm.objects(SessionModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    return realm.create(SessionModel.name, SessionModel.newInstance(max + 1, time, operator, storingPlace, operation,
+      disabled, codes))
+  }
+
+  static getSortedByDate (realm, reverse) {
+    return realm.objects(SessionModel.name).sorted(SessionModel.FIELD_TIME, reverse)
+  }
+
+  static getOpenedSession (realm) {
+    let sessions = SessionModel.getSortedByDate(realm, true).filtered(`${SessionModel.FIELD_DISABLED} = false`)
+    if (sessions.length) return sessions[0]
+    else return null
+  }
+
+  static findSessionByKey (realm, sessionKey) {
+    return realm.objectForPrimaryKey(SessionModel.name, sessionKey)
+  }
+
+  static findCodeByName (session, codeName) {
+    if (session) {
+      let collisionCode = session.codes.filtered(`${CodeModel.FIELD_NAME} = '${codeName}'`)
+      if (collisionCode.length) return collisionCode[0]
+    }
+    return null
   }
 }

@@ -14,19 +14,6 @@ export default class CodeModel {
     }
   }
 
-  static newInstance (id, name) {
-    let instance = new CodeModel()
-    instance.id = id
-    instance.name = name
-    return instance
-  }
-
-  static create (realm, name) {
-    let max = 0
-    realm.objects(CodeModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(CodeModel.name, CodeModel.newInstance(max + 1, name))
-  }
-
   get id () {
     return this[CodeModel.FIELD_ID]
   }
@@ -44,5 +31,18 @@ export default class CodeModel {
       throw new Error(`Length must be less than ${CodeModel.NAME_MAX_LENGTH}`)
     }
     this[CodeModel.FIELD_NAME] = value
+  }
+
+  static newInstance (id, name) {
+    let instance = new CodeModel()
+    instance.id = id
+    instance.name = name
+    return instance
+  }
+
+  static create (realm, name) {
+    let max = 0
+    realm.objects(CodeModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    return realm.create(CodeModel.name, CodeModel.newInstance(max + 1, name))
   }
 }

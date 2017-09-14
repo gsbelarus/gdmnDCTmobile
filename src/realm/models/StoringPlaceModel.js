@@ -23,43 +23,6 @@ export default class StoringPlaceModel {
     }
   }
 
-  static newInstance (id, name, code, disabled) {
-    let instance = new StoringPlaceModel()
-    instance.id = id
-    instance.name = name
-    instance.code = code
-    instance.disabled = disabled
-    return instance
-  }
-
-  static create (realm, name, code, disabled) {
-    let max = 0
-    realm.objects(StoringPlaceModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(max + 1, name, code, disabled))
-  }
-
-  static getEnabledObjects (realm) {
-    return realm.objects(StoringPlaceModel.name)
-      .filtered(`${StoringPlaceModel.FIELD_DISABLED} = false`)
-  }
-
-  static getSortedByName (realm, reverse) {
-    return StoringPlaceModel.getEnabledObjects(realm)
-      .sorted(StoringPlaceModel.FIELD_NAME, reverse)
-  }
-
-  static search (items, search) {
-    if (!search) return items
-
-    return items.filtered(`${StoringPlaceModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
-  }
-
-  bindSearchTextField () {
-    this.searchField =
-      (this.name && this.name.toLowerCase()) +
-      (this.code && this.code.toLowerCase())
-  }
-
   get id () {
     return this[StoringPlaceModel.FIELD_ID]
   }
@@ -106,5 +69,42 @@ export default class StoringPlaceModel {
 
   set searchField (value) {
     this[StoringPlaceModel.FIELD_SEARCH_FIELD] = value
+  }
+
+  static newInstance (id, name, code, disabled) {
+    let instance = new StoringPlaceModel()
+    instance.id = id
+    instance.name = name
+    instance.code = code
+    instance.disabled = disabled
+    return instance
+  }
+
+  static create (realm, name, code, disabled) {
+    let max = 0
+    realm.objects(StoringPlaceModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    return realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(max + 1, name, code, disabled))
+  }
+
+  static getEnabledObjects (realm) {
+    return realm.objects(StoringPlaceModel.name)
+      .filtered(`${StoringPlaceModel.FIELD_DISABLED} = false`)
+  }
+
+  static getSortedByName (realm, reverse) {
+    return StoringPlaceModel.getEnabledObjects(realm)
+      .sorted(StoringPlaceModel.FIELD_NAME, reverse)
+  }
+
+  static search (items, search) {
+    if (!search) return items
+
+    return items.filtered(`${StoringPlaceModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
+  }
+
+  bindSearchTextField () {
+    this.searchField =
+      (this.name && this.name.toLowerCase()) +
+      (this.code && this.code.toLowerCase())
   }
 }

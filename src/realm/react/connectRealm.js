@@ -11,8 +11,11 @@ export default function connectRealm (mapToRealmProps = (realm, ownProps) => ({r
         reactRealmInstance: PropTypes.object
       }
 
+      state = {
+        extraData: false
+      }
+
       _realmProps = {}
-      _extraData = false
 
       constructor (props, context) {
         super(props, context)
@@ -29,53 +32,58 @@ export default function connectRealm (mapToRealmProps = (realm, ownProps) => ({r
       }
 
       _update (objects, changes) {
-        this._extraData = !this._extraData
-        this.forceUpdate()
+        this.setState({extraData: !this.state.extraData})
       }
 
-      _addListeners () {
+      _addListeners (context) {
         if (this._realmProps) {
-          for (let prop in this._realmProps) {
-            if (this._realmProps[prop].addListener) {
-              try {
-                this._realmProps[prop].addListener(this._update)
-              } catch (ignore) {}
-            }
+          if (context.reactRealmInstance) {
+            context.reactRealmInstance.addListener('change', this._update)
           }
+          // for (let prop in this._realmProps) {
+          //   if (this._realmProps[prop].addListener) {
+          //     try {
+          //       this._realmProps[prop].addListener(this._update)
+          //     } catch (ignore) {}
+          //   }
+          // }
         }
       }
 
-      _removeListeners () {
+      _removeListeners (context) {
         if (this._realmProps) {
-          for (let prop in this._realmProps) {
-            if (this._realmProps[prop].addListener) {
-              try {
-                this._realmProps[prop].removeListener(this._update)
-              } catch (ignore) {}
-            }
+          if (context.reactRealmInstance) {
+            context.reactRealmInstance.removeListener('change', this._update)
           }
+          // for (let prop in this._realmProps) {
+          //   if (this._realmProps[prop].addListener) {
+          //     try {
+          //       this._realmProps[prop].removeListener(this._update)
+          //     } catch (ignore) {}
+          //   }
+          // }
         }
       }
 
       componentWillUpdate (nextProps, nextState, nextContext) {
         if (this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) {
-          this._removeListeners()
+          this._removeListeners(this.context)
           this._initRealmProps(nextProps, nextContext)
-          this._addListeners()
+          this._addListeners(nextContext)
         }
       }
 
-      componentWillMount () {
-        this._addListeners()
+      componentDidMount () {
+        this._addListeners(this.context)
       }
 
       componentWillUnmount () {
-        this._removeListeners()
+        this._removeListeners(this.context)
       }
 
       render () {
         return (
-          <WrappedComponent {...mergeProps(this._realmProps, mapToProps(this._extraData, this.props), this.props)} />
+          <WrappedComponent {...mergeProps(this._realmProps, mapToProps(this.state.extraData, this.props), this.props)} />
         )
       }
     }

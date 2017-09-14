@@ -6,13 +6,16 @@ import strings, {
   STRING_ACTION_DELETE,
   STRING_ACTION_EXPORT,
   STRING_ACTION_IMPORT,
+  STRING_ACTION_SETTINGS,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
   STRING_TITLE_SELECT_STORING_PLACE,
   STRING_TITLE_SESSION_DETAIL,
-  STRING_TITLE_SESSIONS
+  STRING_TITLE_SESSIONS,
+  STRING_TITLE_SETTINGS
 } from '../localization/strings'
+import SettingsContainer from '../containers/SettingsContainer'
 import SessionsContainer from '../containers/SessionsContainer'
 import SessionDetailContainer from '../containers/SessionDetailContainer'
 import SelectOperatorContainer from '../containers/SelectOperatorContainer'
@@ -27,6 +30,7 @@ import HeaderStepHistory from '../components/HeaderStepHistory/index'
 
 export const SPLASH_SCREEN = 'SplashScreen'
 export const ERROR = 'Error'
+export const SETTINGS = 'Settings'
 export const SESSIONS = 'Sessions'
 export const SESSION_DETAIL = 'SessionDetail'
 export const SELECT_OPERATOR = 'SelectOperator'
@@ -58,17 +62,31 @@ export default StackNavigator({
       header: null
     })
   },
+  [SETTINGS]: {
+    screen: SettingsContainer,
+    navigationOptions: ({navigation, screenProps}) => ({
+      title: strings(STRING_TITLE_SETTINGS)
+    })
+  },
   [SESSIONS]: {
     screen: SessionsContainer,
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SESSIONS),
       headerRight: (
-        <HeaderIcon
-          iconName={'file-download'}
-          label={strings(STRING_ACTION_IMPORT)}
-          onPress={navigation.importData}
-          rippleColor={'white'}
-          iconStyle={{color: 'white'}}/>
+        <View style={{flexDirection: 'row'}}>
+          <HeaderIcon
+            iconName={'file-download'}
+            label={strings(STRING_ACTION_IMPORT)}
+            onPress={navigation.importData}
+            rippleColor={'white'}
+            iconStyle={{color: 'white'}}/>
+          <HeaderIcon
+            iconName={'settings'}
+            label={strings(STRING_ACTION_SETTINGS)}
+            onPress={navigation.openSettings}
+            rippleColor={'white'}
+            iconStyle={{color: 'white'}}/>
+        </View>
       )
     })
   },

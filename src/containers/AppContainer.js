@@ -6,14 +6,13 @@ import { ImportManager } from '../fsManager'
 import { openRealm } from '../realm/realm'
 import {
   closeSession,
-  deleteSession,
   deleteSessionDetail,
   exportData,
   goBack,
   importData,
   init,
   openCreateSession,
-  openSessionDetail,
+  openSessionDetail, openSettings,
   updateSearchFilter
 } from '../redux/actions/appActions'
 import AppNavigator from '../navigators/AppNavigator'
@@ -34,8 +33,8 @@ class App extends PureComponent {
     this._importWatcher = this._importWatcher.bind(this)
     this._exportData = this._exportData.bind(this)
     this._closeSession = this._closeSession.bind(this)
-    this._deleteSession = this._deleteSession.bind(this)
     this._deleteSessionDetail = this._deleteSessionDetail.bind(this)
+    this._openSettings = this._openSettings.bind(this)
     this._openCreateSession = this._openCreateSession.bind(this)
     this._openSessionDetail = this._openSessionDetail.bind(this)
     this._updateSearchFilter = this._updateSearchFilter.bind(this)
@@ -62,12 +61,12 @@ class App extends PureComponent {
     this.props.dispatch(closeSession(this.state.realm))
   }
 
-  _deleteSession (session) {
-    this.props.dispatch(deleteSession(this.state.realm, session))
-  }
-
   _deleteSessionDetail () {
     this.props.dispatch(deleteSessionDetail(this.state.realm))
+  }
+
+  _openSettings () {
+    this.props.dispatch(openSettings())
   }
 
   _openCreateSession (object) {
@@ -92,7 +91,7 @@ class App extends PureComponent {
   }
 
   componentWillUnmount () {
-    if (this.state.realm) this.state.realm.close()
+    // if (this.state.realm) this.state.realm.close()
 
     BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
     ImportManager.unwatch(this._importWatcher)
@@ -110,8 +109,8 @@ class App extends PureComponent {
                 state,
                 exportData: this._exportData,
                 closeSession: this._closeSession,
-                deleteSession: this._deleteSession,
                 deleteSessionDetail: this._deleteSessionDetail,
+                openSettings: this._openSettings,
                 openCreateSession: this._openCreateSession,
                 openSessionDetail: this._openSessionDetail,
                 updateSearchFilter: this._updateSearchFilter

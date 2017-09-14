@@ -17,6 +17,8 @@
     "react-native-action-button": "^2.8.0",
     "react-native-android-fs-watcher": "file:react-native-android-fs-watcher",
     "react-native-android-scanner": "file:react-native-android-scanner",
+    "react-native-device-info": "^0.11.0",
+    "react-native-dialogs": "0.0.19",
     "react-native-fs": "^2.5.1",
     "react-native-i18n": "^2.0.6",
     "react-native-snackbar": "^0.4.1",
