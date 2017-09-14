@@ -68,7 +68,7 @@ export default () => ({
   [STRING_SETTINGS_COUNT_SESSION_PRIMARY]: 'Размер хранилища сессий',
   [STRING_SETTINGS_COUNT_SESSION_SECONDARY]: 'Максимальное количество сессий для хранения: {{count}}',
   [STRING_SETTINGS_COUNT_SESSION_HINT]: 'Введите количество...',
-  [STRING_SETTINGS_COUNT_SESSION_DESCRIPTION]: 'Максимальное количество сессий для хранения. Старые сессии удаляются',
+  [STRING_SETTINGS_COUNT_SESSION_DESCRIPTION]: 'Максимальное количество сессий для хранения (0 = ∞). Старые сессии удаляются',
   [STRING_SETTINGS_COUNT_SESSION_OVERFLOW]: 'Количество сессий превышает размер хранилища. Удалить старые сессии?',
   [STRING_SETTINGS_ABOUT]: 'О приложении',
   [STRING_SETTINGS_ABOUT_CONTENT]: 'Version code: {{versionCode}}\n\nCopyright \u00a9 2017 by Golden Software of Belarus, Ltd\nAll rights reserved.',

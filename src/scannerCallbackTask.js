@@ -1,5 +1,5 @@
 import ScannerApi from 'react-native-android-scanner'
-import {openRealm} from './realm/realm'
+import { openRealm } from './realm/realm'
 import CodeModel from './realm/models/CodeModel'
 import SessionModel from './realm/models/SessionModel'
 
