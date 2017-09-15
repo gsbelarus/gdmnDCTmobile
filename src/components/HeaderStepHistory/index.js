@@ -65,6 +65,7 @@ export default class HeaderStepHistory extends Component {
     return (
       <FlatList
         horizontal={true}
+        showsHorizontalScrollIndicator={false}
         keyExtractor={keyExtractor}
         data={steps}
         renderItem={this._renderItem}
