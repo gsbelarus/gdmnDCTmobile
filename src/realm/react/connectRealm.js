@@ -40,13 +40,6 @@ export default function connectRealm (mapToRealmProps = (realm, ownProps) => ({r
           if (context.reactRealmInstance) {
             context.reactRealmInstance.addListener('change', this._update)
           }
-          // for (let prop in this._realmProps) {
-          //   if (this._realmProps[prop].addListener) {
-          //     try {
-          //       this._realmProps[prop].addListener(this._update)
-          //     } catch (ignore) {}
-          //   }
-          // }
         }
       }
 
@@ -55,13 +48,6 @@ export default function connectRealm (mapToRealmProps = (realm, ownProps) => ({r
           if (context.reactRealmInstance) {
             context.reactRealmInstance.removeListener('change', this._update)
           }
-          // for (let prop in this._realmProps) {
-          //   if (this._realmProps[prop].addListener) {
-          //     try {
-          //       this._realmProps[prop].removeListener(this._update)
-          //     } catch (ignore) {}
-          //   }
-          // }
         }
       }
 

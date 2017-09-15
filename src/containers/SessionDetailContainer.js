@@ -15,4 +15,9 @@ export default connectRealm(
     )
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})
-)(List)
+)((props) => {
+  return <List
+    {...props}
+    {...props.items.isValid() ? {} : {items: []}}
+    />
+})
