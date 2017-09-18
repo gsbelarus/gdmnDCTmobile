@@ -85,9 +85,11 @@ function showInputDialog (realm, code) {
       allowEmptyInput: false,
       type: 2,
       callback: (input) => {
+        if (code && input === code.name) return
+
         const session = SessionModel.getOpenedSession(realm)
         if (SessionModel.findCodeByName(session, input)) {
-          setTimeout(() => Snackbar.show({    //TODO hack
+          setTimeout(() => Snackbar.show({    //TODO workaround
             title: strings(STRING_ERROR_REPEAT_CODE),
             duration: Snackbar.LENGTH_LONG,
             action: {
@@ -95,7 +97,7 @@ function showInputDialog (realm, code) {
               color: 'red',
               onPress: Snackbar.dismiss,
             }
-          }), 500)
+          }), 0)
         } else if (code) {
           realm.write(() => code.name = input)
         } else {

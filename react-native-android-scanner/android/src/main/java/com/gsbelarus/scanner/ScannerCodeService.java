@@ -2,11 +2,13 @@ package com.gsbelarus.scanner;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -128,11 +130,18 @@ public class ScannerCodeService extends Service {
         int appNameId = getResources().getIdentifier("app_name", "string", getPackageName());
         int appLauncherIconId = getResources().getIdentifier("ic_launcher", "mipmap", getPackageName());
 
+        PackageManager packageManager = getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         return new NotificationCompat.Builder(this)
                 .setContentTitle(getString(appNameId))
                 .setContentText(config.getNotificationText())
                 .setSmallIcon(appLauncherIconId)
                 .setColor(Color.parseColor(config.getNotificationColor()))
+                .setContentIntent(pendingIntent)
                 .build();
     }
 

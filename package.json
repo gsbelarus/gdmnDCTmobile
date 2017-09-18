@@ -22,7 +22,7 @@
     "react-native-fs": "^2.5.1",
     "react-native-i18n": "^2.0.6",
     "react-native-snackbar": "^0.4.1",
-    "react-native-vector-icons": "^4.3.0",
+    "react-native-vector-icons": "^4.4.0",
     "react-navigation": "^1.0.0-beta.12",
     "react-redux": "^5.0.6",
     "realm": "^1.11.1",

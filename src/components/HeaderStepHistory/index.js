@@ -7,6 +7,7 @@ import styles from './styles'
 export default class HeaderStepHistory extends Component {
 
   static propTypes = {
+    extra: PropTypes.any,
     steps: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
       disabled: PropTypes.bool,
@@ -15,6 +16,7 @@ export default class HeaderStepHistory extends Component {
     })),
     separatorIconName: PropTypes.string,
     tintColor: PropTypes.string,
+    onStepPress: PropTypes.func,
     keyExtractor: PropTypes.func,
   }
 
@@ -22,14 +24,31 @@ export default class HeaderStepHistory extends Component {
     steps: [],
     tintColor: 'black',
     separatorIconName: 'keyboard-arrow-right',
+    onStepPress: () => {},
     keyExtractor: (item, index) => index
   }
+
+  list = null
 
   constructor () {
     super()
 
+    this._setListRef = this._setListRef.bind(this)
     this._renderSeparator = this._renderSeparator.bind(this)
     this._renderItem = this._renderItem.bind(this)
+  }
+
+  _setListRef (list) {
+    this.list = list
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    setTimeout(() => {      //TODO workaround
+      if (this.list && (
+          this.props.steps !== prevProps.steps || this.props.extra !== prevProps.extra)) {
+        this.list.scrollToEnd()
+      }
+    }, 500)
   }
 
   _renderSeparator () {
@@ -48,7 +67,8 @@ export default class HeaderStepHistory extends Component {
       <TouchableNativeFeedback
         delayPressIn={0}
         background={Platform.Version > 21 ? TouchableNativeFeedback.Ripple(tintColor, false) : TouchableNativeFeedback.SelectableBackground()}
-        disabled={disabled}>
+        disabled={disabled}
+        onPress={() => this.props.onStepPress(item, index)}>
         <View style={{flexDirection: 'row'}}>
           <Text style={[styles.label, {color: tintColor}, style]}>
             {label}
@@ -60,10 +80,12 @@ export default class HeaderStepHistory extends Component {
   }
 
   render () {
-    const {steps, keyExtractor} = this.props
+    const {steps, keyExtractor, extra} = this.props
 
     return (
       <FlatList
+        ref={this._setListRef}
+        extra={extra}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={keyExtractor}

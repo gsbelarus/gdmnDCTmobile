@@ -13,6 +13,7 @@ import strings, {
   STRING_ERROR_EXPORT_DATA,
   STRING_ERROR_IMPORT_DATA,
   STRING_NOTIFICATION,
+  STRING_NOTIFICATION_SCANNING,
   STRING_PROGRESS_CLOSING_SESSION,
   STRING_PROGRESS_EXPORT_DATA,
   STRING_PROGRESS_IMPORT_DATA,
@@ -172,11 +173,17 @@ export function openCreateSession (realm, object) {
           const progress = {message: strings(STRING_PROGRESS_OPENING_SESSION)}
           dispatch(addToProgress(progress))
 
-          realm.write(() => {
-            SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
-            updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
-          })
-          dispatch(globalNavigate(realm))
+          try {
+            if (!SessionModel.getOpenedSession(realm)) {
+              realm.write(() => {
+                SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
+                updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
+              })
+            }
+            dispatch(globalNavigate(realm))
+          } catch (error) {
+            console.warn(error)
+          }
 
           dispatch(removeFromProgress(progress))
         }
@@ -277,7 +284,7 @@ function globalNavigate (realm) {
     let session = SessionModel.getOpenedSession(realm)
 
     if (session) {
-      await ScannerApi.start()
+      await ScannerApi.start({notificationText: strings(STRING_NOTIFICATION_SCANNING)})
       dispatch(NavigationActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({

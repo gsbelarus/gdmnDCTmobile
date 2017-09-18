@@ -15,6 +15,7 @@ export const STRING_ACTION_EXPORT = 'actionExport'
 export const STRING_ACTION_SEARCH = 'actionSearch'
 export const STRING_ACTION_SETTINGS = 'actionSettings'
 
+export const STRING_NOTIFICATION_SCANNING = 'notificationScanning'
 export const STRING_EMPTY_DATA = 'emptyData'
 export const STRING_NOTIFICATION = 'notification'
 export const STRING_CODE_CREATING = 'creating'

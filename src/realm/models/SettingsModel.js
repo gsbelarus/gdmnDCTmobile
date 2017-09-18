@@ -46,7 +46,6 @@ export default class SettingsModel {
   static getSettings (realm) {
     let settings = realm.objectForPrimaryKey(SettingsModel.name, SettingsModel.DEFAULT_ID)
     if (!settings) {
-      console.log(realm.isInTransaction)
       if (realm.isInTransaction) {
         SettingsModel.init(realm)
       } else {

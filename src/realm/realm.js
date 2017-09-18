@@ -13,7 +13,7 @@ export async function openRealm () {
   if (!realm) {
     realm = await Realm.open({
       schema: [SettingModel, SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
-      schemaVersion: 22,
+      schemaVersion: 100,
       shouldCompactOnLaunch: (totalBytes, usedBytes) => true
     })
 

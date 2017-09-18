@@ -20,9 +20,9 @@ export default class SessionModel {
     properties: {
       [SessionModel.FIELD_ID]: {type: 'int'},
       [SessionModel.FIELD_TIME]: {type: 'date'},
-      [SessionModel.FIELD_OPERATOR]: {type: OperatorModel.name, optional: true},
-      [SessionModel.FIELD_STORING_PLACE]: {type: StoringPlaceModel.name, optional: true},
-      [SessionModel.FIELD_OPERATION]: {type: OperationModel.name, optional: true},
+      [SessionModel.FIELD_OPERATOR]: {type: OperatorModel.name},
+      [SessionModel.FIELD_STORING_PLACE]: {type: StoringPlaceModel.name},
+      [SessionModel.FIELD_OPERATION]: {type: OperationModel.name},
       [SessionModel.FIELD_DISABLED]: {type: 'bool'},
       [SessionModel.FIELD_CODES]: {type: 'list', objectType: CodeModel.name}
     }
