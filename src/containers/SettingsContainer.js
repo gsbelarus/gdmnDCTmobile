@@ -24,7 +24,7 @@ export default connectRealm(
   (realm, ownProps) => ({
     setting: SettingModel.getSettings(realm),
     updateMaxCountSession: (maxCountSession) => {
-      if (maxCountSession !== 0 && SessionModel.getSortedByDate(realm).length > maxCountSession) {
+      if (maxCountSession > 0 && SessionModel.getSortedByDate(realm).length > maxCountSession) {
         let dialog = new DialogAndroid()
         dialog.set({
           title: strings(STRING_NOTIFICATION),

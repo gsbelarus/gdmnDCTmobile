@@ -24,10 +24,12 @@ export default class SettingsModel {
   }
 
   get maxCountSession () {
+    if (this[SettingsModel.FIELD_MAX_COUNT_SESSION] < 0) return 0
     return this[SettingsModel.FIELD_MAX_COUNT_SESSION]
   }
 
   set maxCountSession (value) {
+    if (value < 0) value = 0
     this[SettingsModel.FIELD_MAX_COUNT_SESSION] = value
   }
 
