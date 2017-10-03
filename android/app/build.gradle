@@ -138,12 +138,12 @@ repositories {
 
 dependencies {
     compile project(':realm')
-    compile project(':react-native-dialogs')
-    compile project(':react-native-device-info')
     compile project(':react-native-vector-icons')
     compile project(':react-native-snackbar')
     compile project(':react-native-i18n')
     compile project(':react-native-fs')
+    compile project(':react-native-dialogs')
+    compile project(':react-native-device-info')
     compile project(':react-native-android-scanner')
     compile project(':react-native-android-fs-watcher')
     compile fileTree(dir: "libs", include: ["*.jar"])

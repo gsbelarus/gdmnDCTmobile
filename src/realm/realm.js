@@ -4,8 +4,8 @@ import OperatorModel from './models/OperatorModel'
 import StoringPlaceModel from './models/StoringPlaceModel'
 import OperationModel from './models/OperationModel'
 import CodeModel from './models/CodeModel'
-import createDemoData from './utils'
 import SettingModel from './models/SettingsModel'
+import createDemoData from './utils'
 
 let realm
 

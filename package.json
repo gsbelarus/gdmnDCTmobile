@@ -11,19 +11,19 @@
   },
   "dependencies": {
     "moment": "^2.18.1",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0-rc.3",
-    "react-native": "^0.48.3",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-native": "^0.48.4",
     "react-native-action-button": "^2.8.0",
     "react-native-android-fs-watcher": "file:react-native-android-fs-watcher",
     "react-native-android-scanner": "file:react-native-android-scanner",
     "react-native-device-info": "^0.11.0",
-    "react-native-dialogs": "0.0.19",
-    "react-native-fs": "^2.5.1",
+    "react-native-dialogs": "^0.0.20",
+    "react-native-fs": "^2.5.2",
     "react-native-i18n": "^2.0.6",
-    "react-native-snackbar": "^0.4.1",
+    "react-native-snackbar": "^0.4.2",
     "react-native-vector-icons": "^4.4.0",
-    "react-navigation": "^1.0.0-beta.12",
+    "react-navigation": "^1.0.0-beta.13",
     "react-redux": "^5.0.6",
     "realm": "^1.11.1",
     "redux": "^3.7.2",
@@ -31,10 +31,10 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "babel-jest": "^21.0.2",
+    "babel-jest": "^21.2.0",
     "babel-preset-react-native": "^4.0.0",
-    "jest": "^21.1.0",
-    "react-test-renderer": "^16.0.0-rc.3"
+    "jest": "^21.2.1",
+    "react-test-renderer": "^16.0.0"
   },
   "jest": {
     "preset": "react-native"
