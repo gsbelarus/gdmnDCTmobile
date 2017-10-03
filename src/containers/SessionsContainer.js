@@ -14,7 +14,7 @@ export default connectRealm(
         primaryText={`${item.operator.name} / ${item.operation.name} / ${item.storingPlace.name}`}
         secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm')}
         iconRightName={'clear'}
-        onItemPress={() => ownProps.navigation.openSessionDetail(item)}
+        onItemPress={() => ownProps.openSessionDetail(item)}
         onItemIconRightPress={() => {
           realm.write(() => {
             realm.delete(item.codes)
@@ -23,7 +23,7 @@ export default connectRealm(
         }}/>
     ),
     actionVisible: true,
-    onActionPress: ownProps.navigation.openCreateSession
+    onActionPress: () => ownProps.openCreateSession(realm)
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})
 )(List)

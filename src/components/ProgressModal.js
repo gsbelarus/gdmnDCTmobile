@@ -20,7 +20,7 @@ export default class ProgressModal extends PureComponent {
   }
 
   constructor (props, context) {
-    super()
+    super(props, context)
 
     this._onBackPress = this._onBackPress.bind(this)
   }
@@ -41,22 +41,23 @@ export default class ProgressModal extends PureComponent {
     BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
   }
 
-  componentWillUpdate (nextProps, nextState) {
+  componentWillUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 
   render () {
-    return this.props.visible ? (
-      <View style={{
-        ...StyleSheet.absoluteFillObject
-      }}>
-        <SplashScreen
-          progressColor={this.props.progressColor}
-          label={this.props.label}
-          progressStyle={this.props.progressStyle}
-          labelStyle={this.props.labelStyle}
-          style={this.props.style}/>
-      </View>
-    ) : null
+    return this.props.visible
+      ? (
+        <View style={{
+          ...StyleSheet.absoluteFillObject
+        }}>
+          <SplashScreen
+            progressColor={this.props.progressColor}
+            label={this.props.label}
+            progressStyle={this.props.progressStyle}
+            labelStyle={this.props.labelStyle}
+            style={this.props.style}/>
+        </View>
+      ) : null
   }
 }

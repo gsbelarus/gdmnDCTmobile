@@ -15,6 +15,15 @@ import strings, {
   STRING_TITLE_SESSIONS,
   STRING_TITLE_SETTINGS
 } from '../localization/strings'
+import {
+  closeSession,
+  deleteSessionDetail,
+  exportData,
+  importData,
+  openCreateSession,
+  openSessionDetail,
+  openSettings
+} from '../redux/actions/appActions'
 import SettingsContainer from '../containers/SettingsContainer'
 import SessionsContainer from '../containers/SessionsContainer'
 import SessionDetailContainer from '../containers/SessionDetailContainer'
@@ -40,7 +49,7 @@ export const SCANNER = 'Scanner'
 
 export default StackNavigator({
   [SPLASH_SCREEN]: {
-    screen: () => (
+    screen: ({navigation}) => (
       <SplashScreen
         label={require('../../app.json').displayName}
         progressColor={'white'}
@@ -51,10 +60,10 @@ export default StackNavigator({
     })
   },
   [ERROR]: {
-    screen: (props) => (
+    screen: ({navigation}) => (
       <EmptyView
-        text={props.navigation.state.params.message}
-        icon={props.navigation.state.params.icon}
+        text={navigation.state.params.message}
+        icon={navigation.state.params.icon}
         textStyle={{color: 'white'}}
         style={{backgroundColor: 'red'}}/>
     ),
@@ -69,7 +78,17 @@ export default StackNavigator({
     })
   },
   [SESSIONS]: {
-    screen: SessionsContainer,
+    screen: ({navigation}) => (
+      <SessionsContainer
+        openCreateSession={(realm) => navigation.dispatch(openCreateSession(realm))}
+        openSessionDetail={(session) =>
+          navigation.dispatch(openSessionDetail({
+            sessionKey: session.id,
+            sessionOperatorName: session.operator.name,
+            sessionOperationName: session.operation.name,
+            sessionStoringPlaceName: session.storingPlace.name
+          }))}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SESSIONS),
       headerRight: (
@@ -77,13 +96,13 @@ export default StackNavigator({
           <HeaderIcon
             iconName={'file-download'}
             label={strings(STRING_ACTION_IMPORT)}
-            onPress={navigation.importData}
+            onPress={() => navigation.dispatch(importData(navigation.realm))}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
           <HeaderIcon
             iconName={'settings'}
             label={strings(STRING_ACTION_SETTINGS)}
-            onPress={navigation.openSettings}
+            onPress={() => navigation.dispatch(openSettings())}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
         </View>
@@ -99,13 +118,13 @@ export default StackNavigator({
           <HeaderIcon
             iconName={'file-upload'}
             label={strings(STRING_ACTION_EXPORT)}
-            onPress={navigation.exportData}
+            onPress={() => navigation.dispatch(exportData(navigation.realm, navigation.state.params.sessionKey))}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
           <HeaderIcon
             iconName={'clear'}
             label={strings(STRING_ACTION_DELETE)}
-            onPress={navigation.deleteSessionDetail}
+            onPress={() => navigation.dispatch(deleteSessionDetail(navigation.realm, navigation.state.params.sessionKey))}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
         </View>
@@ -128,34 +147,49 @@ export default StackNavigator({
     })
   },
   [SELECT_OPERATOR]: {
-    screen: SelectOperatorContainer,
+    screen: ({navigation}) => (
+      <SelectOperatorContainer
+        openCreateSession={(realm, operator) => navigation.dispatch(openCreateSession(realm, operator))}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SELECT_OPERATOR)
     })
   },
   [SELECT_STORING_PLACE]: {
-    screen: SelectStoringPlaceContainer,
+    screen: ({navigation}) => (
+      <SelectStoringPlaceContainer
+        search={navigation.state.params && navigation.state.params.search}
+        openCreateSession={(realm, storingPlace) => navigation.dispatch(openCreateSession(realm, storingPlace))}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SELECT_STORING_PLACE),
       header: (props) => {
         return (
           <View style={props.getScreenDetails(props.scene).options.headerStyle}>
             <Header {...props}/>
-            <HeaderSearchBar onChangeText={navigation.updateSearchFilter}/>
+            <HeaderSearchBar
+              value={navigation.state.params && navigation.state.params.search}
+              onChangeText={(search) => navigation.setParams({search})}/>
           </View>
         )
       }
     })
   },
   [SELECT_OPERATION]: {
-    screen: SelectOperationContainer,
+    screen: ({navigation}) => (
+      <SelectOperationContainer
+        search={navigation.state.params && navigation.state.params.search}
+        openCreateSession={(realm, operation) => navigation.dispatch(openCreateSession(realm, operation))}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SELECT_OPERATION),
       header: (props) => {
         return (
           <View style={props.getScreenDetails(props.scene).options.headerStyle}>
             <Header {...props}/>
-            <HeaderSearchBar onChangeText={navigation.updateSearchFilter}/>
+            <HeaderSearchBar
+              value={navigation.state.params && navigation.state.params.search}
+              onChangeText={(search) => navigation.setParams({search})}/>
           </View>
         )
       }
@@ -169,7 +203,7 @@ export default StackNavigator({
         <HeaderIcon
           iconName={'highlight-off'}
           label={strings(STRING_ACTION_CLOSE_SESSION)}
-          onPress={navigation.closeSession}
+          onPress={() => navigation.dispatch(closeSession(navigation.realm))}
           rippleColor={'white'}
           iconStyle={{color: 'red'}}/>
       ),

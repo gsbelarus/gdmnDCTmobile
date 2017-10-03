@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Vibration, Platform, Text, ToastAndroid, TouchableNativeFeedback, View } from 'react-native'
+import { Text, ToastAndroid, Vibration, View } from 'react-native'
+import TouchableView from '../TouchableView'
 import styles from './styles'
 
 export default class HeaderIcon extends Component {
@@ -23,32 +24,28 @@ export default class HeaderIcon extends Component {
     rippleColor: 'black'
   }
 
-  constructor () {
-    super()
+  constructor (props, context) {
+    super(props, context)
 
     this._onLongPress = this._onLongPress.bind(this)
   }
 
   _onLongPress () {
-    const {label} = this.props
-
     Vibration.vibrate(50)
-    ToastAndroid.show(label, ToastAndroid.LONG)
+    ToastAndroid.show(this.props.label, ToastAndroid.LONG)
   }
 
   render () {
-    const {iconName, rippleColor, iconStyle, style, onPress} = this.props
-
     return (
-      <TouchableNativeFeedback
+      <TouchableView
         delayPressIn={0}
-        background={Platform.Version > 21 ? TouchableNativeFeedback.Ripple(rippleColor, true) : TouchableNativeFeedback.SelectableBackground()}
-        onPress={onPress}
-        onLongPress={this._onLongPress}>
-        <View style={style}>
-          <Icon name={iconName} style={[styles.icon, iconStyle]}/>
-        </View>
-      </TouchableNativeFeedback>
+        borderless={true}
+        rippleColor={this.props.rippleColor}
+        onPress={this.props.onPress}
+        onLongPress={this._onLongPress}
+        style={this.props.style}>
+        <Icon name={this.props.iconName} style={[styles.icon, this.props.iconStyle]}/>
+      </TouchableView>
     )
   }
 }

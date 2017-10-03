@@ -26,25 +26,7 @@ export default class HeaderSearchBar extends PureComponent {
     tint: 'black'
   }
 
-  state = {
-    text: null
-  }
-
-  constructor () {
-    super()
-
-    this._onChangeText = this._onChangeText.bind(this)
-  }
-
-  _onChangeText (text) {
-    this.setState({text})
-    this.props.onChangeText(text)
-  }
-
-  componentWillUpdate (nextProps, nextContext) {
-    if (this.props.value !== nextProps.value) {
-      this._onChangeText(nextProps.value)
-    }
+  componentWillUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 
@@ -54,19 +36,19 @@ export default class HeaderSearchBar extends PureComponent {
         <TextInput
           underlineColorAndroid={'transparent'}
           returnKeyType={'search'}
-          value={this.state.text}
+          value={this.props.value}
           autoFocus={this.props.autoFocus}
-          onChangeText={this._onChangeText}
+          onChangeText={this.props.onChangeText}
           placeholder={this.props.placeholder}
           placeholderTextColor={this.props.placeholderTextColor}
           selectionColor={this.props.selectionColor}
           style={[styles.textInput, {color: this.props.tint}]}/>
         {
-          this.state.text
+          this.props.value
             ? <HeaderIcon
               iconName={'clear'}
               label={strings(STRING_ACTION_SEARCH)}
-              onPress={() => this._onChangeText('')}/>
+              onPress={() => this.props.onChangeText('')}/>
             : null
         }
       </View>

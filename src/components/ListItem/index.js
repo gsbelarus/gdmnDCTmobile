@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { LayoutAnimation, Platform, Text, TouchableNativeFeedback, Vibration, View } from 'react-native'
+import { LayoutAnimation, Text, Vibration, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import TouchableView from '../TouchableView'
 import styles from './styles'
 
 export default class ListItem extends PureComponent {
@@ -31,8 +32,8 @@ export default class ListItem extends PureComponent {
     itemDisabledColor: 'transparent'
   }
 
-  constructor () {
-    super()
+  constructor (props, context) {
+    super(props, context)
 
     this._onItemPress = this._onItemPress.bind(this)
     this._onItemLongPress = this._onItemLongPress.bind(this)
@@ -44,80 +45,60 @@ export default class ListItem extends PureComponent {
   }
 
   _onItemPress () {
-    const {id, onItemPress} = this.props
-
-    onItemPress(id)
+    this.props.onItemPress(this.props.id)
   }
 
   _onItemLongPress () {
-    const {id, onItemLongPress} = this.props
-
-    if (onItemLongPress) {
+    if (this.props.onItemLongPress) {
       Vibration.vibrate(50)
-      onItemLongPress(id)
+      this.props.onItemLongPress(this.props.id)
     }
   }
 
   _onItemIconRightPress () {
-    const {id, onItemIconRightPress} = this.props
-
-    onItemIconRightPress(id)
-  }
-
-  _renderPrimaryText () {
-    const {primaryText, primaryTextStyle} = this.props
-
-    if (primaryText) {
-      return <Text style={[styles.itemPrimaryText, primaryTextStyle]}>{primaryText}</Text>
-    }
-    return null
-  }
-
-  _renderSecondaryText () {
-    const {secondaryText, secondaryTextStyle} = this.props
-
-    if (secondaryText) {
-      return <Text style={[styles.itemSecondaryText, secondaryTextStyle]}>{secondaryText}</Text>
-    }
-    return null
-  }
-
-  _renderIconRight () {
-    const {primaryText, secondaryText, iconRightName, iconRightStyle} = this.props
-
-    if (iconRightName) {
-      return (
-        <View style={primaryText && secondaryText ? {marginTop: 8} : null}>
-          <TouchableNativeFeedback
-            delayPressIn={0}
-            onPress={this._onItemIconRightPress}
-            background={Platform.Version > 21 ? TouchableNativeFeedback.SelectableBackgroundBorderless() : TouchableNativeFeedback.SelectableBackground()}>
-            <View><Icon name={iconRightName} style={[styles.itemIconRight, iconRightStyle]}/></View>
-          </TouchableNativeFeedback>
-        </View>
-      )
-    }
-    return null
+    this.props.onItemIconRightPress(this.props.id)
   }
 
   render () {
-    const {iconRightName, itemDisabled, itemDisabledColor, style} = this.props
-
     return (
-      <TouchableNativeFeedback
+      <TouchableView
         delayPressIn={0}
-        disabled={itemDisabled}
+        disabled={this.props.itemDisabled}
         onPress={this._onItemPress}
-        onLongPress={this._onItemLongPress}
-        background={TouchableNativeFeedback.SelectableBackground()}>
-        <View style={[styles.itemContainer, style, itemDisabled ? {backgroundColor: itemDisabledColor} : null]}>
-          <View style={[styles.itemTextContainer, iconRightName ? {minHeight: 24} : null]}>
-            {this._renderPrimaryText()}
-            {this._renderSecondaryText()}
+        onLongPress={this._onItemLongPress}>
+        <View
+          style={[
+            styles.itemContainer,
+            this.props.style,
+            this.props.itemDisabled ? {backgroundColor: this.props.itemDisabledColor} : null
+          ]}>
+          <View style={[styles.itemTextContainer, this.props.iconRightName ? {minHeight: 24} : null]}>
+            {this.props.primaryText
+              ? (
+                <Text style={[styles.itemPrimaryText, this.props.primaryTextStyle]}>
+                  {this.props.primaryText}
+                </Text>
+              ) : null}
+            {this.props.secondaryText
+              ? (
+                <Text style={[styles.itemSecondaryText, this.props.secondaryTextStyle]}>
+                  {this.props.secondaryText}
+                </Text>
+              ) : null}
           </View>
-          {this._renderIconRight()}
+          {this.props.iconRightName
+            ? (
+              <View style={this.props.primaryText && this.props.secondaryText ? {marginTop: 8} : null}>
+                <TouchableView
+                  delayPressIn={0}
+                  borderless={true}
+                  onPress={this._onItemIconRightPress}>
+                  <Icon name={this.props.iconRightName} style={[styles.itemIconRight, this.props.iconRightStyle]}/>
+                </TouchableView>
+              </View>
+            ) : null}
         </View>
-      </TouchableNativeFeedback>
+      </TouchableView>
     )
   }
 }

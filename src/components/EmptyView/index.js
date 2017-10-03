@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Text, View } from 'react-native'
-import styles from './styles'
 import strings, { STRING_EMPTY_DATA } from '../../localization/strings'
+import styles from './styles'
 
 export default class EmptyView extends PureComponent {
 

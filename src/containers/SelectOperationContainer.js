@@ -12,7 +12,7 @@ export default connectRealm(
         id={item.id}
         primaryText={item.name}
         secondaryText={item.code}
-        onItemPress={() => ownProps.navigation.openCreateSession(item)}/>
+        onItemPress={() => ownProps.openCreateSession(realm, item)}/>
     )
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData, keyboardShouldPersistTaps: 'handled'}),
@@ -20,8 +20,7 @@ export default connectRealm(
     return {
       ...mapRealmProps,
       ...mapProps,
-      items: OperationModel.search(mapRealmProps.allItems,
-        ownProps.navigation.state.params && ownProps.navigation.state.params.search)
+      items: OperationModel.search(mapRealmProps.allItems, ownProps.search)
     }
   }
 )(List)

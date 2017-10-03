@@ -16,7 +16,12 @@ export default class SplashScreen extends PureComponent {
   render () {
     return (
       <View style={[styles.container, this.props.style]}>
-        {this.props.label ? <Text style={[styles.primaryText, this.props.labelStyle]}>{this.props.label}</Text> : null}
+        {this.props.label
+          ? (
+            <Text style={[styles.primaryText, this.props.labelStyle]}>
+              {this.props.label}
+            </Text>
+          ) : null}
         <ActivityIndicator
           animating={true}
           style={styles.progress}

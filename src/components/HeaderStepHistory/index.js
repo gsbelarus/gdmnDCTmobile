@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { FlatList, Platform, Text, TouchableNativeFeedback, View } from 'react-native'
+import { FlatList, Text } from 'react-native'
+import TouchableView from '../TouchableView'
 import styles from './styles'
 
 export default class HeaderStepHistory extends Component {
@@ -30,8 +31,8 @@ export default class HeaderStepHistory extends Component {
 
   list = null
 
-  constructor () {
-    super()
+  constructor (props, context) {
+    super(props, context)
 
     this._setListRef = this._setListRef.bind(this)
     this._renderSeparator = this._renderSeparator.bind(this)
@@ -52,44 +53,36 @@ export default class HeaderStepHistory extends Component {
   }
 
   _renderSeparator () {
-    const {separatorIconName, tintColor} = this.props
-
     return (
-      <Icon name={separatorIconName} style={[styles.separatorIcon, {color: tintColor}]}/>
+      <Icon name={this.props.separatorIconName} style={[styles.separatorIcon, {color: this.props.tintColor}]}/>
     )
   }
 
   _renderItem ({item, index}) {
-    const {tintColor} = this.props
-    const {label, disabled, style} = item
-
     return (
-      <TouchableNativeFeedback
+      <TouchableView
         delayPressIn={0}
-        background={Platform.Version > 21 ? TouchableNativeFeedback.Ripple(tintColor, false) : TouchableNativeFeedback.SelectableBackground()}
-        disabled={disabled}
-        onPress={() => this.props.onStepPress(item, index)}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={[styles.label, {color: tintColor}, style]}>
-            {label}
-          </Text>
-          {index < this.props.steps.length - 1 ? this._renderSeparator() : null}
-        </View>
-      </TouchableNativeFeedback>
+        disabled={item.disabled}
+        rippleColor={this.props.tintColor}
+        onPress={() => this.props.onStepPress(item, index)}
+        style={{flexDirection: 'row'}}>
+        <Text style={[styles.label, {color: this.props.tintColor}, item.style]}>
+          {item.label}
+        </Text>
+        {index < this.props.steps.length - 1 ? this._renderSeparator() : null}
+      </TouchableView>
     )
   }
 
   render () {
-    const {steps, keyExtractor, extra} = this.props
-
     return (
       <FlatList
         ref={this._setListRef}
-        extra={extra}
+        extra={this.props.extra}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={keyExtractor}
-        data={steps}
+        keyExtractor={this.props.keyExtractor}
+        data={this.props.steps}
         renderItem={this._renderItem}
         // ItemSeparatorComponent={this._renderSeparator}
       />

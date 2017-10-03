@@ -37,11 +37,14 @@ export default class List extends PureComponent {
     height: 0
   }
 
-  constructor () {
-    super()
+  constructor (props, context) {
+    super(props, context)
 
     this._onLayout = this._onLayout.bind(this)
-    this._renderSeparator = this._renderSeparator.bind(this)
+  }
+
+  static _renderSeparator () {
+    return <View style={styles.separator}/>
   }
 
   _onLayout (event) {
@@ -53,13 +56,7 @@ export default class List extends PureComponent {
     LayoutAnimation.easeInEaseOut()
   }
 
-  _renderSeparator () {
-    return <View style={styles.separator}/>
-  }
-
   render () {
-    const {separator} = this.props
-
     return (
       <View style={[styles.container, this.props.style]}>
         <FlatList
@@ -69,22 +66,24 @@ export default class List extends PureComponent {
           data={this.props.items}
           renderItem={this.props.renderItem}
           keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
-          ItemSeparatorComponent={separator ? separator : this._renderSeparator}
+          ItemSeparatorComponent={this.props.separator ? this.props.separator : List._renderSeparator}
           ListEmptyComponent={
-            <EmptyView style={{
-              width: this.state.width,
-              height: this.state.height
-            }}/>
+            <EmptyView
+              style={{
+                width: this.state.width,
+                height: this.state.height
+              }}/>
           }
           contentContainerStyle={[styles.content, this.props.items.length ? null : {paddingVertical: 0}]}/>
-        {this.props.actionVisible ? (
-          <ActionButton
-            icon={this.props.actionIcon}
-            fixNativeFeedbackRadius={true}
-            nativeFeedbackRippleColor={this.props.actionRippleColor}
-            buttonColor={this.props.actionColor}
-            onPress={this.props.onActionPress}/>
-        ) : null}
+        {this.props.actionVisible
+          ? (
+            <ActionButton
+              icon={this.props.actionIcon}
+              fixNativeFeedbackRadius={true}
+              nativeFeedbackRippleColor={this.props.actionRippleColor}
+              buttonColor={this.props.actionColor}
+              onPress={this.props.onActionPress}/>
+          ) : null}
       </View>
     )
   }

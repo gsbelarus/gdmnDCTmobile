@@ -97,7 +97,7 @@ function showInputDialog (realm, code) {
               color: 'red',
               onPress: Snackbar.dismiss,
             }
-          }), 0)
+          }), 300)
         } else if (code) {
           realm.write(() => code.name = input)
         } else {

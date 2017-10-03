@@ -11,7 +11,7 @@ export default connectRealm(
       <ListItem
         id={item.id}
         primaryText={item.name}
-        onItemPress={() => ownProps.navigation.openCreateSession(item)}/>
+        onItemPress={() => ownProps.openCreateSession(realm, item)}/>
     )
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})

@@ -37,8 +37,16 @@ import OperationModel from '../../realm/models/OperationModel'
 import { ExportManager, ImportManager } from '../../fsManager'
 import { addToProgress, removeFromProgress } from './progressActions'
 import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
-import { updateStoredSessionsQuantity } from '../../realm/utils'
 import SettingsModel from '../../realm/models/SettingsModel'
+import { updateStoredSessionsQuantity } from '../../realm/utils'
+
+function navigate (routeName = ERROR, params = {}, action = null) {
+  return NavigationActions.navigate({routeName, params, action})
+}
+
+function reset (index = 0, actions = [navigate()], key = null) {
+  return NavigationActions.reset({index, actions, key})
+}
 
 export function goBack () {
   return (dispatch, getState) => {
@@ -52,6 +60,18 @@ export function goBack () {
   }
 }
 
+export function openScanner (params) {
+  return navigate(SCANNER, params)
+}
+
+export function openSessionDetail (params) {
+  return navigate(SESSION_DETAIL, params)
+}
+
+export function openSettings (params) {
+  return navigate(SETTINGS, params)
+}
+
 export function init (realm) {
   return async (dispatch, getState) => {
     const progress = {message: strings(STRING_PROGRESS_VERIFY_APP)}
@@ -61,16 +81,14 @@ export function init (realm) {
     isSupported = true    //TODO remove
 
     if (!isSupported) {
-      dispatch(NavigationActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({
-          routeName: ERROR,
-          params: {
+      dispatch(reset(0,
+        [navigate(ERROR,
+          {
             message: strings(STRING_ERROR_DEVICE_NOT_SUPPORTED),
             icon: 'sentiment-very-dissatisfied'
           }
-        })]
-      }))
+        )]
+      ))
     } else {
       dispatch(importData(realm))
       dispatch(globalNavigate(realm))
@@ -107,16 +125,13 @@ export function importData (realm, fileName) {
   }
 }
 
-export function exportData (realm) {
+export function exportData (realm, sessionKey) {
   return async (dispatch, getState) => {
-    const {appState} = getState()
-    const params = getCurrentRouteState(appState).params || {}
-
     const progress = {message: strings(STRING_PROGRESS_EXPORT_DATA)}
     dispatch(addToProgress(progress))
     try {
-      if (params.sessionKey) {
-        let session = SessionModel.findSessionByKey(realm, params.sessionKey)
+      if (sessionKey) {
+        let session = SessionModel.findSessionByKey(realm, sessionKey)
         await ExportManager.exportSession(session)
 
       } else {
@@ -133,7 +148,7 @@ export function exportData (realm) {
         action: {
           title: strings(STRING_ACTION_REPEAT),
           color: 'red',
-          onPress: () => dispatch(exportData(realm)),
+          onPress: () => dispatch(exportData(realm, sessionKey)),
         }
       })
     } finally {
@@ -148,19 +163,13 @@ export function openCreateSession (realm, object) {
     const {operator, storingPlace} = getCurrentRouteState(appState).params || {}
 
     if (!object) {
-      dispatch(NavigationActions.navigate({routeName: SELECT_OPERATOR}))
+      dispatch(navigate(SELECT_OPERATOR))
 
     } else if (object instanceof OperatorModel) {
-      dispatch(NavigationActions.navigate({
-        routeName: SELECT_STORING_PLACE,
-        params: {operator: object}
-      }))
+      dispatch(navigate(SELECT_STORING_PLACE, {operator: object}))
 
     } else if (object instanceof StoringPlaceModel) {
-      dispatch(NavigationActions.navigate({
-        routeName: SELECT_OPERATION,
-        params: {storingPlace: object, operator}
-      }))
+      dispatch(navigate(SELECT_OPERATION, {storingPlace: object, operator}))
 
     } else if (object instanceof OperationModel) {
       let dialog = new DialogAndroid()
@@ -191,22 +200,6 @@ export function openCreateSession (realm, object) {
       dialog.show()
     }
   }
-}
-
-export function openSessionDetail (session) {
-  return NavigationActions.navigate({
-    routeName: SESSION_DETAIL,
-    params: {
-      sessionKey: session.id,
-      sessionOperatorName: session.operator.name,
-      sessionOperationName: session.operation.name,
-      sessionStoringPlaceName: session.storingPlace.name
-    }
-  })
-}
-
-export function openSettings () {
-  return NavigationActions.navigate({routeName: SETTINGS})
 }
 
 export function deleteSessionDetail (realm) {
@@ -265,47 +258,26 @@ export function closeSession (realm) {
   }
 }
 
-export function updateSearchFilter (search) {
-  return (dispatch, getState) => {
-    const {appState} = getState()
-    const route = getCurrentRouteState(appState)
-    dispatch(NavigationActions.setParams({
-      key: route.key,
-      params: {
-        ...route.params,
-        search
-      }
-    }))
-  }
-}
-
 function globalNavigate (realm) {
   return async (dispatch, getState) => {
     let session = SessionModel.getOpenedSession(realm)
 
     if (session) {
       await ScannerApi.start({notificationText: strings(STRING_NOTIFICATION_SCANNING)})
-      dispatch(NavigationActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({
-          routeName: SCANNER,
-          params: {
-            sessionKey: session.id,
-            sessionOperatorName: session.operator.name,
-            sessionOperationName: session.operation.name,
-            sessionStoringPlaceName: session.storingPlace.name
-          }
+      dispatch(reset(0,
+        [openScanner({
+          sessionKey: session.id,
+          sessionOperatorName: session.operator.name,
+          sessionOperationName: session.operation.name,
+          sessionStoringPlaceName: session.storingPlace.name
         })]
-      }))
+      ))
 
     } else {
       if (await ScannerApi.isRunning()) {
         await ScannerApi.stop()
       }
-      dispatch(NavigationActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({routeName: SESSIONS})]
-      }))
+      dispatch(reset(0, [navigate(SESSIONS)]))
     }
   }
 }
