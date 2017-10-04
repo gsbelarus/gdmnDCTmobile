@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { BackHandler, LayoutAnimation, StyleSheet, Text, View } from 'react-native'
+import AutoBind from 'autobind-decorator'
 import SplashScreen from './SplashScreen/index'
 
 export default class ProgressModal extends PureComponent {
@@ -19,12 +20,7 @@ export default class ProgressModal extends PureComponent {
     onRequestClose: () => {}
   }
 
-  constructor (props, context) {
-    super(props, context)
-
-    this._onBackPress = this._onBackPress.bind(this)
-  }
-
+  @AutoBind
   _onBackPress () {
     if (this.props.visible) {
       this.props.onRequestClose()

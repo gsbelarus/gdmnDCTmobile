@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { FlatList, LayoutAnimation, View } from 'react-native'
 import ActionButton from 'react-native-action-button'
+import AutoBind from 'autobind-decorator'
 import EmptyView from '../EmptyView/index'
 import styles from './styles'
 
@@ -37,16 +38,11 @@ export default class List extends PureComponent {
     height: 0
   }
 
-  constructor (props, context) {
-    super(props, context)
-
-    this._onLayout = this._onLayout.bind(this)
-  }
-
   static _renderSeparator () {
     return <View style={styles.separator}/>
   }
 
+  @AutoBind
   _onLayout (event) {
     const {width, height} = event.nativeEvent.layout
     this.setState({width, height})

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { BackHandler, StatusBar, View } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers } from 'react-navigation'
+import AutoBind from 'autobind-decorator'
 import { ImportManager } from '../fsManager'
 import { openRealm } from '../realm/realm'
 import { goBack, importData, init } from '../redux/actions/appActions'
@@ -15,23 +16,18 @@ class App extends PureComponent {
     realm: null
   }
 
-  constructor (props, context) {
-    super(props, context)
-
-    this._init = this._init.bind(this)
-    this._onBackPress = this._onBackPress.bind(this)
-    this._importWatcher = this._importWatcher.bind(this)
-  }
-
+  @AutoBind
   _init () {
     this.props.dispatch(init(this.state.realm))
   }
 
+  @AutoBind
   _onBackPress () {
     this.props.dispatch(goBack())
     return true
   }
 
+  @AutoBind
   _importWatcher (fileName) {
     this.props.dispatch(importData(this.state.realm, fileName))
   }

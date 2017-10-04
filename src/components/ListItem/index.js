@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { LayoutAnimation, Text, Vibration, View } from 'react-native'
+import AutoBind from 'autobind-decorator'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import TouchableView from '../TouchableView'
 import styles from './styles'
@@ -32,22 +33,16 @@ export default class ListItem extends PureComponent {
     itemDisabledColor: 'transparent'
   }
 
-  constructor (props, context) {
-    super(props, context)
-
-    this._onItemPress = this._onItemPress.bind(this)
-    this._onItemLongPress = this._onItemLongPress.bind(this)
-    this._onItemIconRightPress = this._onItemIconRightPress.bind(this)
-  }
-
   componentWillUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 
+  @AutoBind
   _onItemPress () {
     this.props.onItemPress(this.props.id)
   }
 
+  @AutoBind
   _onItemLongPress () {
     if (this.props.onItemLongPress) {
       Vibration.vibrate(50)
@@ -55,6 +50,7 @@ export default class ListItem extends PureComponent {
     }
   }
 
+  @AutoBind
   _onItemIconRightPress () {
     this.props.onItemIconRightPress(this.props.id)
   }
