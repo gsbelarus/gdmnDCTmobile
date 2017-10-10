@@ -5,6 +5,7 @@ import StoringPlaceModel from './models/StoringPlaceModel'
 import OperationModel from './models/OperationModel'
 import CodeModel from './models/CodeModel'
 import SettingModel from './models/SettingsModel'
+import createDemoData from './utils'
 
 let realm
 
@@ -16,7 +17,7 @@ export async function openRealm () {
       shouldCompactOnLaunch: (totalBytes, usedBytes) => true
     }).progress(console.log)
 
-    // createDemoData(realm)    //TODO remove
+    createDemoData(realm)    //TODO remove
   }
   return realm
 }
