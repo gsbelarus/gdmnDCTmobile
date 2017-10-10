@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import connectRealm from '../realm/react/connectRealm'
 import SessionModel from '../realm/models/SessionModel'
 import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
 
-export default connectRealm(
+@connectRealm(
   (realm, ownProps) => ({
     items: SessionModel.findSessionByKey(realm, ownProps.navigation.state.params.sessionKey).codes,
     renderItem: ({item}) => (
@@ -15,9 +15,15 @@ export default connectRealm(
     )
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})
-)((props) => {
-  return <List
-    {...props}
-    {...props.items.isValid() ? {} : {items: []}}
-    />
-})
+)
+export default class SessionDetailContainer extends PureComponent {
+
+  render () {
+    return (
+      <List
+        {...this.props}
+        {...this.props.items.isValid() ? {} : {items: []}}
+      />
+    )
+  }
+}

@@ -15,7 +15,7 @@ export async function openRealm () {
       schema: [SettingModel, SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
       schemaVersion: 100,
       shouldCompactOnLaunch: (totalBytes, usedBytes) => true
-    })
+    }).progress(console.log)
 
     createDemoData(realm)
   }

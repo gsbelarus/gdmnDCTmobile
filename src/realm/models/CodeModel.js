@@ -5,15 +5,6 @@ export default class CodeModel {
   static FIELD_ID = '_id'
   static FIELD_NAME = '_name'
 
-  static schema = {
-    name: CodeModel.name,
-    primaryKey: CodeModel.FIELD_ID,
-    properties: {
-      [CodeModel.FIELD_ID]: {type: 'int'},
-      [CodeModel.FIELD_NAME]: {type: 'string'}
-    }
-  }
-
   get id () {
     return this[CodeModel.FIELD_ID]
   }
@@ -41,8 +32,16 @@ export default class CodeModel {
   }
 
   static create (realm, name) {
-    let max = 0
-    realm.objects(CodeModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    let max = realm.objects(CodeModel.name).max(CodeModel.FIELD_ID) || 0
     return realm.create(CodeModel.name, CodeModel.newInstance(max + 1, name))
+  }
+}
+
+CodeModel.schema = {
+  name: CodeModel.name,
+  primaryKey: CodeModel.FIELD_ID,
+  properties: {
+    [CodeModel.FIELD_ID]: {type: 'int'},
+    [CodeModel.FIELD_NAME]: {type: 'string'}
   }
 }

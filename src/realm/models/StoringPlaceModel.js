@@ -10,19 +10,6 @@ export default class StoringPlaceModel {
 
   static FIELD_SEARCH_FIELD = '_searchField'
 
-  static schema = {
-    name: StoringPlaceModel.name,
-    primaryKey: StoringPlaceModel.FIELD_ID,
-    properties: {
-      [StoringPlaceModel.FIELD_ID]: {type: 'int'},
-      [StoringPlaceModel.FIELD_NAME]: {type: 'string'},
-      [StoringPlaceModel.FIELD_CODE]: {type: 'string', optional: true},
-      [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool'},
-
-      [StoringPlaceModel.FIELD_SEARCH_FIELD]: {type: 'string'}
-    }
-  }
-
   get id () {
     return this[StoringPlaceModel.FIELD_ID]
   }
@@ -81,8 +68,7 @@ export default class StoringPlaceModel {
   }
 
   static create (realm, name, code, disabled) {
-    let max = 0
-    realm.objects(StoringPlaceModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    let max = realm.objects(StoringPlaceModel.name).max(StoringPlaceModel.FIELD_ID) || 0
     return realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(max + 1, name, code, disabled))
   }
 
@@ -98,7 +84,6 @@ export default class StoringPlaceModel {
 
   static search (items, search) {
     if (!search) return items
-
     return items.filtered(`${StoringPlaceModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
   }
 
@@ -106,5 +91,18 @@ export default class StoringPlaceModel {
     this.searchField =
       (this.name && this.name.toLowerCase()) +
       (this.code && this.code.toLowerCase())
+  }
+}
+
+StoringPlaceModel.schema = {
+  name: StoringPlaceModel.name,
+  primaryKey: StoringPlaceModel.FIELD_ID,
+  properties: {
+    [StoringPlaceModel.FIELD_ID]: {type: 'int'},
+    [StoringPlaceModel.FIELD_NAME]: {type: 'string'},
+    [StoringPlaceModel.FIELD_CODE]: {type: 'string', optional: true},
+    [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool'},
+
+    [StoringPlaceModel.FIELD_SEARCH_FIELD]: {type: 'string'}
   }
 }

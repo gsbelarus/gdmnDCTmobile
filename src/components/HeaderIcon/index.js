@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import AutoBind from 'autobind-decorator'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Text, ToastAndroid, Vibration, View } from 'react-native'
 import TouchableView from '../TouchableView'
@@ -25,7 +24,12 @@ export default class HeaderIcon extends Component {
     rippleColor: 'black'
   }
 
-  @AutoBind
+  constructor (props, context) {
+    super(props, context)
+
+    this._onLongPress = this._onLongPress.bind(this)
+  }
+
   _onLongPress () {
     Vibration.vibrate(50)
     ToastAndroid.show(this.props.label, ToastAndroid.LONG)

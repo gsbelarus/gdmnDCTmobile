@@ -6,16 +6,6 @@ export default class OperatorModel {
   static FIELD_NAME = '_name'
   static FIELD_DISABLED = '_disabled'
 
-  static schema = {
-    name: OperatorModel.name,
-    primaryKey: OperatorModel.FIELD_ID,
-    properties: {
-      [OperatorModel.FIELD_ID]: {type: 'int'},
-      [OperatorModel.FIELD_NAME]: {type: 'string'},
-      [OperatorModel.FIELD_DISABLED]: {type: 'bool'}
-    }
-  }
-
   get id () {
     return this[OperatorModel.FIELD_ID]
   }
@@ -52,8 +42,7 @@ export default class OperatorModel {
   }
 
   static create (realm, name, disabled) {
-    let max = 0
-    realm.objects(OperatorModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
+    let max = realm.objects(OperatorModel.name).max(OperatorModel.FIELD_ID) || 0
     return realm.create(OperatorModel.name, OperatorModel.newInstance(max + 1, name, disabled))
   }
 
@@ -65,5 +54,15 @@ export default class OperatorModel {
   static getSortedByName (realm, reverse) {
     return OperatorModel.getEnabledObjects(realm)
       .sorted(OperatorModel.FIELD_NAME, reverse)
+  }
+}
+
+OperatorModel.schema = {
+  name: OperatorModel.name,
+  primaryKey: OperatorModel.FIELD_ID,
+  properties: {
+    [OperatorModel.FIELD_ID]: {type: 'int'},
+    [OperatorModel.FIELD_NAME]: {type: 'string'},
+    [OperatorModel.FIELD_DISABLED]: {type: 'bool'}
   }
 }

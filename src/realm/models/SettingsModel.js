@@ -6,15 +6,6 @@ export default class SettingsModel {
   static FIELD_ID = '_id'
   static FIELD_MAX_COUNT_SESSION = '_maxCountSession'
 
-  static schema = {
-    name: SettingsModel.name,
-    primaryKey: SettingsModel.FIELD_ID,
-    properties: {
-      [SettingsModel.FIELD_ID]: {type: 'int', default: SettingsModel.DEFAULT_ID},
-      [SettingsModel.FIELD_MAX_COUNT_SESSION]: {type: 'int', default: SettingsModel.DEFAULT_MAX_COUNT_SESSION}
-    }
-  }
-
   get id () {
     return this[SettingsModel.FIELD_ID]
   }
@@ -56,5 +47,14 @@ export default class SettingsModel {
       settings = SettingsModel.getSettings(realm)
     }
     return settings
+  }
+}
+
+SettingsModel.schema = {
+  name: SettingsModel.name,
+  primaryKey: SettingsModel.FIELD_ID,
+  properties: {
+    [SettingsModel.FIELD_ID]: {type: 'int', default: SettingsModel.DEFAULT_ID},
+    [SettingsModel.FIELD_MAX_COUNT_SESSION]: {type: 'int', default: SettingsModel.DEFAULT_MAX_COUNT_SESSION}
   }
 }

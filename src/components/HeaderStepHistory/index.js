@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import AutoBind from 'autobind-decorator'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { FlatList, Text } from 'react-native'
 import TouchableView from '../TouchableView'
@@ -32,28 +31,24 @@ export default class HeaderStepHistory extends Component {
 
   list = null
 
-  @AutoBind
+  constructor (props, context) {
+    super(props, context)
+
+    this._setListRef = this._setListRef.bind(this)
+    this._renderSeparator = this._renderSeparator.bind(this)
+    this._renderItem = this._renderItem.bind(this)
+  }
+
   _setListRef (list) {
     this.list = list
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    setTimeout(() => {      //TODO workaround
-      if (this.list && (
-          this.props.steps !== prevProps.steps || this.props.extra !== prevProps.extra)) {
-        this.list.scrollToEnd()
-      }
-    }, 500)
-  }
-
-  @AutoBind
   _renderSeparator () {
     return (
       <Icon name={this.props.separatorIconName} style={[styles.separatorIcon, {color: this.props.tintColor}]}/>
     )
   }
 
-  @AutoBind
   _renderItem ({item, index}) {
     return (
       <TouchableView
@@ -68,6 +63,15 @@ export default class HeaderStepHistory extends Component {
         {index < this.props.steps.length - 1 ? this._renderSeparator() : null}
       </TouchableView>
     )
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    setTimeout(() => {      //TODO workaround
+      if (this.list && (
+          this.props.steps !== prevProps.steps || this.props.extra !== prevProps.extra)) {
+        this.list.scrollToEnd()
+      }
+    }, 500)
   }
 
   render () {

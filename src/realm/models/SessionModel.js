@@ -14,20 +14,6 @@ export default class SessionModel {
 
   static FIELD_CODES = '_codes'
 
-  static schema = {
-    name: SessionModel.name,
-    primaryKey: SessionModel.FIELD_ID,
-    properties: {
-      [SessionModel.FIELD_ID]: {type: 'int'},
-      [SessionModel.FIELD_TIME]: {type: 'date'},
-      [SessionModel.FIELD_OPERATOR]: {type: OperatorModel.name},
-      [SessionModel.FIELD_STORING_PLACE]: {type: StoringPlaceModel.name},
-      [SessionModel.FIELD_OPERATION]: {type: OperationModel.name},
-      [SessionModel.FIELD_DISABLED]: {type: 'bool'},
-      [SessionModel.FIELD_CODES]: {type: 'list', objectType: CodeModel.name}
-    }
-  }
-
   get id () {
     return this[SessionModel.FIELD_ID]
   }
@@ -97,10 +83,9 @@ export default class SessionModel {
   }
 
   static create (realm, time, operator, storingPlace, operation, disabled, codes) {
-    let max = 0
-    realm.objects(SessionModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(SessionModel.name, SessionModel.newInstance(max + 1, time, operator, storingPlace, operation,
-      disabled, codes))
+    let max = realm.objects(SessionModel.name).max(SessionModel.FIELD_ID) || 0
+    return realm.create(SessionModel.name,
+      SessionModel.newInstance(max + 1, time, operator, storingPlace, operation, disabled, codes))
   }
 
   static getSortedByDate (realm, reverse) {
@@ -123,5 +108,19 @@ export default class SessionModel {
       if (collisionCode.length) return collisionCode[0]
     }
     return null
+  }
+}
+
+SessionModel.schema = {
+  name: SessionModel.name,
+  primaryKey: SessionModel.FIELD_ID,
+  properties: {
+    [SessionModel.FIELD_ID]: {type: 'int'},
+    [SessionModel.FIELD_TIME]: {type: 'date'},
+    [SessionModel.FIELD_OPERATOR]: {type: OperatorModel.name},
+    [SessionModel.FIELD_STORING_PLACE]: {type: StoringPlaceModel.name},
+    [SessionModel.FIELD_OPERATION]: {type: OperationModel.name},
+    [SessionModel.FIELD_DISABLED]: {type: 'bool'},
+    [SessionModel.FIELD_CODES]: {type: 'list', objectType: CodeModel.name}
   }
 }

@@ -11,20 +11,6 @@ export default class OperationModel {
 
   static FIELD_SEARCH_FIELD = '_searchField'
 
-  static schema = {
-    name: OperationModel.name,
-    primaryKey: OperationModel.FIELD_ID,
-    properties: {
-      [OperationModel.FIELD_ID]: {type: 'int'},
-      [OperationModel.FIELD_NAME]: {type: 'string'},
-      [OperationModel.FIELD_CODE]: {type: 'string', optional: true},
-      [OperationModel.FIELD_SORT_NUMBER]: {type: 'string', optional: true},
-      [OperationModel.FIELD_DISABLED]: {type: 'bool'},
-
-      [OperationModel.FIELD_SEARCH_FIELD]: {type: 'string'}
-    }
-  }
-
   get id () {
     return this[OperationModel.FIELD_ID]
   }
@@ -92,9 +78,10 @@ export default class OperationModel {
   }
 
   static create (realm, update, name, code, sortNumber, disabled) {
-    let max = 0
-    realm.objects(OperationModel.name).forEach((i) => {max < i.id ? max = i.id : 0})
-    return realm.create(OperationModel.name, OperationModel.newInstance(max + 1, name, code, sortNumber, disabled), update)
+    let max = realm.objects(OperationModel.name).max(OperationModel.FIELD_ID) || 0
+    return realm.create(OperationModel.name,
+      OperationModel.newInstance(max + 1, name, code, sortNumber, disabled),
+      update)
   }
 
   static getEnabledObjects (realm) {
@@ -109,7 +96,6 @@ export default class OperationModel {
 
   static search (items, search) {
     if (!search) return items
-
     return items.filtered(`${OperationModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)
   }
 
@@ -117,5 +103,19 @@ export default class OperationModel {
     this.searchField =
       (this.name && this.name.toLowerCase()) +
       (this.code && this.code.toLowerCase())
+  }
+}
+
+OperationModel.schema = {
+  name: OperationModel.name,
+  primaryKey: OperationModel.FIELD_ID,
+  properties: {
+    [OperationModel.FIELD_ID]: {type: 'int'},
+    [OperationModel.FIELD_NAME]: {type: 'string'},
+    [OperationModel.FIELD_CODE]: {type: 'string', optional: true},
+    [OperationModel.FIELD_SORT_NUMBER]: {type: 'string', optional: true},
+    [OperationModel.FIELD_DISABLED]: {type: 'bool'},
+
+    [OperationModel.FIELD_SEARCH_FIELD]: {type: 'string'}
   }
 }

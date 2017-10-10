@@ -20,22 +20,7 @@ import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
 import CodeModel from '../realm/models/CodeModel'
 
-class Scanner extends PureComponent {
-
-  componentDidMount () {
-    ScannerApi.addListener(this.props.onScanned)
-  }
-
-  componentWillUnmount () {
-    ScannerApi.removeListener(this.props.onScanned)
-  }
-
-  render () {
-    return <List {...this.props}/>
-  }
-}
-
-export default connectRealm(
+@connectRealm(
   (realm, ownProps) => ({
     realm,
     items: SessionModel.getOpenedSession(realm).codes,
@@ -68,7 +53,21 @@ export default connectRealm(
     }
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})
-)(Scanner)
+)
+export default class ScannerContainer extends PureComponent {
+
+  componentDidMount () {
+    ScannerApi.addListener(this.props.onScanned)
+  }
+
+  componentWillUnmount () {
+    ScannerApi.removeListener(this.props.onScanned)
+  }
+
+  render () {
+    return <List {...this.props}/>
+  }
+}
 
 function showInputDialog (realm, code) {
   let dialog = new DialogAndroid()
