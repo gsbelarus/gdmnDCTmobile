@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ActivityIndicator, ColorPropType, Text, View, ViewPropTypes } from 'react-native'
 import styles from './styles'
 
 export default class SplashScreen extends PureComponent {
 
   static propTypes = {
-    progressColor: PropTypes.string,
+    progressColor: ColorPropType,
     label: PropTypes.string,
-    progressStyle: View.propTypes.style,
-    labelStyle: Text.propTypes.style,
-    style: View.propTypes.style
+    progressStyle: ViewPropTypes.style,
+    labelStyle: ViewPropTypes.style,
+    style: ViewPropTypes.style
   }
 
   render () {

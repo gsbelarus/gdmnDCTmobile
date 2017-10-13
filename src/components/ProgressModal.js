@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { BackHandler, LayoutAnimation, StyleSheet, Text, View } from 'react-native'
+import { BackHandler, ColorPropType, LayoutAnimation, StyleSheet, Text, View, ViewPropTypes } from 'react-native'
 import SplashScreen from './SplashScreen/index'
 
 export default class ProgressModal extends PureComponent {
@@ -9,10 +9,10 @@ export default class ProgressModal extends PureComponent {
     visible: PropTypes.bool,
     label: PropTypes.string,
     onRequestClose: PropTypes.func,
-    progressColor: PropTypes.string,
+    progressColor: ColorPropType,
     labelStyle: Text.propTypes.style,
-    progressStyle: View.propTypes.style,
-    style: View.propTypes.style
+    progressStyle: ViewPropTypes.style,
+    style: ViewPropTypes.style
   }
 
   static defaultProps = {

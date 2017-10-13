@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Platform, TouchableNativeFeedback, TouchableOpacity, View, } from 'react-native'
+import { ColorPropType, Platform, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native'
 
 export default class TouchableView extends PureComponent {
 
   static propTypes = {
     borderless: PropTypes.bool,
-    rippleColor: PropTypes.string
+    rippleColor: ColorPropType
   }
 
   static defaultProps = {

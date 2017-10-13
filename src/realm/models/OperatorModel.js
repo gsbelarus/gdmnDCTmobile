@@ -1,6 +1,6 @@
 export default class OperatorModel {
 
-  static NAME_MAX_LENGTH = 20
+  static NAME_MAX_LENGTH = 60
 
   static FIELD_ID = '_id'
   static FIELD_NAME = '_name'

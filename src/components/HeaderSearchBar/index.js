@@ -1,22 +1,22 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { LayoutAnimation, TextInput, View } from 'react-native'
+import { ColorPropType, LayoutAnimation, TextInput, View, ViewPropTypes } from 'react-native'
 import strings, { STRING_ACTION_SEARCH } from '../../localization/strings'
-import styles from './styles'
 import HeaderIcon from '../HeaderIcon/index'
+import styles from './styles'
 
 export default class HeaderSearchBar extends PureComponent {
 
   static propTypes = {
     value: PropTypes.string,
-    tint: PropTypes.string,
+    tint: ColorPropType,
     autoFocus: PropTypes.bool,
     placeholder: PropTypes.string,
-    placeholderTextColor: PropTypes.string,
-    underlineColorAndroid: PropTypes.string,
-    selectionColor: PropTypes.string,
+    placeholderTextColor: ColorPropType,
+    underlineColorAndroid: ColorPropType,
+    selectionColor: ColorPropType,
     onChangeText: PropTypes.func,
-    style: View.propTypes.style
+    style: ViewPropTypes.style
   }
 
   static defaultProps = {

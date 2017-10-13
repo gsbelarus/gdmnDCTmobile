@@ -10,10 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "moment": "^2.19.0",
+    "moment": "^2.19.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-native": "^0.48.4",
+    "react-native": "^0.49.3",
     "react-native-action-button": "^2.8.0",
     "react-native-android-fs-watcher": "file:react-native-android-fs-watcher",
     "react-native-android-scanner": "file:react-native-android-scanner",

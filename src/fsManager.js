@@ -129,7 +129,7 @@ export class ImportManager {
       ))
       realm.write(() => {
         operatorModels.forEach((operator) => {
-          realm.create(OperationModel.name, operator, true)
+          realm.create(OperatorModel.name, operator, true)
         })
       })
       console.log('imported', filePath)

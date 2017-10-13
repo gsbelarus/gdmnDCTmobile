@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Text, ToastAndroid, Vibration, View } from 'react-native'
+import { Text, ToastAndroid, Vibration, ColorPropType, ViewPropTypes } from 'react-native'
 import TouchableView from '../TouchableView'
 import styles from './styles'
 
@@ -10,10 +10,10 @@ export default class HeaderIcon extends Component {
   static propTypes = {
     iconName: PropTypes.string,
     label: PropTypes.string,
-    rippleColor: PropTypes.string,
+    rippleColor: ColorPropType,
     iconStyle: Text.propTypes.style,
     textStyle: Text.propTypes.style,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     onPress: PropTypes.func
   }
 
