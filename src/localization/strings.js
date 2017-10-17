@@ -27,11 +27,14 @@ export const STRING_SETTINGS_COUNT_SESSION_SECONDARY = 'settingsCountSessionSeco
 export const STRING_SETTINGS_COUNT_SESSION_HINT = 'settingsCountSessionHint'
 export const STRING_SETTINGS_COUNT_SESSION_DESCRIPTION = 'settingsCountSessionDescription'
 export const STRING_SETTINGS_COUNT_SESSION_OVERFLOW = 'settingsCountSessionOverflow'
+export const STRING_SETTINGS_URL_PRIMARY = 'settingsUrlPrimary'
+export const STRING_SETTINGS_URL_SECONDARY = 'settingsUrlSecondary'
+export const STRING_SETTINGS_URL_HINT = 'settingsUrlHint'
+export const STRING_SETTINGS_URL_INVALID = 'settingsUrlInvalid'
 export const STRING_SETTINGS_ABOUT = 'settingsAbout'
 export const STRING_SETTINGS_ABOUT_CONTENT = 'settingsAboutContent'
 
-export const STRING_PROGRESS_IMPORT_DATA = 'progressImportData'
-export const STRING_PROGRESS_EXPORT_DATA = 'progressExportData'
+export const STRING_PROGRESS_SYNC = 'progressSync'
 export const STRING_PROGRESS_OPENING_SESSION = 'progressOpeningSession'
 export const STRING_PROGRESS_CLOSING_SESSION = 'progressClosingSession'
 export const STRING_PROGRESS_VERIFY_APP = 'progressVerifyApp'
@@ -50,6 +53,7 @@ export const STRING_ERROR_EXPORT_DATA = 'errorExportData'
 export const STRING_ERROR_CLOSING_SESSION = 'errorClosingSession'
 export const STRING_ERROR_SCANNING = 'errorScanning'
 export const STRING_ERROR_REPEAT_CODE = 'errorRepeatCode'
+export const STRING_ERROR_SYNC = 'errorSync'
 
 I18n.fallbacks = true
 I18n.translations = {

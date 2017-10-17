@@ -11,6 +11,7 @@ export default class SessionModel {
   static FIELD_STORING_PLACE = '_storing_place'
   static FIELD_OPERATION = '_operation'
   static FIELD_DISABLED = '_disabled'
+  static FIELD_EXPORTED = '_exported'
 
   static FIELD_CODES = '_codes'
 
@@ -60,6 +61,14 @@ export default class SessionModel {
 
   set disabled (value) {
     this[SessionModel.FIELD_DISABLED] = value
+  }
+
+  get exported () {
+    return this[SessionModel.FIELD_EXPORTED]
+  }
+
+  set exported (value) {
+    this[SessionModel.FIELD_EXPORTED] = value
   }
 
   get codes () {

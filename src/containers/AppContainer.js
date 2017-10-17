@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react'
 import { BackHandler, StatusBar, View } from 'react-native'
 import { connect } from 'react-redux'
 import { addNavigationHelpers } from 'react-navigation'
-import { ImportManager } from '../fsManager'
 import { openRealm } from '../realm/realm'
-import { goBack, importData, init } from '../redux/actions/appActions'
+import { goBack, init } from '../redux/actions/appActions'
 import AppNavigator from '../navigators/AppNavigator'
 import ProgressModalContainer from './ProgressModalContainer'
 import RealmProvider from '../realm/react/RealmProvider'
@@ -20,7 +19,6 @@ class App extends PureComponent {
 
     this._init = this._init.bind(this)
     this._onBackPress = this._onBackPress.bind(this)
-    this._importWatcher = this._importWatcher.bind(this)
   }
 
   _init () {
@@ -32,24 +30,18 @@ class App extends PureComponent {
     return true
   }
 
-  _importWatcher (fileName) {
-    this.props.dispatch(importData(this.state.realm, fileName))
-  }
-
   componentDidMount () {
     openRealm().then(realm => this.setState({realm}, this._init), console.warn)
 
     StatusBar.setBackgroundColor('black', true)
 
     BackHandler.addEventListener('hardwareBackPress', this._onBackPress)
-    ImportManager.watch(this._importWatcher)
   }
 
   componentWillUnmount () {
     // if (this.state.realm) this.state.realm.close()
 
     BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
-    ImportManager.unwatch(this._importWatcher)
   }
 
   render () {
