@@ -113,7 +113,7 @@ OperationModel.schema = {
     [OperationModel.FIELD_ID]: {type: 'int'},
     [OperationModel.FIELD_NAME]: {type: 'string'},
     [OperationModel.FIELD_CODE]: {type: 'string', optional: true},
-    [OperationModel.FIELD_SORT_NUMBER]: {type: 'string', optional: true},
+    [OperationModel.FIELD_SORT_NUMBER]: {type: 'int', optional: true},
     [OperationModel.FIELD_DISABLED]: {type: 'bool'},
 
     [OperationModel.FIELD_SEARCH_FIELD]: {type: 'string'}

@@ -44,9 +44,9 @@ export default class ImportManager {
 
     const operatorModels = operators.map((operator) => (
       OperatorModel.newInstance(
-        operator[OperatorModel.FIELD_ID],
-        operator[OperatorModel.FIELD_NAME],
-        operator[OperatorModel.FIELD_DISABLED]
+        operator.data()[OperatorModel.FIELD_ID],
+        operator.data()[OperatorModel.FIELD_NAME],
+        operator.data()[OperatorModel.FIELD_DISABLED]
       )
     ))
     operatorModels.forEach((operator) => {
@@ -60,10 +60,10 @@ export default class ImportManager {
 
     const storingPlaceModels = storingPlaces.map((storingPlace) => (
       StoringPlaceModel.newInstance(
-        storingPlace[StoringPlaceModel.FIELD_ID],
-        storingPlace[StoringPlaceModel.FIELD_NAME],
-        storingPlace[StoringPlaceModel.FIELD_CODE],
-        storingPlace[StoringPlaceModel.FIELD_DISABLED]
+        storingPlace.data()[StoringPlaceModel.FIELD_ID],
+        storingPlace.data()[StoringPlaceModel.FIELD_NAME],
+        storingPlace.data()[StoringPlaceModel.FIELD_CODE],
+        storingPlace.data()[StoringPlaceModel.FIELD_DISABLED]
       )
     ))
     storingPlaceModels.forEach((storingPlace) => {
@@ -77,11 +77,11 @@ export default class ImportManager {
 
     const operationModels = operations.map((operation) => (
       OperationModel.newInstance(
-        operation[OperationModel.FIELD_ID],
-        operation[OperationModel.FIELD_NAME],
-        operation[OperationModel.FIELD_CODE],
-        operation[OperationModel.FIELD_SORT_NUMBER],
-        operation[OperationModel.FIELD_DISABLED]
+        operation.data()[OperationModel.FIELD_ID],
+        operation.data()[OperationModel.FIELD_NAME],
+        operation.data()[OperationModel.FIELD_CODE],
+        operation.data()[OperationModel.FIELD_SORT_NUMBER],
+        operation.data()[OperationModel.FIELD_DISABLED]
       )
     ))
     operationModels.forEach((operation) => {

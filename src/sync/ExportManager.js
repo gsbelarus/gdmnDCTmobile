@@ -22,17 +22,15 @@ export default class ExportManager {
   }
 
   async exportAll () {
-    try {
-      const sessions = SessionModel.getSortedByDate(this.realm)
-      for (let i = 0; i < sessions.length; i++) {
-        const session = sessions[i]
-        if (!session.exported) {
-          await this._api.all('sessions').post(sessions[i])
-          this.realm.write(() => sessions[i].exported = true)
+    const sessions = SessionModel.getSortedByDate(this.realm)
+    for (let i = 0; i < sessions.length; i++) {
+      const session = sessions[i]
+      if (!session.exported) {
+        const response = await this._api.all('sessions').post(session)
+        if (response.body().data().ok) {
+          this.realm.write(() => session.exported = true)
         }
       }
-    } catch (error) {
-      throw error
     }
   }
 }

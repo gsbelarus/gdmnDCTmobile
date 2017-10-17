@@ -5,10 +5,12 @@ import CodeModel from './CodeModel'
 
 export default class SessionModel {
 
+  static DEFAULT_EXPORTED = false
+
   static FIELD_ID = '_id'
   static FIELD_TIME = '_time'
   static FIELD_OPERATOR = '_operator'
-  static FIELD_STORING_PLACE = '_storing_place'
+  static FIELD_STORING_PLACE = '_storingPlace'
   static FIELD_OPERATION = '_operation'
   static FIELD_DISABLED = '_disabled'
   static FIELD_EXPORTED = '_exported'
@@ -130,6 +132,7 @@ SessionModel.schema = {
     [SessionModel.FIELD_STORING_PLACE]: {type: StoringPlaceModel.name},
     [SessionModel.FIELD_OPERATION]: {type: OperationModel.name},
     [SessionModel.FIELD_DISABLED]: {type: 'bool'},
+    [SessionModel.FIELD_EXPORTED]: {type: 'bool', default: SessionModel.DEFAULT_EXPORTED},
     [SessionModel.FIELD_CODES]: {type: 'list', objectType: CodeModel.name}
   }
 }

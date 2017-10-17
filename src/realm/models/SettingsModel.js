@@ -39,7 +39,7 @@ export default class SettingsModel {
     if (SettingsModel.URL_SCHEMA_PATTERN.test(this[SettingsModel.FIELD_URL])) {
       return this[SettingsModel.FIELD_URL]
     }
-    return `http://${this[SettingsModel.FIELD_URL]}`
+    return `http://${this[SettingsModel.FIELD_URL]}/api/v1`
   }
 
   get url () {

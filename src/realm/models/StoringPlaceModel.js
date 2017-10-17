@@ -101,7 +101,7 @@ StoringPlaceModel.schema = {
     [StoringPlaceModel.FIELD_ID]: {type: 'int'},
     [StoringPlaceModel.FIELD_NAME]: {type: 'string'},
     [StoringPlaceModel.FIELD_CODE]: {type: 'string', optional: true},
-    [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool'},
+    [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool', optional: true},
 
     [StoringPlaceModel.FIELD_SEARCH_FIELD]: {type: 'string'}
   }
