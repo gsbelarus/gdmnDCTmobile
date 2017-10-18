@@ -1,16 +1,18 @@
 import OperatorModel from './OperatorModel'
 import StoringPlaceModel from './StoringPlaceModel'
 import OperationModel from './OperationModel'
-import CodeModel from './CodeModel'
 
 export default class SessionModel {
+
+  static DEFAULT_EXPORTED = false
 
   static FIELD_ID = '_id'
   static FIELD_TIME = '_time'
   static FIELD_OPERATOR = '_operator'
-  static FIELD_STORING_PLACE = '_storing_place'
+  static FIELD_STORING_PLACE = '_storingPlace'
   static FIELD_OPERATION = '_operation'
   static FIELD_DISABLED = '_disabled'
+  static FIELD_EXPORTED = '_exported'
 
   static FIELD_CODES = '_codes'
 
@@ -62,6 +64,14 @@ export default class SessionModel {
     this[SessionModel.FIELD_DISABLED] = value
   }
 
+  get exported () {
+    return this[SessionModel.FIELD_EXPORTED]
+  }
+
+  set exported (value) {
+    this[SessionModel.FIELD_EXPORTED] = value
+  }
+
   get codes () {
     return this[SessionModel.FIELD_CODES]
   }
@@ -70,7 +80,14 @@ export default class SessionModel {
     this[SessionModel.FIELD_CODES] = value
   }
 
-  static newInstance (id, time, operator, storingPlace, operation, disabled, codes) {
+  static newInstance (id,
+                      time,
+                      operator,
+                      storingPlace,
+                      operation,
+                      disabled = false,
+                      codes = [],
+                      exported = SessionModel.DEFAULT_EXPORTED) {
     let instance = new SessionModel()
     instance.id = id
     instance.time = time
@@ -78,6 +95,7 @@ export default class SessionModel {
     instance.storingPlace = storingPlace
     instance.operation = operation
     instance.disabled = disabled
+    instance.exported = exported
     instance.codes = codes
     return instance
   }
@@ -101,26 +119,19 @@ export default class SessionModel {
   static findSessionByKey (realm, sessionKey) {
     return realm.objectForPrimaryKey(SessionModel.name, sessionKey)
   }
-
-  static findCodeByName (session, codeName) {
-    if (session) {
-      let collisionCode = session.codes.filtered(`${CodeModel.FIELD_NAME} = '${codeName}'`)
-      if (collisionCode.length) return collisionCode[0]
-    }
-    return null
-  }
 }
 
 SessionModel.schema = {
   name: SessionModel.name,
   primaryKey: SessionModel.FIELD_ID,
   properties: {
-    [SessionModel.FIELD_ID]: {type: 'int'},
-    [SessionModel.FIELD_TIME]: {type: 'date'},
-    [SessionModel.FIELD_OPERATOR]: {type: OperatorModel.name},
-    [SessionModel.FIELD_STORING_PLACE]: {type: StoringPlaceModel.name},
-    [SessionModel.FIELD_OPERATION]: {type: OperationModel.name},
-    [SessionModel.FIELD_DISABLED]: {type: 'bool'},
-    [SessionModel.FIELD_CODES]: {type: 'list', objectType: CodeModel.name}
+    [SessionModel.FIELD_ID]: 'int',
+    [SessionModel.FIELD_TIME]: 'date',
+    [SessionModel.FIELD_OPERATOR]: OperatorModel.name,
+    [SessionModel.FIELD_STORING_PLACE]: StoringPlaceModel.name,
+    [SessionModel.FIELD_OPERATION]: OperationModel.name,
+    [SessionModel.FIELD_DISABLED]: 'bool',
+    [SessionModel.FIELD_EXPORTED]: 'bool',
+    [SessionModel.FIELD_CODES]: 'string[]'
   }
 }

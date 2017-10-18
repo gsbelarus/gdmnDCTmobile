@@ -4,9 +4,8 @@ import { View } from 'react-native'
 import strings, {
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_DELETE,
-  STRING_ACTION_EXPORT,
-  STRING_ACTION_IMPORT,
   STRING_ACTION_SETTINGS,
+  STRING_ACTION_SYNC,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
@@ -18,11 +17,10 @@ import strings, {
 import {
   closeSession,
   deleteSessionDetail,
-  exportData,
-  importData,
   openCreateSession,
   openSessionDetail,
-  openSettings
+  openSettings,
+  syncData
 } from '../redux/actions/appActions'
 import SettingsContainer from '../containers/SettingsContainer'
 import SessionsContainer from '../containers/SessionsContainer'
@@ -72,7 +70,9 @@ export default StackNavigator({
     })
   },
   [SETTINGS]: {
-    screen: SettingsContainer,
+    screen: ({navigation}) => (
+      <SettingsContainer syncData={() => navigation.dispatch(syncData(navigation.realm))}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SETTINGS)
     })
@@ -94,9 +94,9 @@ export default StackNavigator({
       headerRight: (
         <View style={{flexDirection: 'row'}}>
           <HeaderIcon
-            iconName={'file-download'}
-            label={strings(STRING_ACTION_IMPORT)}
-            onPress={() => navigation.dispatch(importData(navigation.realm))}
+            iconName={'sync'}
+            label={strings(STRING_ACTION_SYNC)}
+            onPress={() => navigation.dispatch(syncData(navigation.realm))}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
           <HeaderIcon
@@ -114,20 +114,12 @@ export default StackNavigator({
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SESSION_DETAIL),
       headerRight: (
-        <View style={{flexDirection: 'row'}}>
-          <HeaderIcon
-            iconName={'file-upload'}
-            label={strings(STRING_ACTION_EXPORT)}
-            onPress={() => navigation.dispatch(exportData(navigation.realm, navigation.state.params.sessionKey))}
-            rippleColor={'white'}
-            iconStyle={{color: 'white'}}/>
-          <HeaderIcon
-            iconName={'clear'}
-            label={strings(STRING_ACTION_DELETE)}
-            onPress={() => navigation.dispatch(deleteSessionDetail(navigation.realm, navigation.state.params.sessionKey))}
-            rippleColor={'white'}
-            iconStyle={{color: 'white'}}/>
-        </View>
+        <HeaderIcon
+          iconName={'delete'}
+          label={strings(STRING_ACTION_DELETE)}
+          onPress={() => navigation.dispatch(deleteSessionDetail(navigation.realm, navigation.state.params.sessionKey))}
+          rippleColor={'white'}
+          iconStyle={{color: 'white'}}/>
       ),
       header: (props) => {
         const {headerStyle, headerTintColor} = props.getScreenDetails(props.scene).options

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { FlatList, Text } from 'react-native'
+import { ColorPropType, FlatList, Text } from 'react-native'
 import TouchableView from '../TouchableView'
 import styles from './styles'
 
@@ -12,11 +12,11 @@ export default class HeaderStepHistory extends Component {
     steps: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
       disabled: PropTypes.bool,
-      rippleColor: PropTypes.string,
+      rippleColor: ColorPropType,
       style: Text.propTypes.style
     })),
     separatorIconName: PropTypes.string,
-    tintColor: PropTypes.string,
+    tintColor: ColorPropType,
     onStepPress: PropTypes.func,
     keyExtractor: PropTypes.func,
   }

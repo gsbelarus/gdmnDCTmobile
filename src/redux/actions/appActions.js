@@ -6,19 +6,22 @@ import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_CONFIRM,
+  STRING_ACTION_OK,
   STRING_ACTION_OPEN_SESSION,
   STRING_ACTION_REPEAT,
   STRING_ERROR_CLOSING_SESSION,
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
-  STRING_ERROR_EXPORT_DATA,
-  STRING_ERROR_IMPORT_DATA,
+  STRING_ERROR_NO_CONNECTION,
+  STRING_ERROR_SYNC,
   STRING_NOTIFICATION,
   STRING_NOTIFICATION_SCANNING,
   STRING_PROGRESS_CLOSING_SESSION,
-  STRING_PROGRESS_EXPORT_DATA,
-  STRING_PROGRESS_IMPORT_DATA,
   STRING_PROGRESS_OPENING_SESSION,
-  STRING_PROGRESS_VERIFY_APP
+  STRING_PROGRESS_SYNC,
+  STRING_PROGRESS_VERIFY_APP,
+  STRING_SETTINGS_URL_HINT,
+  STRING_SETTINGS_URL_INVALID,
+  STRING_SETTINGS_URL_PRIMARY
 } from '../../localization/strings'
 import {
   ERROR,
@@ -34,7 +37,8 @@ import SessionModel from '../../realm/models/SessionModel'
 import StoringPlaceModel from '../../realm/models/StoringPlaceModel'
 import OperatorModel from '../../realm/models/OperatorModel'
 import OperationModel from '../../realm/models/OperationModel'
-import { ExportManager, ImportManager } from '../../fsManager'
+import ExportManager from '../../sync/ExportManager'
+import ImportManager from '../../sync/ImportManager'
 import { addToProgress, removeFromProgress } from './progressActions'
 import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
 import SettingsModel from '../../realm/models/SettingsModel'
@@ -90,65 +94,72 @@ export function init (realm) {
         )]
       ))
     } else {
-      dispatch(importData(realm))
       dispatch(globalNavigate(realm))
+      const settings = SettingsModel.getSettings(realm)
+      if (!settings.url) {
+        showEditUrlDialog(realm)
+      }
     }
 
     dispatch(removeFromProgress(progress))
   }
 }
 
-export function importData (realm, fileName) {
-  return async (dispatch, getState) => {
-    const progress = {message: strings(STRING_PROGRESS_IMPORT_DATA)}
-    dispatch(addToProgress(progress))
+function showEditUrlDialog (realm) {
+  const settings = SettingsModel.getSettings(realm)
+
+  function updateUrl (url) {
     try {
-      if (fileName) {
-        await ImportManager.importByFileName(realm, fileName)
-      } else {
-        await ImportManager.importAll(realm)
-      }
+      realm.write(() => settings.url = url)
     } catch (error) {
       console.warn(error)
-      Snackbar.show({
-        title: strings(STRING_ERROR_IMPORT_DATA),
-        duration: Snackbar.LENGTH_LONG,
-        action: {
-          title: strings(STRING_ACTION_REPEAT),
-          color: 'red',
-          onPress: () => dispatch(importData(realm, fileName)),
-        }
+      let dialog = new DialogAndroid()
+      dialog.set({
+        title: strings(STRING_NOTIFICATION),
+        content: strings(STRING_SETTINGS_URL_INVALID),
+        positiveText: strings(STRING_ACTION_REPEAT),
+        cancelable: false,
+        onPositive: () => showEditUrlDialog(realm)
       })
-    } finally {
-      dispatch(removeFromProgress(progress))
+      dialog.show()
     }
   }
+
+  let dialog = new DialogAndroid()
+  dialog.set({
+    title: strings(STRING_SETTINGS_URL_PRIMARY),
+    positiveText: strings(STRING_ACTION_OK),
+    cancelable: false,
+    input: {
+      hint: strings(STRING_SETTINGS_URL_HINT),
+      prefill: settings.url,
+      callback: updateUrl
+    }
+  })
+  dialog.show()
 }
 
-export function exportData (realm, sessionKey) {
+export function syncData (realm) {
   return async (dispatch, getState) => {
-    const progress = {message: strings(STRING_PROGRESS_EXPORT_DATA)}
+    const progress = {message: strings(STRING_PROGRESS_SYNC)}
     dispatch(addToProgress(progress))
     try {
-      if (sessionKey) {
-        let session = SessionModel.findSessionByKey(realm, sessionKey)
-        await ExportManager.exportSession(session)
+      await new ExportManager(realm).exportAll()
+      await new ImportManager(realm).importAll()
+      const settings = SettingsModel.getSettings(realm)
+      realm.write(() => settings.lastSyncDate = new Date())
 
-      } else {
-        const sessions = SessionModel.getSortedByDate(realm)
-        for (let i = 0; i < sessions.length; i++) {
-          await ExportManager.exportSession(sessions[i])
-        }
-      }
     } catch (error) {
       console.warn(error)
       Snackbar.show({
-        title: strings(STRING_ERROR_EXPORT_DATA),
+        title: error.message === 'Network request failed'
+          ? strings(STRING_ERROR_NO_CONNECTION)
+          : strings(STRING_ERROR_SYNC),
         duration: Snackbar.LENGTH_LONG,
         action: {
           title: strings(STRING_ACTION_REPEAT),
           color: 'red',
-          onPress: () => dispatch(exportData(realm, sessionKey)),
+          onPress: () => dispatch(syncData(realm)),
         }
       })
     } finally {
@@ -184,14 +195,15 @@ export function openCreateSession (realm, object) {
 
           try {
             if (!SessionModel.getOpenedSession(realm)) {
-              realm.write(() => {
-                SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
-                updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
-              })
+              realm.beginTransaction()
+              SessionModel.create(realm, new Date(), operator, storingPlace, object)
+              updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
+              realm.commitTransaction()
             }
             dispatch(globalNavigate(realm))
           } catch (error) {
             console.warn(error)
+            realm.cancelTransaction()
           }
 
           dispatch(removeFromProgress(progress))
@@ -212,7 +224,6 @@ export function deleteSessionDetail (realm) {
     const session = SessionModel.findSessionByKey(realm, sessionKey)
     if (session) {
       realm.write(() => {
-        realm.delete(session.codes)
         realm.delete(session)
       })
     }
@@ -227,11 +238,15 @@ export function closeSession (realm) {
       dispatch(addToProgress(progress))
       try {
         const session = SessionModel.getOpenedSession(realm)
-        await ExportManager.exportSession(session)
-        realm.write(() => session.disabled = true)
+
+        realm.beginTransaction()
+        session.disabled = true
+        realm.commitTransaction()
+
         dispatch(globalNavigate(realm))
       } catch (error) {
         console.warn(error)
+        realm.cancelTransaction()
         Snackbar.show({
           title: strings(STRING_ERROR_CLOSING_SESSION),
           duration: Snackbar.LENGTH_INDEFINITE,

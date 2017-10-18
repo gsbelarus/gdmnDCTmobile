@@ -11,7 +11,6 @@ import com.rnfs.RNFSPackage;
 import com.aakashns.reactnativedialogs.ReactNativeDialogsPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.gsbelarus.scanner.ScannerReactPackage;
-import com.gsbelarus.fswatcher.FSWatcherReactPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -39,9 +38,13 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFSPackage(),
             new ReactNativeDialogsPackage(),
             new RNDeviceInfo(),
-            new ScannerReactPackage(),
-            new FSWatcherReactPackage()
+            new ScannerReactPackage()
       );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
     }
   };
 

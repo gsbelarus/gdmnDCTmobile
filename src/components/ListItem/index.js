@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { LayoutAnimation, Text, Vibration, View } from 'react-native'
+import { ColorPropType, LayoutAnimation, Text, Vibration, View, ViewPropTypes } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import TouchableView from '../TouchableView'
 import styles from './styles'
@@ -15,7 +15,7 @@ export default class ListItem extends PureComponent {
     primaryText: PropTypes.string,
     secondaryText: PropTypes.string,
     itemDisabled: PropTypes.bool,
-    itemDisabledColor: PropTypes.string,
+    itemDisabledColor: ColorPropType,
     onItemPress: PropTypes.func,
     onItemLongPress: PropTypes.func,
     onItemIconRightPress: PropTypes.func,
@@ -23,7 +23,7 @@ export default class ListItem extends PureComponent {
     primaryTextStyle: Text.propTypes.style,
     secondaryTextStyle: Text.propTypes.style,
     iconRightStyle: Text.propTypes.style,
-    style: View.propTypes.style
+    style: ViewPropTypes.style
   }
 
   static defaultProps = {

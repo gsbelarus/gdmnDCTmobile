@@ -18,19 +18,18 @@ import connectRealm from '../realm/react/connectRealm'
 import SessionModel from '../realm/models/SessionModel'
 import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
-import CodeModel from '../realm/models/CodeModel'
 
 @connectRealm(
   (realm, ownProps) => ({
     realm,
     items: SessionModel.getOpenedSession(realm).codes,
-    renderItem: ({item}) => (
+    renderItem: ({item, index}) => (
       <ListItem
-        id={item.id}
-        primaryText={item.name}
-        iconRightName={'clear'}
+        id={index}
+        primaryText={item}
+        iconRightName={'delete'}
         onItemPress={() => showInputDialog(realm, item)}
-        onItemIconRightPress={() => realm.write(() => realm.delete(item))}/>
+        onItemIconRightPress={() => deleteCode(realm, item)}/>
     ),
     actionVisible: true,
     onActionPress: () => showInputDialog(realm),
@@ -47,7 +46,8 @@ import CodeModel from '../realm/models/CodeModel'
         })
       } else {
         await scannerCallbackTask(scanResult)
-        let code = SessionModel.findCodeByName(SessionModel.getOpenedSession(realm), scanResult.value)
+        const session = SessionModel.getOpenedSession(realm)
+        let code = session.codes.find((item) => item === scanResult.value)
         if (code) showInputDialog(realm, code)
       }
     }
@@ -76,18 +76,17 @@ function showInputDialog (realm, code) {
     positiveText: strings(STRING_ACTION_OK),
     negativeText: strings(STRING_ACTION_CANCEL),
     neutralText: code ? strings(STRING_ACTION_DELETE) : null,
-    onNeutral: () => realm.write(() => realm.delete(code)),
+    onNeutral: () => deleteCode(realm, code),
     input: {
       hint: strings(STRING_CODE_ENTER),
-      prefill: code ? code.name : '',
-      maxLength: CodeModel.NAME_MAX_LENGTH,
+      prefill: code || '',
       allowEmptyInput: false,
       type: 2,
       callback: (input) => {
-        if (code && input === code.name) return
+        if (code && input === code) return
 
         const session = SessionModel.getOpenedSession(realm)
-        if (SessionModel.findCodeByName(session, input)) {
+        if (session.codes.find((item) => item === input)) {
           setTimeout(() => Snackbar.show({    //TODO workaround
             title: strings(STRING_ERROR_REPEAT_CODE),
             duration: Snackbar.LENGTH_LONG,
@@ -98,12 +97,19 @@ function showInputDialog (realm, code) {
             }
           }), 300)
         } else if (code) {
-          realm.write(() => code.name = input)
+          let index = session.codes.findIndex((item) => item === code)
+          realm.write(() => session.codes[index] = input)
         } else {
-          realm.write(() => session.codes.unshift(CodeModel.create(realm, input)))
+          realm.write(() => session.codes.unshift(input))
         }
       }
     }
   })
   dialog.show()
+}
+
+function deleteCode (realm, code) {
+  const session = SessionModel.getOpenedSession(realm)
+  let index = session.codes.findIndex((item) => item === code)
+  realm.write(() => session.codes.splice(index, 1))
 }

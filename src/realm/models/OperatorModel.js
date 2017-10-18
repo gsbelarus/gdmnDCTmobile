@@ -1,6 +1,6 @@
 export default class OperatorModel {
 
-  static NAME_MAX_LENGTH = 20
+  static NAME_MAX_LENGTH = 60
 
   static FIELD_ID = '_id'
   static FIELD_NAME = '_name'
@@ -61,8 +61,8 @@ OperatorModel.schema = {
   name: OperatorModel.name,
   primaryKey: OperatorModel.FIELD_ID,
   properties: {
-    [OperatorModel.FIELD_ID]: {type: 'int'},
-    [OperatorModel.FIELD_NAME]: {type: 'string'},
-    [OperatorModel.FIELD_DISABLED]: {type: 'bool'}
+    [OperatorModel.FIELD_ID]: 'int',
+    [OperatorModel.FIELD_NAME]: 'string',
+    [OperatorModel.FIELD_DISABLED]: 'bool'
   }
 }

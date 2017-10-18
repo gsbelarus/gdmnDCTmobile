@@ -13,14 +13,12 @@ export default connectRealm(
         id={item.id}
         primaryText={`${item.operator.name} / ${item.operation.name} / ${item.storingPlace.name}`}
         secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm')}
-        iconRightName={'clear'}
+        iconRightName={'delete'}
         onItemPress={() => ownProps.openSessionDetail(item)}
         onItemIconRightPress={() => {
-          realm.write(() => {
-            realm.delete(item.codes)
-            realm.delete(item)
-          })
-        }}/>
+          realm.write(() => realm.delete(item))
+        }}
+        style={{backgroundColor: item.exported ? '#50C85030' : '#C8505030'}}/>
     ),
     actionVisible: true,
     onActionPress: () => ownProps.openCreateSession(realm)

@@ -16,9 +16,9 @@ export default function createDemoData (realm) {
     realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(2, 'Место 2', '432', false), true)
     realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(3, 'Место 3', '543', true), true)
 
-    realm.create(OperationModel.name, OperationModel.newInstance(1, 'Операция 1', '321', '1', false), true)
-    realm.create(OperationModel.name, OperationModel.newInstance(2, 'Операция 2', '432', '1', false), true)
-    realm.create(OperationModel.name, OperationModel.newInstance(3, 'Операция 3', '543', '1', true), true)
+    realm.create(OperationModel.name, OperationModel.newInstance(1, 'Операция 1', '321', 1, false), true)
+    realm.create(OperationModel.name, OperationModel.newInstance(2, 'Операция 2', '432', 3, false), true)
+    realm.create(OperationModel.name, OperationModel.newInstance(3, 'Операция 3', '543', 2, true), true)
 
     let settings = SettingsModel.getSettings(realm)
     updateStoredSessionsQuantity(realm, settings.maxCountSession)

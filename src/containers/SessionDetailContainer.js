@@ -7,10 +7,10 @@ import ListItem from '../components/ListItem/index'
 @connectRealm(
   (realm, ownProps) => ({
     items: SessionModel.findSessionByKey(realm, ownProps.navigation.state.params.sessionKey).codes,
-    renderItem: ({item}) => (
+    renderItem: ({item, index}) => (
       <ListItem
-        id={item.id}
-        primaryText={item.name}
+        id={index}
+        primaryText={item}
         itemDisabled={true}/>
     )
   }),

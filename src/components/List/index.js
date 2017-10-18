@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { FlatList, LayoutAnimation, View } from 'react-native'
+import { ColorPropType, FlatList, LayoutAnimation, View, ViewPropTypes } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import EmptyView from '../EmptyView/index'
 import styles from './styles'
@@ -15,14 +15,14 @@ export default class List extends PureComponent {
     ]),
     keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled', false, true]),
     actionVisible: PropTypes.bool,
-    actionColor: PropTypes.string,
-    actionRippleColor: PropTypes.string,
+    actionColor: ColorPropType,
+    actionRippleColor: ColorPropType,
     actionIcon: PropTypes.element,
     renderItem: PropTypes.func.isRequired,
     separator: PropTypes.func,
     keyExtractor: PropTypes.func,
     onActionPress: PropTypes.func,
-    style: View.propTypes.style
+    style: ViewPropTypes.style
   }
 
   static defaultProps = {
