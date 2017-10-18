@@ -98,11 +98,11 @@ StoringPlaceModel.schema = {
   name: StoringPlaceModel.name,
   primaryKey: StoringPlaceModel.FIELD_ID,
   properties: {
-    [StoringPlaceModel.FIELD_ID]: {type: 'int'},
-    [StoringPlaceModel.FIELD_NAME]: {type: 'string'},
-    [StoringPlaceModel.FIELD_CODE]: {type: 'string', optional: true},
-    [StoringPlaceModel.FIELD_DISABLED]: {type: 'bool', optional: true},
+    [StoringPlaceModel.FIELD_ID]: 'int',
+    [StoringPlaceModel.FIELD_NAME]: 'string',
+    [StoringPlaceModel.FIELD_CODE]: 'string?',
+    [StoringPlaceModel.FIELD_DISABLED]: 'bool?',
 
-    [StoringPlaceModel.FIELD_SEARCH_FIELD]: {type: 'string'}
+    [StoringPlaceModel.FIELD_SEARCH_FIELD]: 'string'
   }
 }

@@ -16,10 +16,7 @@ export default connectRealm(
         iconRightName={'clear'}
         onItemPress={() => ownProps.openSessionDetail(item)}
         onItemIconRightPress={() => {
-          realm.write(() => {
-            realm.delete(item.codes)
-            realm.delete(item)
-          })
+          realm.write(() => realm.delete(item))
         }}
         style={{backgroundColor: item.exported ? '#50C85030' : '#C8505030'}}/>
     ),

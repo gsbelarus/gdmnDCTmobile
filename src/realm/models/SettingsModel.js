@@ -96,9 +96,9 @@ SettingsModel.schema = {
   name: SettingsModel.name,
   primaryKey: SettingsModel.FIELD_ID,
   properties: {
-    [SettingsModel.FIELD_ID]: {type: 'int', default: SettingsModel.DEFAULT_ID},
-    [SettingsModel.FIELD_MAX_COUNT_SESSION]: {type: 'int', default: SettingsModel.DEFAULT_MAX_COUNT_SESSION},
-    [SettingsModel.FIELD_URL]: {type: 'string', optional: true},
-    [SettingsModel.FIELD_LAST_SYNC_DATE]: {type: 'date', optional: true}
+    [SettingsModel.FIELD_ID]: 'int',
+    [SettingsModel.FIELD_MAX_COUNT_SESSION]: 'int',
+    [SettingsModel.FIELD_URL]: 'string?',
+    [SettingsModel.FIELD_LAST_SYNC_DATE]: 'date?'
   }
 }

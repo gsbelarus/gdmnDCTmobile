@@ -61,8 +61,8 @@ OperatorModel.schema = {
   name: OperatorModel.name,
   primaryKey: OperatorModel.FIELD_ID,
   properties: {
-    [OperatorModel.FIELD_ID]: {type: 'int'},
-    [OperatorModel.FIELD_NAME]: {type: 'string'},
-    [OperatorModel.FIELD_DISABLED]: {type: 'bool'}
+    [OperatorModel.FIELD_ID]: 'int',
+    [OperatorModel.FIELD_NAME]: 'string',
+    [OperatorModel.FIELD_DISABLED]: 'bool'
   }
 }

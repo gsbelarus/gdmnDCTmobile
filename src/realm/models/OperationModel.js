@@ -110,12 +110,12 @@ OperationModel.schema = {
   name: OperationModel.name,
   primaryKey: OperationModel.FIELD_ID,
   properties: {
-    [OperationModel.FIELD_ID]: {type: 'int'},
-    [OperationModel.FIELD_NAME]: {type: 'string'},
-    [OperationModel.FIELD_CODE]: {type: 'string', optional: true},
-    [OperationModel.FIELD_SORT_NUMBER]: {type: 'int', optional: true},
-    [OperationModel.FIELD_DISABLED]: {type: 'bool'},
+    [OperationModel.FIELD_ID]: 'int',
+    [OperationModel.FIELD_NAME]: 'string',
+    [OperationModel.FIELD_CODE]: 'string?',
+    [OperationModel.FIELD_SORT_NUMBER]: 'int?',
+    [OperationModel.FIELD_DISABLED]: 'bool',
 
-    [OperationModel.FIELD_SEARCH_FIELD]: {type: 'string'}
+    [OperationModel.FIELD_SEARCH_FIELD]: 'string'
   }
 }

@@ -193,7 +193,7 @@ export function openCreateSession (realm, object) {
           try {
             if (!SessionModel.getOpenedSession(realm)) {
               realm.beginTransaction()
-              SessionModel.create(realm, new Date(), operator, storingPlace, object, false, [])
+              SessionModel.create(realm, new Date(), operator, storingPlace, object)
               updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
               realm.commitTransaction()
             }
@@ -221,7 +221,6 @@ export function deleteSessionDetail (realm) {
     const session = SessionModel.findSessionByKey(realm, sessionKey)
     if (session) {
       realm.write(() => {
-        realm.delete(session.codes)
         realm.delete(session)
       })
     }
