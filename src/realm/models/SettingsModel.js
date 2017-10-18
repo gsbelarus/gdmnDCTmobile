@@ -16,6 +16,7 @@ export default class SettingsModel {
   static FIELD_ID = '_id'
   static FIELD_MAX_COUNT_SESSION = '_maxCountSession'
   static FIELD_URL = '_url'
+  static FIELD_LAST_SYNC_DATE = '_lastSyncDate'
 
   get id () {
     return this[SettingsModel.FIELD_ID]
@@ -53,13 +54,23 @@ export default class SettingsModel {
     this[SettingsModel.FIELD_URL] = value
   }
 
+  get lastSyncDate () {
+    return this[SettingsModel.FIELD_LAST_SYNC_DATE]
+  }
+
+  set lastSyncDate (value) {
+    this[SettingsModel.FIELD_LAST_SYNC_DATE] = value
+  }
+
   static newInstance (id = SettingsModel.DEFAULT_ID,
                       maxCountSession = SettingsModel.DEFAULT_MAX_COUNT_SESSION,
-                      url) {
+                      url,
+                      lastSyncDate) {
     let instance = new SettingsModel()
     instance.id = id
     instance.maxCountSession = maxCountSession
     instance.url = url
+    instance.lastSyncDate = lastSyncDate
     return instance
   }
 
@@ -87,6 +98,7 @@ SettingsModel.schema = {
   properties: {
     [SettingsModel.FIELD_ID]: {type: 'int', default: SettingsModel.DEFAULT_ID},
     [SettingsModel.FIELD_MAX_COUNT_SESSION]: {type: 'int', default: SettingsModel.DEFAULT_MAX_COUNT_SESSION},
-    [SettingsModel.FIELD_URL]: {type: 'string', optional: true}
+    [SettingsModel.FIELD_URL]: {type: 'string', optional: true},
+    [SettingsModel.FIELD_LAST_SYNC_DATE]: {type: 'date', optional: true}
   }
 }

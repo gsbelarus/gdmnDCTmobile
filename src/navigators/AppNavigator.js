@@ -4,8 +4,8 @@ import { View } from 'react-native'
 import strings, {
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_DELETE,
-  STRING_ACTION_IMPORT,
   STRING_ACTION_SETTINGS,
+  STRING_ACTION_SYNC,
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
@@ -70,7 +70,9 @@ export default StackNavigator({
     })
   },
   [SETTINGS]: {
-    screen: SettingsContainer,
+    screen: ({navigation}) => (
+      <SettingsContainer syncData={() => navigation.dispatch(syncData(navigation.realm))}/>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SETTINGS)
     })
@@ -93,7 +95,7 @@ export default StackNavigator({
         <View style={{flexDirection: 'row'}}>
           <HeaderIcon
             iconName={'sync'}
-            label={strings(STRING_ACTION_IMPORT)}
+            label={strings(STRING_ACTION_SYNC)}
             onPress={() => navigation.dispatch(syncData(navigation.realm))}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>

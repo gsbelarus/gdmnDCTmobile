@@ -20,7 +20,8 @@ export default connectRealm(
             realm.delete(item.codes)
             realm.delete(item)
           })
-        }}/>
+        }}
+        style={{backgroundColor: item.exported ? '#50C85030' : '#C8505030'}}/>
     ),
     actionVisible: true,
     onActionPress: () => ownProps.openCreateSession(realm)

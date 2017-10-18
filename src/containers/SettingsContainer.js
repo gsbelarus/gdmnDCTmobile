@@ -12,6 +12,8 @@ import strings, {
   STRING_SETTINGS_COUNT_SESSION_OVERFLOW,
   STRING_SETTINGS_COUNT_SESSION_PRIMARY,
   STRING_SETTINGS_COUNT_SESSION_SECONDARY,
+  STRING_SETTINGS_SYNC_PRIMARY,
+  STRING_SETTINGS_SYNC_SECONDARY,
   STRING_SETTINGS_URL_HINT,
   STRING_SETTINGS_URL_INVALID,
   STRING_SETTINGS_URL_PRIMARY,
@@ -23,10 +25,12 @@ import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
 import SettingModel from '../realm/models/SettingsModel'
 import SessionModel from '../realm/models/SessionModel'
+import { formatDate } from '../localization/utils'
 
 export default connectRealm(
   (realm, ownProps) => ({
     setting: SettingModel.getSettings(realm),
+    syncData: ownProps.syncData,
     updateMaxCountSession: (maxCountSession) => {
       if (maxCountSession > 0 && SessionModel.getSortedByDate(realm).length > maxCountSession) {
         let dialog = new DialogAndroid()
@@ -59,6 +63,7 @@ export default connectRealm(
     renderItem: ({item}) => (
       <ListItem
         id={item.id}
+        itemDisabled={item.disabled}
         primaryText={item.primaryText}
         secondaryText={item.secondaryText}
         onItemPress={item.onItemPress}
@@ -114,6 +119,14 @@ function getItems (mapRealmProps) {
       dialog.show()
     }
   }, {
+    primaryText: strings(STRING_SETTINGS_SYNC_PRIMARY),
+    secondaryText: mapRealmProps.setting.lastSyncDate
+      ? strings(STRING_SETTINGS_SYNC_SECONDARY,
+        {date: formatDate(mapRealmProps.setting.lastSyncDate, 'Do MMMM YYYY, HH:mm')})
+      : null,
+    disabled: !mapRealmProps.setting.url,
+    onItemPress: mapRealmProps.syncData
+  }, {
     primaryText: strings(STRING_SETTINGS_ABOUT),
     onItemPress: () => {
       let dialog = new DialogAndroid()
@@ -140,6 +153,6 @@ function updateMaxCountSessions (realm, maxCountSession) {
 }
 
 function updateUrl (realm, url) {
-  let settings = SettingModel.getSettings(realm)
+  const settings = SettingModel.getSettings(realm)
   realm.write(() => settings.url = url)
 }

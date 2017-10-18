@@ -6,6 +6,7 @@ import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_CONFIRM,
+  STRING_ACTION_OK,
   STRING_ACTION_OPEN_SESSION,
   STRING_ACTION_REPEAT,
   STRING_ERROR_CLOSING_SESSION,
@@ -16,7 +17,10 @@ import strings, {
   STRING_PROGRESS_CLOSING_SESSION,
   STRING_PROGRESS_OPENING_SESSION,
   STRING_PROGRESS_SYNC,
-  STRING_PROGRESS_VERIFY_APP
+  STRING_PROGRESS_VERIFY_APP,
+  STRING_SETTINGS_URL_HINT,
+  STRING_SETTINGS_URL_INVALID,
+  STRING_SETTINGS_URL_PRIMARY
 } from '../../localization/strings'
 import {
   ERROR,
@@ -90,10 +94,48 @@ export function init (realm) {
       ))
     } else {
       dispatch(globalNavigate(realm))
+      const settings = SettingsModel.getSettings(realm)
+      if (!settings.url) {
+        showEditUrlDialog(realm)
+      }
     }
 
     dispatch(removeFromProgress(progress))
   }
+}
+
+function showEditUrlDialog (realm) {
+  const settings = SettingsModel.getSettings(realm)
+
+  function updateUrl (url) {
+    try {
+      realm.write(() => settings.url = url)
+    } catch (error) {
+      console.warn(error)
+      let dialog = new DialogAndroid()
+      dialog.set({
+        title: strings(STRING_NOTIFICATION),
+        content: strings(STRING_SETTINGS_URL_INVALID),
+        positiveText: strings(STRING_ACTION_REPEAT),
+        cancelable: false,
+        onPositive: () => showEditUrlDialog(realm)
+      })
+      dialog.show()
+    }
+  }
+
+  let dialog = new DialogAndroid()
+  dialog.set({
+    title: strings(STRING_SETTINGS_URL_PRIMARY),
+    positiveText: strings(STRING_ACTION_OK),
+    cancelable: false,
+    input: {
+      hint: strings(STRING_SETTINGS_URL_HINT),
+      prefill: settings.url,
+      callback: updateUrl
+    }
+  })
+  dialog.show()
 }
 
 export function syncData (realm) {
@@ -103,6 +145,9 @@ export function syncData (realm) {
     try {
       await new ExportManager(realm).exportAll()
       await new ImportManager(realm).importAll()
+      const settings = SettingsModel.getSettings(realm)
+      realm.write(() => settings.lastSyncDate = new Date())
+
     } catch (error) {
       console.warn(error)
       Snackbar.show({

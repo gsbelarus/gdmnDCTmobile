@@ -5,7 +5,6 @@ import StoringPlaceModel from './models/StoringPlaceModel'
 import OperationModel from './models/OperationModel'
 import CodeModel from './models/CodeModel'
 import SettingModel from './models/SettingsModel'
-import createDemoData from './utils'
 
 let realm
 
@@ -13,11 +12,12 @@ export async function openRealm () {
   if (!realm) {
     realm = await Realm.open({
       schema: [SettingModel, SessionModel, OperatorModel, StoringPlaceModel, OperationModel, CodeModel],
-      schemaVersion: 106,
+      schemaVersion: 107,
       shouldCompactOnLaunch: (totalBytes, usedBytes) => true
     }).progress(console.log)
 
-    // createDemoData(realm)    //TODO remove
+    // realm.write(() => realm.deleteAll())     //TODO remove
+    // createDemoData(realm)                //TODO remove
   }
   return realm
 }
