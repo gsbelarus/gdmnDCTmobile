@@ -13,7 +13,7 @@ export default connectRealm(
         id={item.id}
         primaryText={`${item.operator.name} / ${item.operation.name} / ${item.storingPlace.name}`}
         secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm')}
-        iconRightName={'clear'}
+        iconRightName={'delete'}
         onItemPress={() => ownProps.openSessionDetail(item)}
         onItemIconRightPress={() => {
           realm.write(() => realm.delete(item))

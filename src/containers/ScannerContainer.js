@@ -27,7 +27,7 @@ import ListItem from '../components/ListItem/index'
       <ListItem
         id={index}
         primaryText={item}
-        iconRightName={'clear'}
+        iconRightName={'delete'}
         onItemPress={() => showInputDialog(realm, item)}
         onItemIconRightPress={() => deleteCode(realm, item)}/>
     ),

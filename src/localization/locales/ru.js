@@ -17,8 +17,7 @@ import {
   STRING_EMPTY_DATA,
   STRING_ERROR_CLOSING_SESSION,
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
-  STRING_ERROR_EXPORT_DATA,
-  STRING_ERROR_IMPORT_DATA,
+  STRING_ERROR_NO_CONNECTION,
   STRING_ERROR_REPEAT_CODE,
   STRING_ERROR_SCANNING,
   STRING_ERROR_SYNC,
@@ -37,7 +36,6 @@ import {
   STRING_SETTINGS_COUNT_SESSION_SECONDARY,
   STRING_SETTINGS_SYNC_PRIMARY,
   STRING_SETTINGS_SYNC_SECONDARY,
-  STRING_SETTINGS_SYNC_SECONDARY_EMPTY,
   STRING_SETTINGS_URL_HINT,
   STRING_SETTINGS_URL_INVALID,
   STRING_SETTINGS_URL_PRIMARY,
@@ -100,10 +98,9 @@ export default () => ({
   [STRING_TITLE_SCANNER]: 'Сессия открыта...',
 
   [STRING_ERROR_DEVICE_NOT_SUPPORTED]: 'Устройство не поддерживается',
-  [STRING_ERROR_IMPORT_DATA]: 'Не удалось загрузить данные',
-  [STRING_ERROR_EXPORT_DATA]: 'Не удалось выгрузить данные',
   [STRING_ERROR_CLOSING_SESSION]: 'Не удалось закрыть сессию',
   [STRING_ERROR_SCANNING]: 'Не удалось считать код',
   [STRING_ERROR_REPEAT_CODE]: 'Код уже отсканирован',
-  [STRING_ERROR_SYNC]: 'Не удалось синхронизировать данные'
+  [STRING_ERROR_SYNC]: 'Не удалось синхронизировать данные',
+  [STRING_ERROR_NO_CONNECTION]: 'Не удалось установить соединение'
 })

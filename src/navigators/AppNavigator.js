@@ -115,7 +115,7 @@ export default StackNavigator({
       title: strings(STRING_TITLE_SESSION_DETAIL),
       headerRight: (
         <HeaderIcon
-          iconName={'clear'}
+          iconName={'delete'}
           label={strings(STRING_ACTION_DELETE)}
           onPress={() => navigation.dispatch(deleteSessionDetail(navigation.realm, navigation.state.params.sessionKey))}
           rippleColor={'white'}

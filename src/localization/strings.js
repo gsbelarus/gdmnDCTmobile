@@ -49,12 +49,11 @@ export const STRING_TITLE_SELECT_OPERATION = 'titleSelectOperation'
 export const STRING_TITLE_SCANNER = 'titleScanner'
 
 export const STRING_ERROR_DEVICE_NOT_SUPPORTED = 'deviceNotSupported'
-export const STRING_ERROR_IMPORT_DATA = 'errorImportData'
-export const STRING_ERROR_EXPORT_DATA = 'errorExportData'
 export const STRING_ERROR_CLOSING_SESSION = 'errorClosingSession'
 export const STRING_ERROR_SCANNING = 'errorScanning'
 export const STRING_ERROR_REPEAT_CODE = 'errorRepeatCode'
 export const STRING_ERROR_SYNC = 'errorSync'
+export const STRING_ERROR_NO_CONNECTION = 'errorNoConnection'
 
 I18n.fallbacks = true
 I18n.translations = {

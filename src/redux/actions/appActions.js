@@ -11,6 +11,7 @@ import strings, {
   STRING_ACTION_REPEAT,
   STRING_ERROR_CLOSING_SESSION,
   STRING_ERROR_DEVICE_NOT_SUPPORTED,
+  STRING_ERROR_NO_CONNECTION,
   STRING_ERROR_SYNC,
   STRING_NOTIFICATION,
   STRING_NOTIFICATION_SCANNING,
@@ -151,7 +152,9 @@ export function syncData (realm) {
     } catch (error) {
       console.warn(error)
       Snackbar.show({
-        title: strings(STRING_ERROR_SYNC),
+        title: error.message === 'Network request failed'
+          ? strings(STRING_ERROR_NO_CONNECTION)
+          : strings(STRING_ERROR_SYNC),
         duration: Snackbar.LENGTH_LONG,
         action: {
           title: strings(STRING_ACTION_REPEAT),
