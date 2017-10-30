@@ -82,7 +82,7 @@ export function init (realm) {
     dispatch(addToProgress(progress))
 
     let isSupported = await ScannerApi.isDeviceSupported()
-    // isSupported = true    //TODO remove
+    isSupported = true    //TODO remove
 
     if (!isSupported) {
       dispatch(reset(0,
