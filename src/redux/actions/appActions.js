@@ -34,7 +34,6 @@ import {
   SETTINGS
 } from '../../navigators/AppNavigator'
 import SessionModel from '../../realm/models/SessionModel'
-import StoringPlaceModel from '../../realm/models/StoringPlaceModel'
 import OperatorModel from '../../realm/models/OperatorModel'
 import OperationModel from '../../realm/models/OperationModel'
 import ExportManager from '../../sync/ExportManager'
@@ -171,16 +170,13 @@ export function syncData (realm) {
 export function openCreateSession (realm, object) {
   return (dispatch, getState) => {
     const {appState} = getState()
-    const {operator, storingPlace} = getCurrentRouteState(appState).params || {}
+    const {operator} = getCurrentRouteState(appState).params || {}
 
     if (!object) {
       dispatch(navigate(SELECT_OPERATOR))
 
     } else if (object instanceof OperatorModel) {
-      dispatch(navigate(SELECT_STORING_PLACE, {operator: object}))
-
-    } else if (object instanceof StoringPlaceModel) {
-      dispatch(navigate(SELECT_OPERATION, {storingPlace: object, operator}))
+      dispatch(navigate(SELECT_OPERATION, {operator: object}))
 
     } else if (object instanceof OperationModel) {
       let dialog = new DialogAndroid()
@@ -195,15 +191,14 @@ export function openCreateSession (realm, object) {
 
           try {
             if (!SessionModel.getOpenedSession(realm)) {
-              realm.beginTransaction()
-              SessionModel.create(realm, new Date(), operator, storingPlace, object)
-              updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
-              realm.commitTransaction()
+              realm.write(() => {
+                SessionModel.create(realm, new Date(), operator, object)
+                updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
+              })
             }
             dispatch(globalNavigate(realm))
           } catch (error) {
             console.warn(error)
-            realm.cancelTransaction()
           }
 
           dispatch(removeFromProgress(progress))
@@ -224,6 +219,7 @@ export function deleteSessionDetail (realm) {
     const session = SessionModel.findSessionByKey(realm, sessionKey)
     if (session) {
       realm.write(() => {
+        realm.delete(session.codes)
         realm.delete(session)
       })
     }
@@ -238,15 +234,10 @@ export function closeSession (realm) {
       dispatch(addToProgress(progress))
       try {
         const session = SessionModel.getOpenedSession(realm)
-
-        realm.beginTransaction()
-        session.disabled = true
-        realm.commitTransaction()
-
+        realm.write(() => session.disabled = true)
         dispatch(globalNavigate(realm))
       } catch (error) {
         console.warn(error)
-        realm.cancelTransaction()
         Snackbar.show({
           title: strings(STRING_ERROR_CLOSING_SESSION),
           duration: Snackbar.LENGTH_INDEFINITE,
@@ -283,8 +274,7 @@ function globalNavigate (realm) {
         [openScanner({
           sessionKey: session.id,
           sessionOperatorName: session.operator.name,
-          sessionOperationName: session.operation.name,
-          sessionStoringPlaceName: session.storingPlace.name
+          sessionOperationName: session.operation.name
         })]
       ))
 

@@ -1,6 +1,6 @@
 import OperatorModel from './OperatorModel'
-import StoringPlaceModel from './StoringPlaceModel'
 import OperationModel from './OperationModel'
+import CodeModel from './CodeModel'
 
 export default class SessionModel {
 
@@ -9,7 +9,6 @@ export default class SessionModel {
   static FIELD_ID = '_id'
   static FIELD_TIME = '_time'
   static FIELD_OPERATOR = '_operator'
-  static FIELD_STORING_PLACE = '_storingPlace'
   static FIELD_OPERATION = '_operation'
   static FIELD_DISABLED = '_disabled'
   static FIELD_EXPORTED = '_exported'
@@ -38,14 +37,6 @@ export default class SessionModel {
 
   set operator (value) {
     this[SessionModel.FIELD_OPERATOR] = value
-  }
-
-  get storingPlace () {
-    return this[SessionModel.FIELD_STORING_PLACE]
-  }
-
-  set storingPlace (value) {
-    this[SessionModel.FIELD_STORING_PLACE] = value
   }
 
   get operation () {
@@ -83,7 +74,6 @@ export default class SessionModel {
   static newInstance (id,
                       time,
                       operator,
-                      storingPlace,
                       operation,
                       disabled = false,
                       codes = [],
@@ -92,7 +82,6 @@ export default class SessionModel {
     instance.id = id
     instance.time = time
     instance.operator = operator
-    instance.storingPlace = storingPlace
     instance.operation = operation
     instance.disabled = disabled
     instance.exported = exported
@@ -100,14 +89,18 @@ export default class SessionModel {
     return instance
   }
 
-  static create (realm, time, operator, storingPlace, operation, disabled, codes) {
+  static create (realm, time, operator, operation, disabled, codes) {
     let max = realm.objects(SessionModel.name).max(SessionModel.FIELD_ID) || 0
     return realm.create(SessionModel.name,
-      SessionModel.newInstance(max + 1, time, operator, storingPlace, operation, disabled, codes))
+      SessionModel.newInstance(max + 1, time, operator, operation, disabled, codes))
   }
 
   static getSortedByDate (realm, reverse) {
     return realm.objects(SessionModel.name).sorted(SessionModel.FIELD_TIME, reverse)
+  }
+
+  static getExported (realm) {
+    return SessionModel.getSortedByDate(realm).filter((item) => item.exported)
   }
 
   static getOpenedSession (realm) {
@@ -128,10 +121,9 @@ SessionModel.schema = {
     [SessionModel.FIELD_ID]: 'int',
     [SessionModel.FIELD_TIME]: 'date',
     [SessionModel.FIELD_OPERATOR]: OperatorModel.name,
-    [SessionModel.FIELD_STORING_PLACE]: StoringPlaceModel.name,
     [SessionModel.FIELD_OPERATION]: OperationModel.name,
     [SessionModel.FIELD_DISABLED]: 'bool',
     [SessionModel.FIELD_EXPORTED]: 'bool',
-    [SessionModel.FIELD_CODES]: 'string[]'
+    [SessionModel.FIELD_CODES]: `${CodeModel.name}[]`
   }
 }

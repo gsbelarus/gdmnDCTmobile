@@ -71,7 +71,7 @@ export default () => ({
   [STRING_CODE_ENTER]: 'Введите код...',
 
   [STRING_SETTINGS_COUNT_SESSION_PRIMARY]: 'Размер хранилища сессий',
-  [STRING_SETTINGS_COUNT_SESSION_SECONDARY]: 'Максимальное количество сессий для хранения: {{count}}',
+  [STRING_SETTINGS_COUNT_SESSION_SECONDARY]: 'Максимальное количество синхронизированных сессий для хранения: {{count}}',
   [STRING_SETTINGS_COUNT_SESSION_HINT]: 'Введите количество...',
   [STRING_SETTINGS_COUNT_SESSION_DESCRIPTION]: 'Максимальное количество сессий для хранения (0 = ∞). Старые сессии удаляются',
   [STRING_SETTINGS_COUNT_SESSION_OVERFLOW]: 'Количество сессий превышает размер хранилища. Удалить старые сессии?',

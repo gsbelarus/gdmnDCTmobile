@@ -8,7 +8,10 @@ import AppNavigator from '../navigators/AppNavigator'
 import ProgressModalContainer from './ProgressModalContainer'
 import RealmProvider from '../realm/react/RealmProvider'
 
-class App extends PureComponent {
+@connect(
+  (state) => ({state: state.appState})
+)
+export default class App extends PureComponent {
 
   state = {
     realm: null
@@ -51,14 +54,14 @@ class App extends PureComponent {
           <AppNavigator
             navigation={addNavigationHelpers({
               dispatch: this.props.dispatch,
-              state: this.props.state,
+              state: this.props.state
+            })}
+            screenProps={{
               realm: this.state.realm
-            })}/>
+            }}/>
           <ProgressModalContainer/>
         </View>
       </RealmProvider>
     )
   }
 }
-
-export default connect((state) => ({state: state.appState}))(App)

@@ -28,8 +28,12 @@ export default function createDemoData (realm) {
 export function updateStoredSessionsQuantity (realm, count) {
   if (count === 0) return
 
-  let sessions = SessionModel.getSortedByDate(realm, true)
-  if (sessions.length > count) {
-    sessions.slice(count, sessions.length).forEach((item) => realm.delete(item))
+  let sessions = SessionModel.getExported(realm)
+  const exportedSessions = sessions.filter((session) => session.exported)
+  if (exportedSessions.length > count) {
+    sessions.slice(count, sessions.length).forEach((item) => {
+      realm.delete(item.codes)
+      realm.delete(item)
+    })
   }
 }

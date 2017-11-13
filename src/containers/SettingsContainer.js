@@ -32,7 +32,7 @@ export default connectRealm(
     setting: SettingModel.getSettings(realm),
     syncData: ownProps.syncData,
     updateMaxCountSession: (maxCountSession) => {
-      if (maxCountSession > 0 && SessionModel.getSortedByDate(realm).length > maxCountSession) {
+      if (maxCountSession > 0 && SessionModel.getExported(realm).length > maxCountSession) {
         let dialog = new DialogAndroid()
         dialog.set({
           title: strings(STRING_NOTIFICATION),

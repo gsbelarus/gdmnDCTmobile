@@ -82,6 +82,10 @@ export default class StoringPlaceModel {
       .sorted(StoringPlaceModel.FIELD_NAME, reverse)
   }
 
+  static getObject(realm, key) {
+    return realm.objectForPrimaryKey(StoringPlaceModel.name, key)
+  }
+
   static search (items, search) {
     if (!search) return items
     return items.filtered(`${StoringPlaceModel.FIELD_SEARCH_FIELD} CONTAINS[c] "${search.toLowerCase()}"`)

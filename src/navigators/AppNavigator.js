@@ -9,7 +9,6 @@ import strings, {
   STRING_TITLE_SCANNER,
   STRING_TITLE_SELECT_OPERATION,
   STRING_TITLE_SELECT_OPERATOR,
-  STRING_TITLE_SELECT_STORING_PLACE,
   STRING_TITLE_SESSION_DETAIL,
   STRING_TITLE_SESSIONS,
   STRING_TITLE_SETTINGS
@@ -26,9 +25,8 @@ import SettingsContainer from '../containers/SettingsContainer'
 import SessionsContainer from '../containers/SessionsContainer'
 import SessionDetailContainer from '../containers/SessionDetailContainer'
 import SelectOperatorContainer from '../containers/SelectOperatorContainer'
-import SelectStoringPlaceContainer from '../containers/SelectStoringPlaceContainer'
 import SelectOperationContainer from '../containers/SelectOperationContainer'
-import ScannerContainer from '../containers/ScannerContainer'
+import ScannerContainer from '../containers/ScannerContainer/index'
 import HeaderIcon from '../components/HeaderIcon/index'
 import EmptyView from '../components/EmptyView/index'
 import SplashScreen from '../components/SplashScreen/index'
@@ -41,7 +39,6 @@ export const SETTINGS = 'Settings'
 export const SESSIONS = 'Sessions'
 export const SESSION_DETAIL = 'SessionDetail'
 export const SELECT_OPERATOR = 'SelectOperator'
-export const SELECT_STORING_PLACE = 'SelectStoringPlace'
 export const SELECT_OPERATION = 'SelectOperation'
 export const SCANNER = 'Scanner'
 
@@ -70,8 +67,8 @@ export default StackNavigator({
     })
   },
   [SETTINGS]: {
-    screen: ({navigation}) => (
-      <SettingsContainer syncData={() => navigation.dispatch(syncData(navigation.realm))}/>
+    screen: ({navigation, screenProps}) => (
+      <SettingsContainer syncData={() => navigation.dispatch(syncData(screenProps.realm))}/>
     ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SETTINGS)
@@ -85,8 +82,7 @@ export default StackNavigator({
           navigation.dispatch(openSessionDetail({
             sessionKey: session.id,
             sessionOperatorName: session.operator.name,
-            sessionOperationName: session.operation.name,
-            sessionStoringPlaceName: session.storingPlace.name
+            sessionOperationName: session.operation.name
           }))}/>
     ),
     navigationOptions: ({navigation, screenProps}) => ({
@@ -96,7 +92,7 @@ export default StackNavigator({
           <HeaderIcon
             iconName={'sync'}
             label={strings(STRING_ACTION_SYNC)}
-            onPress={() => navigation.dispatch(syncData(navigation.realm))}
+            onPress={() => navigation.dispatch(syncData(screenProps.realm))}
             rippleColor={'white'}
             iconStyle={{color: 'white'}}/>
           <HeaderIcon
@@ -117,17 +113,16 @@ export default StackNavigator({
         <HeaderIcon
           iconName={'delete'}
           label={strings(STRING_ACTION_DELETE)}
-          onPress={() => navigation.dispatch(deleteSessionDetail(navigation.realm, navigation.state.params.sessionKey))}
+          onPress={() => navigation.dispatch(deleteSessionDetail(screenProps.realm, navigation.state.params.sessionKey))}
           rippleColor={'white'}
           iconStyle={{color: 'white'}}/>
       ),
       header: (props) => {
         const {headerStyle, headerTintColor} = props.getScreenDetails(props.scene).options
-        const {sessionOperatorName, sessionOperationName, sessionStoringPlaceName} = navigation.state.params || {}
+        const {sessionOperatorName, sessionOperationName} = navigation.state.params || {}
         let steps = [
           {label: sessionOperatorName, disabled: true},
-          {label: sessionOperationName, disabled: true},
-          {label: sessionStoringPlaceName, disabled: true}
+          {label: sessionOperationName, disabled: true}
         ]
         return (
           <View style={headerStyle}>
@@ -145,26 +140,6 @@ export default StackNavigator({
     ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SELECT_OPERATOR)
-    })
-  },
-  [SELECT_STORING_PLACE]: {
-    screen: ({navigation}) => (
-      <SelectStoringPlaceContainer
-        search={navigation.state.params && navigation.state.params.search}
-        openCreateSession={(realm, storingPlace) => navigation.dispatch(openCreateSession(realm, storingPlace))}/>
-    ),
-    navigationOptions: ({navigation, screenProps}) => ({
-      title: strings(STRING_TITLE_SELECT_STORING_PLACE),
-      header: (props) => {
-        return (
-          <View style={props.getScreenDetails(props.scene).options.headerStyle}>
-            <Header {...props}/>
-            <HeaderSearchBar
-              value={navigation.state.params && navigation.state.params.search}
-              onChangeText={(search) => navigation.setParams({search})}/>
-          </View>
-        )
-      }
     })
   },
   [SELECT_OPERATION]: {
@@ -195,17 +170,16 @@ export default StackNavigator({
         <HeaderIcon
           iconName={'highlight-off'}
           label={strings(STRING_ACTION_CLOSE_SESSION)}
-          onPress={() => navigation.dispatch(closeSession(navigation.realm))}
+          onPress={() => navigation.dispatch(closeSession(screenProps.realm))}
           rippleColor={'white'}
           iconStyle={{color: 'red'}}/>
       ),
       header: (props) => {
         const {headerStyle, headerTintColor} = props.getScreenDetails(props.scene).options
-        const {sessionOperatorName, sessionOperationName, sessionStoringPlaceName} = navigation.state.params || {}
+        const {sessionOperatorName, sessionOperationName} = navigation.state.params || {}
         let steps = [
           {label: sessionOperatorName, disabled: true},
-          {label: sessionOperationName, disabled: true},
-          {label: sessionStoringPlaceName, disabled: true}
+          {label: sessionOperationName, disabled: true}
         ]
         return (
           <View style={headerStyle}>
