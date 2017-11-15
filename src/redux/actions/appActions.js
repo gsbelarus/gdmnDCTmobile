@@ -7,6 +7,7 @@ import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_CONFIRM,
+  STRING_ACTION_DELETE,
   STRING_ACTION_OK,
   STRING_ACTION_OPEN_SESSION,
   STRING_ACTION_REPEAT,
@@ -42,6 +43,7 @@ import ImportManager from '../../sync/ImportManager'
 import { addToProgress, removeFromProgress } from './progressActions'
 import SettingsModel from '../../realm/models/SettingsModel'
 import { updateStoredSessionsQuantity } from '../../realm/utils'
+import { getCurrentRouteState } from '../reducers/appReducer'
 
 function navigate (routeName = ERROR, params = {}, action = null) {
   return NavigationActions.navigate({routeName, params, action})
@@ -216,15 +218,25 @@ export function deleteSessionDetail (realm) {
 
     if (!sessionKey) return
 
-    dispatch(goBack())
+    let dialog = new DialogAndroid()
+    dialog.set({
+      title: strings(STRING_NOTIFICATION),
+      content: strings(STRING_ACTION_DELETE) + '?',
+      positiveText: strings(STRING_ACTION_CONFIRM),
+      negativeText: strings(STRING_ACTION_CANCEL),
+      onPositive: () => {
+        dispatch(goBack())
 
-    const session = SessionModel.findSessionByKey(realm, sessionKey)
-    if (session) {
-      realm.write(() => {
-        realm.delete(session.codes)
-        realm.delete(session)
-      })
-    }
+        const session = SessionModel.findSessionByKey(realm, sessionKey)
+        if (session) {
+          realm.write(() => {
+            realm.delete(session.codes)
+            realm.delete(session)
+          })
+        }
+      }
+    })
+    dialog.show()
   }
 }
 
@@ -287,11 +299,4 @@ function globalNavigate (realm) {
       dispatch(reset(0, [navigate(SESSIONS)]))
     }
   }
-}
-
-function getCurrentRouteState (navigationState) {
-  if (!navigationState) return null
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) return getCurrentRouteState(route)
-  return route
 }
