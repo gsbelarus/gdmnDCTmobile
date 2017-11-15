@@ -214,16 +214,16 @@ export function deleteSessionDetail (realm) {
     const {appState} = getState()
     const {sessionKey} = getCurrentRouteState(appState).params || {}
 
+    if (!sessionKey) return
+
     dispatch(goBack())
 
-    if (sessionKey) {
-      const session = SessionModel.findSessionByKey(realm, sessionKey)
-      if (session) {
-        realm.write(() => {
-          realm.delete(session.codes)
-          realm.delete(session)
-        })
-      }
+    const session = SessionModel.findSessionByKey(realm, sessionKey)
+    if (session) {
+      realm.write(() => {
+        realm.delete(session.codes)
+        realm.delete(session)
+      })
     }
   }
 }
