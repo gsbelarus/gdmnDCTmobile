@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import { Header, StackNavigator } from 'react-navigation'
 import { View } from 'react-native'
+import { AfterInteractions } from 'react-native-interactions'
 import strings, {
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_DELETE,
@@ -32,6 +33,7 @@ import EmptyView from '../components/EmptyView/index'
 import SplashScreen from '../components/SplashScreen/index'
 import HeaderSearchBar from '../components/HeaderSearchBar/index'
 import HeaderStepHistory from '../components/HeaderStepHistory/index'
+import ProgressModal from '../components/ProgressModal'
 
 export const SPLASH_SCREEN = 'SplashScreen'
 export const ERROR = 'Error'
@@ -68,7 +70,9 @@ export default StackNavigator({
   },
   [SETTINGS]: {
     screen: ({navigation, screenProps}) => (
-      <SettingsContainer syncData={() => navigation.dispatch(syncData(screenProps.realm))}/>
+      <AfterInteractions placeholder={placeHolder}>
+        <SettingsContainer syncData={() => navigation.dispatch(syncData(screenProps.realm))}/>
+      </AfterInteractions>
     ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SETTINGS)
@@ -76,14 +80,16 @@ export default StackNavigator({
   },
   [SESSIONS]: {
     screen: ({navigation}) => (
-      <SessionsContainer
-        openCreateSession={(realm) => navigation.dispatch(openCreateSession(realm))}
-        openSessionDetail={(session) =>
-          navigation.dispatch(openSessionDetail({
-            sessionKey: session.id,
-            sessionOperatorName: session.operator.name,
-            sessionOperationName: session.operation.name
-          }))}/>
+      <AfterInteractions placeholder={placeHolder}>
+        <SessionsContainer
+          openCreateSession={(realm) => navigation.dispatch(openCreateSession(realm))}
+          openSessionDetail={(session) =>
+            navigation.dispatch(openSessionDetail({
+              sessionKey: session.id,
+              sessionOperatorName: session.operator.name,
+              sessionOperationName: session.operation.name
+            }))}/>
+      </AfterInteractions>
     ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SESSIONS),
@@ -106,7 +112,11 @@ export default StackNavigator({
     })
   },
   [SESSION_DETAIL]: {
-    screen: SessionDetailContainer,
+    screen: (props) => (
+      <AfterInteractions placeholder={placeHolder}>
+        <SessionDetailContainer {...props}/>
+      </AfterInteractions>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SESSION_DETAIL),
       headerRight: (
@@ -135,8 +145,10 @@ export default StackNavigator({
   },
   [SELECT_OPERATOR]: {
     screen: ({navigation}) => (
-      <SelectOperatorContainer
-        openCreateSession={(realm, operator) => navigation.dispatch(openCreateSession(realm, operator))}/>
+      <AfterInteractions placeholder={placeHolder}>
+        <SelectOperatorContainer
+          openCreateSession={(realm, operator) => navigation.dispatch(openCreateSession(realm, operator))}/>
+      </AfterInteractions>
     ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SELECT_OPERATOR)
@@ -144,9 +156,11 @@ export default StackNavigator({
   },
   [SELECT_OPERATION]: {
     screen: ({navigation}) => (
-      <SelectOperationContainer
-        search={navigation.state.params && navigation.state.params.search}
-        openCreateSession={(realm, operation) => navigation.dispatch(openCreateSession(realm, operation))}/>
+      <AfterInteractions placeholder={placeHolder}>
+        <SelectOperationContainer
+          search={navigation.state.params && navigation.state.params.search}
+          openCreateSession={(realm, operation) => navigation.dispatch(openCreateSession(realm, operation))}/>
+      </AfterInteractions>
     ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SELECT_OPERATION),
@@ -163,7 +177,11 @@ export default StackNavigator({
     })
   },
   [SCANNER]: {
-    screen: ScannerContainer,
+    screen: (props) => (
+      <AfterInteractions placeholder={placeHolder}>
+        <ScannerContainer {...props}/>
+      </AfterInteractions>
+    ),
     navigationOptions: ({navigation, screenProps}) => ({
       title: strings(STRING_TITLE_SCANNER),
       headerRight: (
@@ -200,3 +218,10 @@ export default StackNavigator({
     headerPressColorAndroid: 'white'
   })
 })
+
+const placeHolder = (
+  <ProgressModal
+    visible={true}
+    progressColor={'black'}
+    style={{backgroundColor: 'white'}}/>
+)
