@@ -15,7 +15,7 @@
     "react": "^16.1.1",
     "react-native": "^0.50.3",
     "react-native-action-button": "^2.8.2",
-    "react-native-android-scanner": "file:react-native-android-scanner",
+    "react-native-android-scanner": "git://github.com/gsbelarus/react-native-android-scanner.git",
     "react-native-device-info": "^0.12.1",
     "react-native-dialogs": "^0.0.20",
     "react-native-i18n": "^2.0.9",

@@ -3563,6 +3563,10 @@ react-native-action-button@^2.8.2:
 "react-native-android-scanner@file:react-native-android-scanner":
   version "0.0.1"
 
+"react-native-android-scanner@git://github.com/gsbelarus/react-native-android-scanner.git":
+  version "0.0.1"
+  resolved "git://github.com/gsbelarus/react-native-android-scanner.git#f9cc05392e54dbddf0b0f6c47bd8f4ae5dc6ef5f"
+
 react-native-device-info@^0.12.1:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.12.1.tgz#659ed145caa5a86a4815904381b25e9ebe0c24f6"

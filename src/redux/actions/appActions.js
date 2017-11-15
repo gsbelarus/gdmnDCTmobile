@@ -2,6 +2,7 @@ import { BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import DialogAndroid from 'react-native-dialogs'
 import Snackbar from 'react-native-snackbar'
+import ScannerApi from 'react-native-android-scanner'
 import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_CLOSE_SESSION,
@@ -39,7 +40,6 @@ import OperationModel from '../../realm/models/OperationModel'
 import ExportManager from '../../sync/ExportManager'
 import ImportManager from '../../sync/ImportManager'
 import { addToProgress, removeFromProgress } from './progressActions'
-import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
 import SettingsModel from '../../realm/models/SettingsModel'
 import { updateStoredSessionsQuantity } from '../../realm/utils'
 
