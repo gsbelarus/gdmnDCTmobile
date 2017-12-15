@@ -78,14 +78,14 @@ export default class OperationModel {
   }
 
   static create (realm, update, name, code, sortNumber, disabled) {
-    let max = realm.objects(OperationModel.name).max(OperationModel.FIELD_ID) || 0
-    return realm.create(OperationModel.name,
+    let max = realm.objects(OperationModel.schema.name).max(OperationModel.FIELD_ID) || 0
+    return realm.create(OperationModel.schema.name,
       OperationModel.newInstance(max + 1, name, code, sortNumber, disabled),
       update)
   }
 
   static getEnabledObjects (realm) {
-    return realm.objects(OperationModel.name)
+    return realm.objects(OperationModel.schema.name)
       .filtered(`${OperationModel.FIELD_DISABLED} = false`)
   }
 
@@ -107,7 +107,7 @@ export default class OperationModel {
 }
 
 OperationModel.schema = {
-  name: OperationModel.name,
+  name: 'OperationModel',
   primaryKey: OperationModel.FIELD_ID,
   properties: {
     [OperationModel.FIELD_ID]: 'int',

@@ -90,13 +90,15 @@ export default class SessionModel {
   }
 
   static create (realm, time, operator, operation, disabled, codes) {
-    let max = realm.objects(SessionModel.name).max(SessionModel.FIELD_ID) || 0
-    return realm.create(SessionModel.name,
+    let max = realm.objects(SessionModel.schema.name).max(SessionModel.FIELD_ID) || 0
+    return realm.create(SessionModel.schema.name,
       SessionModel.newInstance(max + 1, time, operator, operation, disabled, codes))
   }
 
   static getSortedByDate (realm, reverse) {
-    return realm.objects(SessionModel.name).sorted(SessionModel.FIELD_TIME, reverse)
+    const s = realm.objects(SessionModel.schema.name)
+    console.log(s)
+    return s.sorted(SessionModel.FIELD_TIME, reverse)
   }
 
   static getExported (realm) {
@@ -110,20 +112,20 @@ export default class SessionModel {
   }
 
   static findSessionByKey (realm, sessionKey) {
-    return realm.objectForPrimaryKey(SessionModel.name, sessionKey)
+    return realm.objectForPrimaryKey(SessionModel.schema.name, sessionKey)
   }
 }
 
 SessionModel.schema = {
-  name: SessionModel.name,
+  name: 'SessionModel',
   primaryKey: SessionModel.FIELD_ID,
   properties: {
     [SessionModel.FIELD_ID]: 'int',
     [SessionModel.FIELD_TIME]: 'date',
-    [SessionModel.FIELD_OPERATOR]: OperatorModel.name,
-    [SessionModel.FIELD_OPERATION]: OperationModel.name,
+    [SessionModel.FIELD_OPERATOR]: `${OperatorModel.schema.name}`,
+    [SessionModel.FIELD_OPERATION]: `${OperationModel.schema.name}`,
     [SessionModel.FIELD_DISABLED]: 'bool',
     [SessionModel.FIELD_EXPORTED]: 'bool',
-    [SessionModel.FIELD_CODES]: `${CodeModel.name}[]`
+    [SessionModel.FIELD_CODES]: `${CodeModel.schema.name}[]`
   }
 }

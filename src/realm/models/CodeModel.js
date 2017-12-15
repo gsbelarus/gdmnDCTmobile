@@ -45,11 +45,11 @@ export default class CodeModel {
   }
 
   static create (realm, name, storingPlace) {
-    let max = realm.objects(CodeModel.name).max(CodeModel.FIELD_ID) || 0
+    let max = realm.objects(CodeModel.schema.name).max(CodeModel.FIELD_ID) || 0
     if (!storingPlace) {
       storingPlace = this.getDefaultStoringPlace(realm)
     }
-    return realm.create(CodeModel.name, CodeModel.newInstance(max + 1, name, storingPlace))
+    return realm.create(CodeModel.schema.name, CodeModel.newInstance(max + 1, name, storingPlace))
   }
 
   static getDefaultStoringPlace (realm) {
@@ -67,11 +67,11 @@ export default class CodeModel {
 }
 
 CodeModel.schema = {
-  name: CodeModel.name,
+  name: 'CodeModel',
   primaryKey: CodeModel.FIELD_ID,
   properties: {
     [CodeModel.FIELD_ID]: 'int',
     [CodeModel.FIELD_NAME]: 'string',
-    [CodeModel.FIELD_STORING_PLACE]: StoringPlaceModel.name,
+    [CodeModel.FIELD_STORING_PLACE]: `${StoringPlaceModel.schema.name}`,
   }
 }

@@ -68,12 +68,12 @@ export default class StoringPlaceModel {
   }
 
   static create (realm, name, code, disabled) {
-    let max = realm.objects(StoringPlaceModel.name).max(StoringPlaceModel.FIELD_ID) || 0
-    return realm.create(StoringPlaceModel.name, StoringPlaceModel.newInstance(max + 1, name, code, disabled))
+    let max = realm.objects(StoringPlaceModel.schema.name).max(StoringPlaceModel.FIELD_ID) || 0
+    return realm.create(StoringPlaceModel.schema.name, StoringPlaceModel.newInstance(max + 1, name, code, disabled))
   }
 
   static getEnabledObjects (realm) {
-    return realm.objects(StoringPlaceModel.name)
+    return realm.objects(StoringPlaceModel.schema.name)
       .filtered(`${StoringPlaceModel.FIELD_DISABLED} = false`)
   }
 
@@ -83,7 +83,7 @@ export default class StoringPlaceModel {
   }
 
   static getObject(realm, key) {
-    return realm.objectForPrimaryKey(StoringPlaceModel.name, key)
+    return realm.objectForPrimaryKey(StoringPlaceModel.schema.name, key)
   }
 
   static search (items, search) {
@@ -99,7 +99,7 @@ export default class StoringPlaceModel {
 }
 
 StoringPlaceModel.schema = {
-  name: StoringPlaceModel.name,
+  name: 'StoringPlaceModel',
   primaryKey: StoringPlaceModel.FIELD_ID,
   properties: {
     [StoringPlaceModel.FIELD_ID]: 'int',

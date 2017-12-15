@@ -75,11 +75,11 @@ export default class SettingsModel {
   }
 
   static init (realm) {
-    realm.create(SettingsModel.name, SettingsModel.newInstance())
+    realm.create('SettingsModel', SettingsModel.newInstance())
   }
 
   static getSettings (realm) {
-    let settings = realm.objectForPrimaryKey(SettingsModel.name, SettingsModel.DEFAULT_ID)
+    let settings = realm.objectForPrimaryKey(SettingsModel.schema.name, SettingsModel.DEFAULT_ID)
     if (!settings) {
       if (realm.isInTransaction) {
         SettingsModel.init(realm)
@@ -93,7 +93,7 @@ export default class SettingsModel {
 }
 
 SettingsModel.schema = {
-  name: SettingsModel.name,
+  name: 'SettingsModel',
   primaryKey: SettingsModel.FIELD_ID,
   properties: {
     [SettingsModel.FIELD_ID]: 'int',
