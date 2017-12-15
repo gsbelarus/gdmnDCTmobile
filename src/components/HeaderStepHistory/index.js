@@ -55,12 +55,10 @@ export default class HeaderStepHistory extends Component {
         delayPressIn={0}
         disabled={item.disabled}
         rippleColor={this.props.tintColor}
-        onPress={() => this.props.onStepPress(item, index)}
-        style={{flexDirection: 'row'}}>
+        onPress={() => this.props.onStepPress(item, index)}>
         <Text style={[styles.label, {color: this.props.tintColor}, item.style]}>
           {item.label}
         </Text>
-        {index < this.props.steps.length - 1 ? this._renderSeparator() : null}
       </TouchableView>
     )
   }
@@ -84,10 +82,8 @@ export default class HeaderStepHistory extends Component {
         keyExtractor={this.props.keyExtractor}
         data={this.props.steps}
         renderItem={this._renderItem}
-        // ItemSeparatorComponent={this._renderSeparator}
+        ItemSeparatorComponent={this._renderSeparator}
       />
     )
   }
-
-  //TODO remove workaround issue #15777
 }

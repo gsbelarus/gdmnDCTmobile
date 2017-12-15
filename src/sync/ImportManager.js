@@ -50,7 +50,7 @@ export default class ImportManager {
       )
     ))
     operatorModels.forEach((operator) => {
-      this.realm.create(OperatorModel.name, operator, true)
+      this.realm.create(OperatorModel.schema.name, operator, true)
     })
   }
 
@@ -67,7 +67,7 @@ export default class ImportManager {
       )
     ))
     storingPlaceModels.forEach((storingPlace) => {
-      this.realm.create(StoringPlaceModel.name, storingPlace, true)
+      this.realm.create(StoringPlaceModel.schema.name, storingPlace, true)
     })
   }
 
@@ -85,7 +85,7 @@ export default class ImportManager {
       )
     ))
     operationModels.forEach((operation) => {
-      this.realm.create(OperationModel.name, operation, true)
+      this.realm.create(OperationModel.schema.name, operation, true)
     })
   }
 }

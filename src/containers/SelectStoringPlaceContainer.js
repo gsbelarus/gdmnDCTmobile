@@ -12,7 +12,8 @@ export default connectRealm(
         id={item.id}
         primaryText={item.name}
         secondaryText={item.code}
-        onItemPress={() => ownProps.openCreateSession(realm, item)}/>
+        onItemPress={() => ownProps.onItemPress(item)}
+        style={ownProps.selectedKey === item.id ? {backgroundColor: 'rgba(0, 0, 0, .32)'} : null}/>
     )
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData, keyboardShouldPersistTaps: 'handled'}),

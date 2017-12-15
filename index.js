@@ -6,7 +6,7 @@ import configureStore from './src/redux/configureStore'
 import AppContainer from './src/containers/AppContainer'
 import scannerCallbackTask from './src/scannerCallbackTask'
 
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
+// UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const store = configureStore()
 

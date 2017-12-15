@@ -9,8 +9,9 @@ import ListItem from '../components/ListItem/index'
     items: SessionModel.findSessionByKey(realm, ownProps.navigation.state.params.sessionKey).codes,
     renderItem: ({item, index}) => (
       <ListItem
-        id={index}
-        primaryText={item}
+        id={item.id}
+        primaryText={item.name}
+        secondaryText={item.storingPlace.name}
         itemDisabled={true}/>
     )
   }),

@@ -52,7 +52,9 @@ export default function connectRealm (mapToRealmProps = (realm, ownProps) => ({r
       }
 
       componentWillUpdate (nextProps, nextState, nextContext) {
-        if (this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) {
+        if (this.context.reactRealmInstance &&
+          this.context.reactRealmInstance.path !== nextContext.reactRealmInstance.path) {
+
           this._removeListeners(this.context)
           this._initRealmProps(nextProps, nextContext)
           this._addListeners(nextContext)

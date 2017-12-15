@@ -2,10 +2,12 @@ import { BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import DialogAndroid from 'react-native-dialogs'
 import Snackbar from 'react-native-snackbar'
+import ScannerApi from 'react-native-android-scanner'
 import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_CLOSE_SESSION,
   STRING_ACTION_CONFIRM,
+  STRING_ACTION_DELETE,
   STRING_ACTION_OK,
   STRING_ACTION_OPEN_SESSION,
   STRING_ACTION_REPEAT,
@@ -34,15 +36,14 @@ import {
   SETTINGS
 } from '../../navigators/AppNavigator'
 import SessionModel from '../../realm/models/SessionModel'
-import StoringPlaceModel from '../../realm/models/StoringPlaceModel'
 import OperatorModel from '../../realm/models/OperatorModel'
 import OperationModel from '../../realm/models/OperationModel'
 import ExportManager from '../../sync/ExportManager'
 import ImportManager from '../../sync/ImportManager'
 import { addToProgress, removeFromProgress } from './progressActions'
-import ScannerApi from '../../../react-native-android-scanner/src/ScannerApi'
 import SettingsModel from '../../realm/models/SettingsModel'
 import { updateStoredSessionsQuantity } from '../../realm/utils'
+import { getCurrentRouteState } from '../reducers/appReducer'
 
 function navigate (routeName = ERROR, params = {}, action = null) {
   return NavigationActions.navigate({routeName, params, action})
@@ -171,16 +172,13 @@ export function syncData (realm) {
 export function openCreateSession (realm, object) {
   return (dispatch, getState) => {
     const {appState} = getState()
-    const {operator, storingPlace} = getCurrentRouteState(appState).params || {}
+    const {operator} = getCurrentRouteState(appState).params || {}
 
     if (!object) {
       dispatch(navigate(SELECT_OPERATOR))
 
     } else if (object instanceof OperatorModel) {
-      dispatch(navigate(SELECT_STORING_PLACE, {operator: object}))
-
-    } else if (object instanceof StoringPlaceModel) {
-      dispatch(navigate(SELECT_OPERATION, {storingPlace: object, operator}))
+      dispatch(navigate(SELECT_OPERATION, {operator: object}))
 
     } else if (object instanceof OperationModel) {
       let dialog = new DialogAndroid()
@@ -195,15 +193,14 @@ export function openCreateSession (realm, object) {
 
           try {
             if (!SessionModel.getOpenedSession(realm)) {
-              realm.beginTransaction()
-              SessionModel.create(realm, new Date(), operator, storingPlace, object)
-              updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
-              realm.commitTransaction()
+              realm.write(() => {
+                SessionModel.create(realm, new Date(), operator, object)
+                updateStoredSessionsQuantity(realm, SettingsModel.getSettings(realm).maxCountSession)
+              })
             }
             dispatch(globalNavigate(realm))
           } catch (error) {
             console.warn(error)
-            realm.cancelTransaction()
           }
 
           dispatch(removeFromProgress(progress))
@@ -219,14 +216,27 @@ export function deleteSessionDetail (realm) {
     const {appState} = getState()
     const {sessionKey} = getCurrentRouteState(appState).params || {}
 
-    dispatch(goBack())
+    if (!sessionKey) return
 
-    const session = SessionModel.findSessionByKey(realm, sessionKey)
-    if (session) {
-      realm.write(() => {
-        realm.delete(session)
-      })
-    }
+    let dialog = new DialogAndroid()
+    dialog.set({
+      title: strings(STRING_NOTIFICATION),
+      content: strings(STRING_ACTION_DELETE) + '?',
+      positiveText: strings(STRING_ACTION_CONFIRM),
+      negativeText: strings(STRING_ACTION_CANCEL),
+      onPositive: () => {
+        dispatch(goBack())
+
+        const session = SessionModel.findSessionByKey(realm, sessionKey)
+        if (session) {
+          realm.write(() => {
+            realm.delete(session.codes)
+            realm.delete(session)
+          })
+        }
+      }
+    })
+    dialog.show()
   }
 }
 
@@ -238,15 +248,10 @@ export function closeSession (realm) {
       dispatch(addToProgress(progress))
       try {
         const session = SessionModel.getOpenedSession(realm)
-
-        realm.beginTransaction()
-        session.disabled = true
-        realm.commitTransaction()
-
+        realm.write(() => session.disabled = true)
         dispatch(globalNavigate(realm))
       } catch (error) {
         console.warn(error)
-        realm.cancelTransaction()
         Snackbar.show({
           title: strings(STRING_ERROR_CLOSING_SESSION),
           duration: Snackbar.LENGTH_INDEFINITE,
@@ -283,8 +288,7 @@ function globalNavigate (realm) {
         [openScanner({
           sessionKey: session.id,
           sessionOperatorName: session.operator.name,
-          sessionOperationName: session.operation.name,
-          sessionStoringPlaceName: session.storingPlace.name
+          sessionOperationName: session.operation.name
         })]
       ))
 
@@ -295,11 +299,4 @@ function globalNavigate (realm) {
       dispatch(reset(0, [navigate(SESSIONS)]))
     }
   }
-}
-
-function getCurrentRouteState (navigationState) {
-  if (!navigationState) return null
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) return getCurrentRouteState(route)
-  return route
 }

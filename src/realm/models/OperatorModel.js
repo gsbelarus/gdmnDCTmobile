@@ -42,12 +42,12 @@ export default class OperatorModel {
   }
 
   static create (realm, name, disabled) {
-    let max = realm.objects(OperatorModel.name).max(OperatorModel.FIELD_ID) || 0
-    return realm.create(OperatorModel.name, OperatorModel.newInstance(max + 1, name, disabled))
+    let max = realm.objects(OperatorModel.schema.name).max(OperatorModel.FIELD_ID) || 0
+    return realm.create(OperatorModel.schema.name, OperatorModel.newInstance(max + 1, name, disabled))
   }
 
   static getEnabledObjects (realm) {
-    return realm.objects(OperatorModel.name)
+    return realm.objects(OperatorModel.schema.name)
       .filtered(`${OperatorModel.FIELD_DISABLED} = false`)
   }
 
@@ -58,7 +58,7 @@ export default class OperatorModel {
 }
 
 OperatorModel.schema = {
-  name: OperatorModel.name,
+  name: 'OperatorModel',
   primaryKey: OperatorModel.FIELD_ID,
   properties: {
     [OperatorModel.FIELD_ID]: 'int',

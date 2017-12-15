@@ -86,7 +86,7 @@ apply from: "../../node_modules/react-native/react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = false
+def enableSeparateBuildPerCPUArchitecture = true
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
@@ -101,8 +101,8 @@ android {
         applicationId "com.gdmndctmobile"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -156,7 +156,6 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-snackbar')
     compile project(':react-native-i18n')
-    compile project(':react-native-fs')
     compile project(':react-native-dialogs')
     compile project(':react-native-device-info')
     compile project(':react-native-android-scanner')

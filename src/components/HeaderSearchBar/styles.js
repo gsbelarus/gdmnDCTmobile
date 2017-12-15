@@ -1,15 +1,17 @@
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
   container: {
-    elevation: 4,
+    height: 48,
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 12,
     marginVertical: 8,
-    borderRadius: 2,
+    elevation: 4,
     backgroundColor: 'white',
-    height: 48
+    borderRadius: 2,
+    borderColor: 'black',
+    borderWidth: Platform.Version > 20 ? 0 : 1
   },
   textInput: {
     flex: 1,
