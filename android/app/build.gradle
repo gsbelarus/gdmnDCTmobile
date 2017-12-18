@@ -108,6 +108,14 @@ android {
         }
     }
     signingConfigs {
+        debug {
+            if (project.hasProperty('DEBUG_STORE_FILE')) {
+                storeFile file(DEBUG_STORE_FILE)
+                storePassword DEBUG_STORE_PASSWORD
+                keyAlias DEBUG_KEY_ALIAS
+                keyPassword DEBUG_KEY_PASSWORD
+            }
+        }
         release {
             if (project.hasProperty('RELEASE_STORE_FILE')) {
                 storeFile file(RELEASE_STORE_FILE)
@@ -126,6 +134,11 @@ android {
         }
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
