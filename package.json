@@ -15,7 +15,7 @@
     "reload-android": "adb shell input text \"RR\""
   },
   "dependencies": {
-    "moment": "^2.19.4",
+    "moment": "^2.20.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-native": "^0.51.0",
@@ -29,7 +29,7 @@
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.21",
     "react-redux": "^5.0.6",
-    "realm": "^2.1.0",
+    "realm": "^2.1.1",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-thunk": "^2.2.0",

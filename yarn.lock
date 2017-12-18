@@ -2508,9 +2508,9 @@ minimist@~0.0.1:
   dependencies:
     minimist "0.0.8"
 
-moment@^2.19.4:
-  version "2.19.4"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.4.tgz#17e5e2c6ead8819c8ecfad83a0acccb312e94682"
+moment@^2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.0.tgz#53396358994dd3a551e966a66af715ecb6c30ad0"
 
 morgan@~1.6.1:
   version "1.6.1"
@@ -3186,9 +3186,9 @@ readable-stream@~1.1.8, readable-stream@~1.1.9:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-realm@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.1.0.tgz#263c48ca337c7c2becec32d912945202684cc8f7"
+realm@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.1.1.tgz#74f7843809ca189b67ae39faea222ccc2fddba4c"
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"
