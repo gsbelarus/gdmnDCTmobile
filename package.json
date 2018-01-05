@@ -15,7 +15,7 @@
     "reload-android": "adb shell input text \"RR\""
   },
   "dependencies": {
-    "moment": "^2.20.0",
+    "moment": "^2.20.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-native": "^0.51.0",
@@ -23,11 +23,11 @@
     "react-native-android-scanner": "git://github.com/gsbelarus/react-native-android-scanner.git",
     "react-native-device-info": "^0.13.0",
     "react-native-dialogs": "^0.0.21",
-    "react-native-i18n": "^2.0.9",
+    "react-native-i18n": "^2.0.10",
     "react-native-interactions": "^0.4.0",
     "react-native-snackbar": "^0.4.4",
-    "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.21",
+    "react-native-vector-icons": "^4.4.3",
+    "react-navigation": "^1.0.0-beta.23",
     "react-redux": "^5.0.6",
     "realm": "^2.1.1",
     "redux": "^3.7.2",

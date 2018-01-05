@@ -56,9 +56,9 @@ export const STRING_ERROR_SYNC = 'errorSync'
 export const STRING_ERROR_NO_CONNECTION = 'errorNoConnection'
 
 I18n.fallbacks = true
-I18n.defaultLocale = 'ru-RU'
+I18n.defaultLocale = 'ru'
 I18n.translations = {
-  'ru-RU': ru()
+  'ru': ru()
 }
 
 export function setLocale (locale) {
