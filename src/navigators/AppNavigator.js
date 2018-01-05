@@ -1,25 +1,14 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { Header, StackNavigator } from 'react-navigation'
 import { View } from 'react-native'
 import { AfterInteractions } from 'react-native-interactions'
 import strings, {
-  STRING_ACTION_CLOSE_SESSION,
-  STRING_ACTION_DELETE,
-  STRING_ACTION_SETTINGS,
-  STRING_ACTION_SYNC,
-  STRING_TITLE_SCANNER,
-  STRING_TITLE_SELECT_OPERATION,
-  STRING_TITLE_SELECT_OPERATOR,
-  STRING_TITLE_SESSION_DETAIL,
-  STRING_TITLE_SESSIONS,
-  STRING_TITLE_SETTINGS
+  STRING_ACTION_CLOSE_SESSION, STRING_ACTION_DELETE, STRING_ACTION_SETTINGS, STRING_ACTION_SYNC,
+  STRING_TITLE_SCANNER, STRING_TITLE_SELECT_OPERATION, STRING_TITLE_SELECT_OPERATOR, STRING_TITLE_SESSION_DETAIL,
+  STRING_TITLE_SESSIONS, STRING_TITLE_SETTINGS
 } from '../localization/strings'
 import {
-  closeSession,
-  deleteSessionDetail,
-  openCreateSession,
-  openSessionDetail,
-  openSettings,
+  closeSession, deleteSessionDetail, openCreateSession, openSessionDetail, openSettings,
   syncData
 } from '../redux/actions/appActions'
 import SettingsContainer from '../containers/SettingsContainer'

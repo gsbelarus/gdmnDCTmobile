@@ -4,35 +4,14 @@ import DialogAndroid from 'react-native-dialogs'
 import Snackbar from 'react-native-snackbar'
 import ScannerApi from 'react-native-android-scanner'
 import strings, {
-  STRING_ACTION_CANCEL,
-  STRING_ACTION_CLOSE_SESSION,
-  STRING_ACTION_CONFIRM,
-  STRING_ACTION_DELETE,
-  STRING_ACTION_OK,
-  STRING_ACTION_OPEN_SESSION,
-  STRING_ACTION_REPEAT,
-  STRING_ERROR_CLOSING_SESSION,
-  STRING_ERROR_DEVICE_NOT_SUPPORTED,
-  STRING_ERROR_NO_CONNECTION,
-  STRING_ERROR_SYNC,
-  STRING_NOTIFICATION,
-  STRING_NOTIFICATION_SCANNING,
-  STRING_PROGRESS_CLOSING_SESSION,
-  STRING_PROGRESS_OPENING_SESSION,
-  STRING_PROGRESS_SYNC,
-  STRING_PROGRESS_VERIFY_APP,
-  STRING_SETTINGS_URL_HINT,
-  STRING_SETTINGS_URL_INVALID,
-  STRING_SETTINGS_URL_PRIMARY
+  STRING_ACTION_CANCEL, STRING_ACTION_CLOSE_SESSION, STRING_ACTION_CONFIRM, STRING_ACTION_DELETE,
+  STRING_ACTION_OK, STRING_ACTION_OPEN_SESSION, STRING_ACTION_REPEAT, STRING_ERROR_CLOSING_SESSION,
+  STRING_ERROR_NO_CONNECTION, STRING_ERROR_SYNC, STRING_NOTIFICATION, STRING_NOTIFICATION_SCANNING,
+  STRING_PROGRESS_CLOSING_SESSION, STRING_PROGRESS_OPENING_SESSION, STRING_PROGRESS_SYNC, STRING_PROGRESS_VERIFY_APP,
+  STRING_SETTINGS_URL_HINT, STRING_SETTINGS_URL_INVALID, STRING_SETTINGS_URL_PRIMARY
 } from '../../localization/strings'
 import {
-  ERROR,
-  SCANNER,
-  SELECT_OPERATION,
-  SELECT_OPERATOR,
-  SELECT_STORING_PLACE,
-  SESSION_DETAIL,
-  SESSIONS,
+  ERROR, SCANNER, SELECT_OPERATION, SELECT_OPERATOR, SESSION_DETAIL, SESSIONS,
   SETTINGS
 } from '../../navigators/AppNavigator'
 import SessionModel from '../../realm/models/SessionModel'
@@ -82,25 +61,24 @@ export function init (realm) {
     const progress = {message: strings(STRING_PROGRESS_VERIFY_APP)}
     dispatch(addToProgress(progress))
 
-    let isSupported = await ScannerApi.isDeviceSupported()
-    // isSupported = true    //TODO remove
-
-    if (!isSupported) {
-      dispatch(reset(0,
-        [navigate(ERROR,
-          {
-            message: strings(STRING_ERROR_DEVICE_NOT_SUPPORTED),
-            icon: 'sentiment-very-dissatisfied'
-          }
-        )]
-      ))
-    } else {
+    // let isSupported = await ScannerApi.isDeviceSupported()
+    //
+    // if (!isSupported) {
+    //   dispatch(reset(0,
+    //     [navigate(ERROR,
+    //       {
+    //         message: strings(STRING_ERROR_DEVICE_NOT_SUPPORTED),
+    //         icon: 'sentiment-very-dissatisfied'
+    //       }
+    //     )]
+    //   ))
+    // } else {
       dispatch(globalNavigate(realm))
       const settings = SettingsModel.getSettings(realm)
       if (!settings.url) {
         showEditUrlDialog(realm)
       }
-    }
+    // }
 
     dispatch(removeFromProgress(progress))
   }
