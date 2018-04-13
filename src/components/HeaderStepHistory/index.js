@@ -26,7 +26,7 @@ export default class HeaderStepHistory extends Component {
     tintColor: 'black',
     separatorIconName: 'keyboard-arrow-right',
     onStepPress: () => {},
-    keyExtractor: (item, index) => index
+    keyExtractor: (item, index) => `${index}`
   }
 
   list = null

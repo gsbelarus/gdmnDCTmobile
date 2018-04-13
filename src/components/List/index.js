@@ -28,7 +28,7 @@ export default class List extends PureComponent {
   static defaultProps = {
     extra: {},
     items: [],
-    keyExtractor: (item, index) => index,
+    keyExtractor: (item, index) => `${index}`,
     onActionPress: () => {}
   }
 

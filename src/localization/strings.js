@@ -38,6 +38,7 @@ export const STRING_SETTINGS_ABOUT_CONTENT = 'settingsAboutContent'
 export const STRING_PROGRESS_SYNC = 'progressSync'
 export const STRING_PROGRESS_OPENING_SESSION = 'progressOpeningSession'
 export const STRING_PROGRESS_CLOSING_SESSION = 'progressClosingSession'
+export const STRING_PROGRESS_DELETING_SESSION = 'progressDeletingSession'
 export const STRING_PROGRESS_VERIFY_APP = 'progressVerifyApp'
 
 export const STRING_TITLE_SETTINGS = 'titleSettings'

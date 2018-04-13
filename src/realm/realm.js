@@ -1,10 +1,10 @@
 import Realm from 'realm'
-import SessionModel from './models/SessionModel'
-import OperatorModel from './models/OperatorModel'
-import StoringPlaceModel from './models/StoringPlaceModel'
-import OperationModel from './models/OperationModel'
-import SettingModel from './models/SettingsModel'
 import CodeModel from './models/CodeModel'
+import OperationModel from './models/OperationModel'
+import OperatorModel from './models/OperatorModel'
+import SessionModel from './models/SessionModel'
+import SettingModel from './models/SettingsModel'
+import StoringPlaceModel from './models/StoringPlaceModel'
 
 let realm
 
@@ -15,7 +15,7 @@ export async function openRealm () {
       schemaVersion: 112,
       deleteRealmIfMigrationNeeded: true,
       shouldCompactOnLaunch: (totalBytes, usedBytes) => true
-    }).progress(console.log)
+    })
 
     // realm.write(() => realm.deleteAll())     //TODO remove
     // createDemoData(realm)                //TODO remove
