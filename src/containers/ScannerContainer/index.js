@@ -1,27 +1,14 @@
-import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
 import { Text, TextInput, View } from 'react-native'
-import Snackbar from 'react-native-snackbar'
-import DialogAndroid from 'react-native-dialogs'
 import ScannerApi from 'react-native-android-scanner'
-import scannerCallbackTask from '../../scannerCallbackTask'
+import DialogAndroid from 'react-native-dialogs'
+import Snackbar from 'react-native-snackbar'
+import { connect } from 'react-redux'
+import HeaderSearchBar from '../../components/HeaderSearchBar/index'
 import List from '../../components/List/index'
 import ListItem from '../../components/ListItem/index'
-import HeaderSearchBar from '../../components/HeaderSearchBar/index'
 import PopupModal from '../../components/PopupModal/index'
 import TouchableView from '../../components/TouchableView'
-import SelectStoringPlaceContainer from '../SelectStoringPlaceContainer'
-import connectRealm from '../../realm/react/connectRealm'
-import SessionModel from '../../realm/models/SessionModel'
-import CodeModel from '../../realm/models/CodeModel'
-import {
-  changeCode,
-  dismissEditor,
-  showEditor,
-  toggleSelector,
-  updateSelectorSearch,
-  updateStoringPlace
-} from '../../redux/actions/scannerActions'
 import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_CONFIRM,
@@ -32,6 +19,19 @@ import strings, {
   STRING_NOTIFICATION,
   STRING_TITLE_SELECT_STORING_PLACE
 } from '../../localization/strings'
+import { connectRealm } from '../../realm/contextRealm'
+import CodeModel from '../../realm/models/CodeModel'
+import SessionModel from '../../realm/models/SessionModel'
+import {
+  changeCode,
+  dismissEditor,
+  showEditor,
+  toggleSelector,
+  updateSelectorSearch,
+  updateStoringPlace
+} from '../../redux/actions/scannerActions'
+import scannerCallbackTask from '../../scannerCallbackTask'
+import SelectStoringPlaceContainer from '../SelectStoringPlaceContainer'
 import styles from './styles'
 
 function showDeleteConfirmDialog (onConfirm) {
@@ -163,7 +163,7 @@ function showRepeatError () {
     }
   })
 )
-export default class ScannerContainer extends PureComponent {
+export default class ScannerContainer extends React.PureComponent {
 
   constructor (props, context) {
     super(props, context)

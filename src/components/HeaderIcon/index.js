@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { ColorPropType, Text, ToastAndroid, Vibration, ViewPropTypes } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { Text, ToastAndroid, Vibration, ColorPropType, ViewPropTypes } from 'react-native'
 import TouchableView from '../TouchableView'
 import styles from './styles'
 
-export default class HeaderIcon extends Component {
+export default class HeaderIcon extends React.Component {
 
   static propTypes = {
     iconName: PropTypes.string,

@@ -1,6 +1,8 @@
 import React from 'react'
 import DeviceInfo from 'react-native-device-info'
 import DialogAndroid from 'react-native-dialogs'
+import List from '../components/List/index'
+import ListItem from '../components/ListItem/index'
 import strings, {
   STRING_ACTION_CANCEL,
   STRING_ACTION_OK,
@@ -19,13 +21,11 @@ import strings, {
   STRING_SETTINGS_URL_PRIMARY,
   STRING_SETTINGS_URL_SECONDARY
 } from '../localization/strings'
-import connectRealm from '../realm/react/connectRealm'
-import { updateStoredSessionsQuantity } from '../realm/utils'
-import List from '../components/List/index'
-import ListItem from '../components/ListItem/index'
-import SettingModel from '../realm/models/SettingsModel'
-import SessionModel from '../realm/models/SessionModel'
 import { formatDate } from '../localization/utils'
+import { connectRealm } from '../realm/contextRealm'
+import SessionModel from '../realm/models/SessionModel'
+import SettingModel from '../realm/models/SettingsModel'
+import { updateStoredSessionsQuantity } from '../realm/utils'
 
 export default connectRealm(
   (realm, ownProps) => ({

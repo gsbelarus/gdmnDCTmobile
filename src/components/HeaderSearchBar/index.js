@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { ColorPropType, LayoutAnimation, TextInput, View, ViewPropTypes } from 'react-native'
 import strings, { STRING_ACTION_SEARCH } from '../../localization/strings'
 import HeaderIcon from '../HeaderIcon/index'
 import styles from './styles'
 
-export default class HeaderSearchBar extends PureComponent {
+export default class HeaderSearchBar extends React.PureComponent {
 
   static propTypes = {
     value: PropTypes.string,
@@ -26,7 +26,7 @@ export default class HeaderSearchBar extends PureComponent {
     tint: 'black'
   }
 
-  componentWillUpdate () {
+  componentDidUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 

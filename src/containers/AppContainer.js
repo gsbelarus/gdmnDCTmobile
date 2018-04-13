@@ -2,8 +2,8 @@ import React from 'react'
 import { StatusBar, View } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationService } from '../NavigationService'
-import AppNavigator2 from '../navigators/AppNavigator'
-import RealmProvider from '../realm/react/RealmProvider'
+import AppNavigator from '../navigators/AppNavigator'
+import { RealmProvider } from '../realm/contextRealm'
 import { openRealm } from '../realm/realm'
 import { init } from '../redux/actions/appActions'
 import ProgressModalContainer from './ProgressModalContainer'
@@ -33,9 +33,9 @@ export default class App extends React.PureComponent {
 
   render () {
     return (
-      <RealmProvider realm={this.state.realm}>
+      <RealmProvider value={this.state.realm}>
         <View style={{flex: 1}}>
-          <AppNavigator2
+          <AppNavigator
             ref={ref => NavigationService._navigator = ref}
             screenProps={{
               realm: this.state.realm,

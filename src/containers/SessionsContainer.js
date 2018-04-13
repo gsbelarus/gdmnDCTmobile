@@ -2,8 +2,8 @@ import React from 'react'
 import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
 import { formatDate } from '../localization/utils'
+import { connectRealm } from '../realm/contextRealm'
 import SessionModel from '../realm/models/SessionModel'
-import connectRealm from '../realm/react/connectRealm'
 
 export default connectRealm(
   (realm, ownProps) => ({
