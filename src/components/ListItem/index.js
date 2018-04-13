@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { ColorPropType, LayoutAnimation, Text, Vibration, View, ViewPropTypes } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import TouchableView from '../TouchableView'
 import styles from './styles'
 
-export default class ListItem extends PureComponent {
+export default class ListItem extends React.PureComponent {
 
   static propTypes = {
     id: PropTypes.oneOfType([
@@ -55,7 +55,7 @@ export default class ListItem extends PureComponent {
     this.props.onItemIconRightPress(this.props.id)
   }
 
-  componentWillUpdate () {
+  componentDidUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 

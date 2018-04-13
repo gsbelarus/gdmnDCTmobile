@@ -97,7 +97,6 @@ export default class SessionModel {
 
   static getSortedByDate (realm, reverse) {
     const s = realm.objects(SessionModel.schema.name)
-    console.log(s)
     return s.sorted(SessionModel.FIELD_TIME, reverse)
   }
 

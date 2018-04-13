@@ -1,8 +1,8 @@
 import React from 'react'
-import connectRealm from '../realm/react/connectRealm'
-import OperationModel from '../realm/models/OperationModel'
 import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
+import { connectRealm } from '../realm/contextRealm'
+import OperationModel from '../realm/models/OperationModel'
 
 export default connectRealm(
   (realm, ownProps) => ({

@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { Text, View, ViewPropTypes } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import strings, { STRING_EMPTY_DATA } from '../../localization/strings'
 import styles from './styles'
 
-export default class EmptyView extends PureComponent {
+export default class EmptyView extends React.PureComponent {
 
   static propTypes = {
     icon: PropTypes.string,

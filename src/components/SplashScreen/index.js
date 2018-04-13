@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { ActivityIndicator, ColorPropType, Text, View, ViewPropTypes } from 'react-native'
 import styles from './styles'
 
-export default class SplashScreen extends PureComponent {
+export default class SplashScreen extends React.PureComponent {
 
   static propTypes = {
     progressColor: ColorPropType,

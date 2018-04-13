@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { ColorPropType, Platform, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native'
 
-export default class TouchableView extends PureComponent {
+export default class TouchableView extends React.PureComponent {
 
   static propTypes = {
     borderless: PropTypes.bool,

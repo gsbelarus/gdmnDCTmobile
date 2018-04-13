@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { BackHandler, ColorPropType, LayoutAnimation, StyleSheet, Text, View, ViewPropTypes } from 'react-native'
 import SplashScreen from './SplashScreen/index'
 
-export default class ProgressModal extends PureComponent {
+export default class ProgressModal extends React.PureComponent {
 
   static propTypes = {
     visible: PropTypes.bool,
@@ -41,7 +41,7 @@ export default class ProgressModal extends PureComponent {
     BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
   }
 
-  componentWillUpdate () {
+  componentDidUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 

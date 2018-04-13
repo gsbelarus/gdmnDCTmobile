@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react'
-import connectRealm from '../realm/react/connectRealm'
-import SessionModel from '../realm/models/SessionModel'
+import React from 'react'
 import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
+import { connectRealm } from '../realm/contextRealm'
+import SessionModel from '../realm/models/SessionModel'
 
 @connectRealm(
   (realm, ownProps) => ({
@@ -17,7 +17,7 @@ import ListItem from '../components/ListItem/index'
   }),
   (extraData, ownProps) => ({...ownProps, extra: extraData})
 )
-export default class SessionDetailContainer extends PureComponent {
+export default class SessionDetailContainer extends React.PureComponent {
 
   render () {
     return (

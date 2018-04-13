@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import React from 'react'
 import { ColorPropType, FlatList, Text } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import TouchableView from '../TouchableView'
 import styles from './styles'
 
-export default class HeaderStepHistory extends Component {
+export default class HeaderStepHistory extends React.PureComponent {
 
   static propTypes = {
     extra: PropTypes.any,
@@ -26,7 +26,7 @@ export default class HeaderStepHistory extends Component {
     tintColor: 'black',
     separatorIconName: 'keyboard-arrow-right',
     onStepPress: () => {},
-    keyExtractor: (item, index) => index
+    keyExtractor: (item, index) => `${index}`
   }
 
   list = null
@@ -66,7 +66,7 @@ export default class HeaderStepHistory extends Component {
   componentDidUpdate (prevProps, prevState) {
     setTimeout(() => {      //TODO workaround
       if (this.list && (
-          this.props.steps !== prevProps.steps || this.props.extra !== prevProps.extra)) {
+        this.props.steps !== prevProps.steps || this.props.extra !== prevProps.extra)) {
         this.list.scrollToEnd()
       }
     }, 500)

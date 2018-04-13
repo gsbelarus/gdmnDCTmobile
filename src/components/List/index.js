@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { ColorPropType, FlatList, LayoutAnimation, View, ViewPropTypes } from 'react-native'
 import ActionButton from 'react-native-action-button'
 import EmptyView from '../EmptyView/index'
 import styles from './styles'
 
-export default class List extends PureComponent {
+export default class List extends React.PureComponent {
 
   static propTypes = {
     extra: PropTypes.any,
@@ -28,7 +28,7 @@ export default class List extends PureComponent {
   static defaultProps = {
     extra: {},
     items: [],
-    keyExtractor: (item, index) => index,
+    keyExtractor: (item, index) => `${index}`,
     onActionPress: () => {}
   }
 
@@ -52,7 +52,7 @@ export default class List extends PureComponent {
     this.setState({width, height})
   }
 
-  componentWillUpdate () {
+  componentDidUpdate () {
     LayoutAnimation.easeInEaseOut()
   }
 

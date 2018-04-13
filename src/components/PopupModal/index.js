@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { Modal, Text, TouchableWithoutFeedback, View, ViewPropTypes } from 'react-native'
 import strings, { STRING_ACTION_CANCEL, STRING_ACTION_OK } from '../../localization/strings'
-import styles from './styles'
 import TouchableView from '../TouchableView'
+import styles from './styles'
 
-export default class PopupModal extends PureComponent {
+export default class PopupModal extends React.PureComponent {
 
   static propTypes = {
     title: PropTypes.string,

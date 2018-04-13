@@ -1,17 +1,15 @@
-import React, { PureComponent } from 'react'
-import { BackHandler, StatusBar, View } from 'react-native'
+import React from 'react'
+import { StatusBar, View } from 'react-native'
 import { connect } from 'react-redux'
-import { addNavigationHelpers } from 'react-navigation'
-import { openRealm } from '../realm/realm'
-import { goBack, init } from '../redux/actions/appActions'
+import { NavigationService } from '../NavigationService'
 import AppNavigator from '../navigators/AppNavigator'
+import { RealmProvider } from '../realm/contextRealm'
+import { openRealm } from '../realm/realm'
+import { init } from '../redux/actions/appActions'
 import ProgressModalContainer from './ProgressModalContainer'
-import RealmProvider from '../realm/react/RealmProvider'
 
-@connect(
-  (state) => ({state: state.appState})
-)
-export default class App extends PureComponent {
+@connect()
+export default class App extends React.PureComponent {
 
   state = {
     realm: null
@@ -21,43 +19,27 @@ export default class App extends PureComponent {
     super(props, context)
 
     this._init = this._init.bind(this)
-    this._onBackPress = this._onBackPress.bind(this)
   }
 
   _init () {
     this.props.dispatch(init(this.state.realm))
   }
 
-  _onBackPress () {
-    this.props.dispatch(goBack())
-    return true
-  }
-
   componentDidMount () {
     openRealm().then(realm => this.setState({realm}, this._init), console.warn)
 
     StatusBar.setBackgroundColor('black', true)
-
-    BackHandler.addEventListener('hardwareBackPress', this._onBackPress)
-  }
-
-  componentWillUnmount () {
-    // if (this.state.realm) this.state.realm.close()
-
-    BackHandler.removeEventListener('hardwareBackPress', this._onBackPress)
   }
 
   render () {
     return (
-      <RealmProvider realm={this.state.realm}>
+      <RealmProvider value={this.state.realm}>
         <View style={{flex: 1}}>
           <AppNavigator
-            navigation={addNavigationHelpers({
-              dispatch: this.props.dispatch,
-              state: this.props.state
-            })}
+            ref={ref => NavigationService._navigator = ref}
             screenProps={{
-              realm: this.state.realm
+              realm: this.state.realm,
+              dispatch: this.props.dispatch
             }}/>
           <ProgressModalContainer/>
         </View>

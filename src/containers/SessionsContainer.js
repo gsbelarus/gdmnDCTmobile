@@ -1,28 +1,9 @@
 import React from 'react'
-import DialogAndroid from 'react-native-dialogs'
-import connectRealm from '../realm/react/connectRealm'
-import SessionModel from '../realm/models/SessionModel'
 import List from '../components/List/index'
 import ListItem from '../components/ListItem/index'
 import { formatDate } from '../localization/utils'
-import strings, {
-  STRING_ACTION_CANCEL,
-  STRING_ACTION_CONFIRM,
-  STRING_ACTION_DELETE,
-  STRING_NOTIFICATION
-} from '../localization/strings'
-
-function showDeleteConfirmDialog (onConfirm) {
-  let dialog = new DialogAndroid()
-  dialog.set({
-    title: strings(STRING_NOTIFICATION),
-    content: strings(STRING_ACTION_DELETE) + '?',
-    positiveText: strings(STRING_ACTION_CONFIRM),
-    negativeText: strings(STRING_ACTION_CANCEL),
-    onPositive: onConfirm
-  })
-  dialog.show()
-}
+import { connectRealm } from '../realm/contextRealm'
+import SessionModel from '../realm/models/SessionModel'
 
 export default connectRealm(
   (realm, ownProps) => ({
@@ -34,11 +15,7 @@ export default connectRealm(
         secondaryText={formatDate(item.time, 'Do MMMM YYYY, HH:mm')}
         iconRightName={'delete'}
         onItemPress={() => ownProps.openSessionDetail(item)}
-        onItemIconRightPress={() => {
-          showDeleteConfirmDialog(() => {
-            realm.write(() => realm.delete(item))
-          })
-        }}
+        onItemIconRightPress={() => ownProps.deleteSessionDetail(item)}
         style={{backgroundColor: item.exported ? '#50C85030' : '#C8505030'}}/>
     ),
     actionVisible: true,
